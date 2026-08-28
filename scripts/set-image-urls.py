@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Stamp your GitHub owner/repo into the product import CSV.
 
-    python scripts/set-image-urls.py YOUR-USERNAME bob-music-store
+    python scripts/set-image-urls.py OWNER REPO [BRANCH]
 
 Rewrites every Image Src in import/bob-music-products.csv to a jsDelivr URL
 pointing at this repository, so Shopify can pull the photographs in on import.
@@ -14,7 +14,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CSV = os.path.join(HERE, '..', 'import', 'bob-music-products.csv')
-PATTERN = re.compile(r'https://cdn\.jsdelivr\.net/gh/[^/]+/[^@]+@main/import/images/')
+PATTERN = re.compile(r'https://cdn\.jsdelivr\.net/gh/[^/]+/[^@]+@[^/]+/import/images/')
 
 
 def main(argv):
