@@ -24,6 +24,15 @@
     "categories": {
       "type": "category-grid",
       "blocks": {
+        "category_cqpEcc": {
+          "type": "category",
+          "settings": {
+            "collection": "violins-wind-copy",
+            "title": "Audio & Studio",
+            "subtitle": "",
+            "url": ""
+          }
+        },
         "c1": {
           "type": "category",
           "settings": {
@@ -80,6 +89,7 @@
         }
       },
       "block_order": [
+        "category_cqpEcc",
         "c1",
         "c2",
         "c3",
