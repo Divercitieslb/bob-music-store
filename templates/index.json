@@ -24,24 +24,6 @@
     "categories": {
       "type": "category-grid",
       "blocks": {
-        "category_PX4wRh": {
-          "type": "category",
-          "settings": {
-            "collection": "audio-studio-copy",
-            "title": "Strings & Accessories",
-            "subtitle": "",
-            "url": ""
-          }
-        },
-        "category_cqpEcc": {
-          "type": "category",
-          "settings": {
-            "collection": "violins-wind-copy",
-            "title": "Audio & Studio",
-            "subtitle": "",
-            "url": ""
-          }
-        },
         "c1": {
           "type": "category",
           "settings": {
@@ -87,25 +69,33 @@
             "url": ""
           }
         },
-        "c6": {
+        "category_cqpEcc": {
           "type": "category",
           "settings": {
-            "collection": "violins-wind",
-            "title": "Violins & Wind",
+            "collection": "violins-wind-copy",
+            "title": "Audio & Studio",
+            "subtitle": "",
+            "url": ""
+          }
+        },
+        "category_PX4wRh": {
+          "type": "category",
+          "settings": {
+            "collection": "audio-studio-copy",
+            "title": "Strings & Accessories",
             "subtitle": "",
             "url": ""
           }
         }
       },
       "block_order": [
-        "category_PX4wRh",
-        "category_cqpEcc",
         "c1",
         "c2",
         "c3",
         "c4",
         "c5",
-        "c6"
+        "category_cqpEcc",
+        "category_PX4wRh"
       ],
       "settings": {
         "eyebrow": "The catalogue",
