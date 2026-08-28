@@ -11,77 +11,78 @@ A complete Shopify theme and product catalogue for Bob Music Store, Beirut —
 
 ---
 
-## 1. What is in here
+## 1. Two branches, on purpose
+
+Shopify's GitHub integration syncs an **entire branch** as the theme and
+enforces a **50 MB limit**. It does not read `.shopifyignore` — only the
+Shopify CLI does. So the repo is split:
+
+| Branch | Holds | Size | Who reads it |
+|---|---|---|---|
+| **`main`** | the theme only | 1.4 MB | Shopify (theme sync) |
+| **`catalogue`** | 300 product images, import CSVs, build scripts, design previews | 124 MB | jsDelivr (image import), and you |
+
+Your local folder has both — everything is on disk regardless of which branch
+is checked out.
 
 ```
-bob-music-store/
-├── assets/                     theme CSS, JS, logo and mark
-│   ├── base.css                the whole design system
-│   ├── theme.js                drawers, tabs, gallery, facets, search
-│   ├── logo-primary.png        supplied lockup, cut to transparent
-│   ├── mark.svg                vector riq — favicon, footer, avatar
-│   └── favicon.svg
-├── config/                     theme settings schema + defaults
-├── layout/theme.liquid         document shell
-├── locales/                    en.default
-├── sections/                   header, footer, hero, product, collection…
-├── snippets/                   product-card, ornament, icon, meta-tags
-├── templates/                  index / product / collection / cart / search…
-├── import/
-│   ├── bob-music-products.csv  ← import into Shopify (268 products)
-│   ├── price-sheet.csv         ← fill in prices, then re-import
-│   ├── collections.csv         the 43 collections + their smart rule
-│   └── images/                 300 retouched photographs
-└── scripts/set-image-urls.py   stamps your GitHub owner/repo into the CSV
+main                            catalogue
+├── assets/                     ├── import/
+│   ├── base.css                │   ├── bob-music-products.csv   ← import this
+│   ├── theme.js                │   ├── price-sheet.csv          ← fill in prices
+│   ├── logo-primary.png        │   ├── collections.csv
+│   ├── mark.svg                │   └── images/   300 photographs
+│   └── favicon.svg             ├── scripts/set-image-urls.py
+├── config/                     ├── _work/        the build pipeline
+├── layout/theme.liquid         └── preview-*.html  static design proofs
+├── locales/
+├── sections/    23 sections
+├── snippets/
+└── templates/
 ```
 
-`preview-*.html` at the repo root are static design proofs (Liquid cannot run
-locally without a store). They are not part of the theme and can be deleted.
+## 2. Connect the theme
 
----
+Shopify admin → **Online Store → Themes → Add theme → Connect from GitHub**
+→ repository `Divercitieslb/bob-music-store` → branch **`main`**.
 
-## 2. Deploy the theme through GitHub
+Shopify then tracks `main`; every push to it updates the theme.
 
-1. **Create the repository** on GitHub as `Divercitieslb/bob-music-store`. Keep it
-   **public**: jsDelivr, which serves the product images during import, only
-   reads public repositories.
+Two things that will bite if they are wrong:
 
-2. **Push this folder:**
-
-```bash
-git remote add origin https://github.com/Divercitieslb/bob-music-store.git
-git branch -M main
-git push -u origin main
-```
-
-3. **Connect it to Shopify:** Shopify admin → **Online Store → Themes →
-   Add theme → Connect from GitHub** → pick the repo and the `main` branch.
-   Shopify then tracks the branch; every push updates the theme.
-
-4. **Preview, then publish.** Use *Customize* to check it, then **Publish**.
-
-> Shopify validates the theme on connect. If it reports an error, it names the
-> file and line — fix, commit, push, and it re-validates automatically.
-
----
+- **Branch must be `main`, not `catalogue`.** Pointing Shopify at `catalogue`
+  hands it 124 MB and it will refuse with *"Theme is too large."*
+- **The Shopify GitHub App needs access to this repo.** If the picker greys it
+  out with *"No access to this repository"*, open
+  [github.com/settings/installations](https://github.com/settings/installations)
+  → Shopify → *Repository access* → add `bob-music-store`.
 
 ## 3. Import the products
 
 ### 3a. Image URLs — already done
 
-All 300 image URLs already point at this repository:
+All 300 image URLs already point at the `catalogue` branch:
 
 ```
-https://cdn.jsdelivr.net/gh/Divercitieslb/bob-music-store@main/import/images/…
+https://cdn.jsdelivr.net/gh/Divercitieslb/bob-music-store@catalogue/import/images/…
 ```
 
-Nothing to do, as long as the repo is **public** and the branch is **main** —
-jsDelivr reads neither private repos nor other branch names.
+**The repository must be public** — jsDelivr will not serve a private one.
+Settings → General → Danger Zone → *Change repository visibility* → Public.
 
-If you ever rename the repo or move it to another account, re-stamp with:
+Check it is serving before you import:
 
 ```bash
-python scripts/set-image-urls.py NEW-OWNER NEW-REPO
+curl -I https://cdn.jsdelivr.net/gh/Divercitieslb/bob-music-store@catalogue/import/images/OUD-07-01.jpg
+```
+
+`HTTP/2 200` means all 300 will resolve. Allow a couple of minutes after
+making the repo public — jsDelivr caches a new repo on first request.
+
+If you ever move or rename the repo, re-stamp with:
+
+```bash
+python scripts/set-image-urls.py NEW-OWNER NEW-REPO catalogue
 ```
 
 ### 3b. Run the import
@@ -213,4 +214,5 @@ To re-run any of the build steps, everything lives in `_work/`:
 | `make_preview.py` | regenerates the static design proofs |
 | `make_mark.py` | regenerates the vector riq mark and favicon |
 
-`_work/` is excluded from the theme by `.shopifyignore`, so it never ships.
+`_work/` and everything else non-theme lives on the `catalogue` branch, so it
+never reaches Shopify.
