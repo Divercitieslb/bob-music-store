@@ -1,0 +1,124 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a> <span aria-hidden="true">/</span>
+    <a href="{{ routes.collections_url }}">Collections</a> <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ collection.title }}</span>
+  </nav>
+</div>
+
+<section class="section section--tight">
+  <div class="wrap">
+    <p class="eyebrow">{{ collection.products_count }} product{% if collection.products_count != 1 %}s{% endif %}</p>
+    <h1 class="h1">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <div class="lede rte" style="margin-top:1rem">{{ collection.description }}</div>
+    {%- endif -%}
+    <div style="margin-top:1.5rem">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="collection-layout">
+
+    <aside class="facets" aria-label="Filters">
+      {%- if section.settings.show_filters -%}
+        <form data-facet-form>
+          {%- for filter in collection.filters -%}
+            <details class="facet" open>
+              <summary>{{ filter.label }} {% render 'icon', name: 'chevron' %}</summary>
+              {%- case filter.type -%}
+                {%- when 'list' -%}
+                  <div class="facet__list">
+                    {%- for value in filter.values -%}
+                      <label class="facet__item">
+                        <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"
+                               {% if value.active %}checked{% endif %}
+                               {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                        <span>{{ value.label }}</span>
+                        <span class="facet__count num">{{ value.count }}</span>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                {%- when 'price_range' -%}
+                  <div style="display:flex;gap:.5rem;align-items:center">
+                    <label class="visually-hidden" for="pmin">Minimum price</label>
+                    <input id="pmin" type="number" name="{{ filter.min_value.param_name }}" placeholder="Min"
+                           value="{{ filter.min_value.value | default: '' }}"
+                           style="width:100%;padding:.55rem;border:1px solid var(--rule);background:var(--paper)">
+                    <span>–</span>
+                    <label class="visually-hidden" for="pmax">Maximum price</label>
+                    <input id="pmax" type="number" name="{{ filter.max_value.param_name }}" placeholder="Max"
+                           value="{{ filter.max_value.value | default: '' }}"
+                           style="width:100%;padding:.55rem;border:1px solid var(--rule);background:var(--paper)">
+                  </div>
+              {%- endcase -%}
+            </details>
+          {%- endfor -%}
+          <noscript><button class="btn btn--sm" type="submit">Apply</button></noscript>
+        </form>
+
+        {%- if collection.filters.size == 0 -%}
+          <p class="note">Filters appear here once product filters are set up in Shopify (Search &amp; Discovery app).</p>
+        {%- endif -%}
+      {%- endif -%}
+    </aside>
+
+    <div>
+      <div class="toolbar">
+        <span class="mono">{{ collection.products_count }} result{% if collection.products_count != 1 %}s{% endif %}</span>
+        <form data-sort-form>
+          <label class="visually-hidden" for="sort">Sort by</label>
+          <select class="select" id="sort" name="sort_by" data-sort>
+            {%- assign cur = collection.sort_by | default: collection.default_sort_by -%}
+            {%- for opt in collection.sort_options -%}
+              <option value="{{ opt.value }}" {% if opt.value == cur %}selected{% endif %}>{{ opt.name }}</option>
+            {%- endfor -%}
+          </select>
+        </form>
+      </div>
+
+      {%- paginate collection.products by section.settings.per_page -%}
+        {%- if collection.products.size > 0 -%}
+          <div class="grid grid--products" style="padding-top:1.75rem">
+            {%- for product in collection.products -%}
+              {% render 'product-card', product: product, loading: forloop.index0 | at_most: 4 %}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="pagination" aria-label="Pagination">
+              {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" aria-label="Previous page">&larr;</a>{%- endif -%}
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}">{{ part.title }}</a>
+                {%- elsif part.title == '&hellip;' -%}
+                  <span>&hellip;</span>
+                {%- else -%}
+                  <span class="is-current" aria-current="page">{{ part.title }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if paginate.next -%}<a href="{{ paginate.next.url }}" aria-label="Next page">&rarr;</a>{%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <div class="empty">
+            <h2 class="h2">Nothing here yet</h2>
+            <p class="lede" style="margin-inline:auto">No products match those filters. Try clearing one, or browse the full catalogue.</p>
+            <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Shop everything</a>
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    { "type": "checkbox", "id": "show_filters", "label": "Show filters", "default": true },
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 12, "max": 48, "step": 4, "default": 24 }
+  ]
+}
+{% endschema %}

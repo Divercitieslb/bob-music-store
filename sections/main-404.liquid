@@ -1,0 +1,11 @@
+<div class="wrap">
+  <div class="empty" style="padding-block:clamp(4rem,12vw,8rem)">
+    <img src="{{ 'mark.svg' | asset_url }}" alt="" width="86" height="86" style="margin:0 auto 1.5rem;opacity:.5">
+    <h1 class="h1">Page not found</h1>
+    <p class="lede" style="margin-inline:auto">That page has moved or never existed. The instruments are all still here.</p>
+    <a class="btn" href="{{ routes.all_products_collection_url }}">Shop the catalogue</a>
+  </div>
+</div>
+{% schema %}
+{ "name": "404" }
+{% endschema %}

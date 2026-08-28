@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "a1": { "type": "accordion", "settings": {
+          "title": "Shipping & delivery",
+          "content": "<p>Delivered across Lebanon. We pack instruments ourselves — a hard case where the instrument needs one, and padded boxes for everything else. Beirut deliveries usually go out the same or next working day.</p>" } },
+        "a2": { "type": "accordion", "settings": {
+          "title": "Set-up & condition",
+          "content": "<p>Every instrument is unboxed, checked and set up on our bench before it ships. Where an item is used or vintage, the description says so plainly and the photographs are of the actual instrument you will receive.</p>" } },
+        "a3": { "type": "accordion", "settings": {
+          "title": "Questions?",
+          "content": "<p>Message the shop on WhatsApp and a player will answer. We are happy to send extra photos, measurements, or a short video of the instrument being played.</p>" } }
+      },
+      "block_order": ["a1", "a2", "a3"],
+      "settings": { "show_related": true }
+    }
+  },
+  "order": ["main"]
+}

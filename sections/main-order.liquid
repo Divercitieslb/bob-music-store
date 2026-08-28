@@ -1,0 +1,47 @@
+<section class="section"><div class="wrap">
+  <p class="eyebrow">Order {{ order.name }}</p>
+  <h1 class="h1">{{ order.created_at | date: format: 'date' }}</h1>
+  <div style="margin:1.25rem 0 2.25rem">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
+
+  <div class="collection-layout">
+    <div>
+      <div class="scroll-x">
+        <table class="acct-table">
+          <thead><tr><th>Product</th><th>Qty</th><th>Total</th></tr></thead>
+          <tbody>
+            {%- for line in order.line_items -%}
+              <tr>
+                <td>
+                  {{ line.title }}
+                  {%- if line.sku != blank %}<br><span class="num" style="font-size:.75rem;color:var(--ink-40)">{{ line.sku }}</span>{% endif -%}
+                </td>
+                <td class="num">{{ line.quantity }}</td>
+                <td class="num">{{ line.final_line_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="cart-summary">
+      <div class="cart-summary__row"><span>Subtotal</span><span class="num">{{ order.subtotal_price | money }}</span></div>
+      {%- for s in order.shipping_methods -%}
+        <div class="cart-summary__row"><span>{{ s.title }}</span><span class="num">{{ s.price | money }}</span></div>
+      {%- endfor -%}
+      {%- for t in order.tax_lines -%}
+        <div class="cart-summary__row"><span>{{ t.title }}</span><span class="num">{{ t.price | money }}</span></div>
+      {%- endfor -%}
+      <div class="cart-summary__row cart-summary__total"><span>Total</span><span class="num">{{ order.total_price | money }}</span></div>
+
+      {%- if order.shipping_address -%}
+        <h2 class="h3" style="font-size:1.05rem;margin-top:.75rem">Shipping to</h2>
+        <div class="rte" style="font-size:.9rem">{{ order.shipping_address | format_address }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <a class="btn btn--ghost" href="{{ routes.account_url }}" style="margin-top:2rem">Back to account</a>
+</div></section>
+
+{% schema %}{ "name": "Order" }{% endschema %}

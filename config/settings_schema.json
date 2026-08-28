@@ -1,0 +1,65 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Bob Music Store",
+    "theme_version": "1.0.0",
+    "theme_author": "Bob Music Store",
+    "theme_documentation_url": "https://github.com/",
+    "theme_support_url": "https://github.com/"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "32×32 or larger. Leave empty to use the riq mark." },
+      { "type": "image_picker", "id": "og_image", "label": "Social sharing image", "info": "1200×630 recommended." }
+    ]
+  },
+  {
+    "name": "Shop details",
+    "settings": [
+      { "type": "header", "content": "Address" },
+      { "type": "text", "id": "address_street", "label": "Street", "default": "" },
+      { "type": "text", "id": "address_city", "label": "City", "default": "Beirut" },
+      { "type": "text", "id": "address_country", "label": "Country", "default": "Lebanon" },
+      { "type": "header", "content": "Contact" },
+      { "type": "text", "id": "phone", "label": "Phone", "default": "" },
+      { "type": "text", "id": "email", "label": "Email", "default": "" },
+      { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number", "info": "International format, e.g. 9613123456. Powers the enquiry buttons.", "default": "" }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      { "type": "url", "id": "social_instagram", "label": "Instagram" },
+      { "type": "url", "id": "social_facebook", "label": "Facebook" },
+      { "type": "url", "id": "social_tiktok", "label": "TikTok" }
+    ]
+  },
+  {
+    "name": "Selling mode",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enquiry_only",
+        "label": "Enquiry-only mode",
+        "default": false,
+        "info": "Hides all prices and replaces Add to cart with a WhatsApp / email enquiry button. Useful while prices are still being set — products priced at 0 always show ‘Price on request’ regardless of this setting."
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "select",
+        "id": "text_direction",
+        "label": "Text direction",
+        "default": "ltr",
+        "options": [
+          { "value": "ltr", "label": "Left to right" },
+          { "value": "rtl", "label": "Right to left (Arabic)" }
+        ]
+      }
+    ]
+  }
+]

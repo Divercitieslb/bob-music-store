@@ -1,0 +1,79 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Beirut · All instruments. One passion.",
+        "heading": "Where the oud meets the amplifier",
+        "text": "Two hundred and sixty-eight instruments under one roof — hand-inlaid darbukas and Egyptian ouds beside Fender, Shure and BOSS. Checked on the bench, played before it ships.",
+        "cta_label": "Shop the catalogue",
+        "cta_url": "/collections/all",
+        "cta2_label": "Arabic instruments",
+        "cta2_url": "/collections/arabic-instruments"
+      }
+    },
+    "categories": {
+      "type": "category-grid",
+      "blocks": {
+        "c1": { "type": "category", "settings": { "collection": "darbuka", "title": "Darbuka" } },
+        "c2": { "type": "category", "settings": { "collection": "oud", "title": "Oud" } },
+        "c3": { "type": "category", "settings": { "collection": "guitars", "title": "Guitars & Bass" } },
+        "c4": { "type": "category", "settings": { "collection": "accordions", "title": "Accordions" } },
+        "c5": { "type": "category", "settings": { "collection": "audio-studio", "title": "Audio & Studio" } },
+        "c6": { "type": "category", "settings": { "collection": "violins-wind", "title": "Violins & Wind" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"],
+      "settings": {
+        "eyebrow": "The catalogue",
+        "heading": "Shop by instrument",
+        "text": "Seven families, forty-eight collections. Everything in the shop, sorted the way a player looks for it.",
+        "link_label": "All collections",
+        "link_url": "/collections",
+        "bg": ""
+      }
+    },
+    "featured": {
+      "type": "featured-products",
+      "blocks": {
+        "t1": { "type": "tab", "settings": { "collection": "darbuka", "label": "Darbuka" } },
+        "t2": { "type": "tab", "settings": { "collection": "oud", "label": "Oud" } },
+        "t3": { "type": "tab", "settings": { "collection": "guitars", "label": "Guitars" } },
+        "t4": { "type": "tab", "settings": { "collection": "accordions", "label": "Accordions" } },
+        "t5": { "type": "tab", "settings": { "collection": "microphones", "label": "Microphones" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4", "t5"],
+      "settings": {
+        "eyebrow": "In the shop now",
+        "heading": "Featured products",
+        "count": 10,
+        "link_label": "View all",
+        "link_url": "/collections/all",
+        "bg": "section--shell"
+      }
+    },
+    "story": {
+      "type": "brand-story",
+      "settings": {
+        "eyebrow": "The shop",
+        "heading": "A counter, a bench, and someone who plays",
+        "text": "<p>Bob Music sits where two musical worlds overlap. On one wall, hand-inlaid darbukas, riqs and ouds built by makers in Egypt, Syria and Lebanon. On the other, the guitars, microphones and pedals any working band needs on a Friday night.</p><p>We do not drop-ship. Everything here has been unboxed, checked and set up by hand — and if it needs a fret dressed or a head tuned before it leaves, that happens first.</p>",
+        "image_alt": "Inside the Bob Music shop",
+        "cta_label": "Our story",
+        "cta_url": "/pages/about",
+        "bg": "section--shell"
+      }
+    },
+    "props": {
+      "type": "value-props",
+      "blocks": {
+        "p1": { "type": "prop", "settings": { "icon": "tune", "title": "Set up on the bench", "text": "Checked, tuned and adjusted by hand before it leaves the shop." } },
+        "p2": { "type": "prop", "settings": { "icon": "truck", "title": "Delivered in Lebanon", "text": "Packed properly, with a hard case where the instrument needs one." } },
+        "p3": { "type": "prop", "settings": { "icon": "note", "title": "Makers we know", "text": "Ouds and darbukas from workshops in Egypt, Syria and Lebanon." } },
+        "p4": { "type": "prop", "settings": { "icon": "whatsapp", "title": "Ask us anything", "text": "Message the shop on WhatsApp — a player will answer, not a bot." } }
+      },
+      "block_order": ["p1", "p2", "p3", "p4"],
+      "settings": { "heading": "Why buy here", "bg": "section--ink" }
+    }
+  },
+  "order": ["hero", "categories", "featured", "story", "props"]
+}

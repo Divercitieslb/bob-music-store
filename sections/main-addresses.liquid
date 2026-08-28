@@ -1,0 +1,44 @@
+<section class="section"><div class="wrap wrap--narrow">
+  <p class="eyebrow">Account</p>
+  <h1 class="h1">Addresses</h1>
+  <div style="margin:1.25rem 0 2.25rem">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
+
+  {%- paginate customer.addresses by 8 -%}
+    {%- for address in customer.addresses -%}
+      <div style="border:1px solid var(--rule);padding:1.35rem;margin-bottom:1rem">
+        {%- if address == customer.default_address -%}
+          <p class="eyebrow" style="margin-bottom:.6rem">Default</p>
+        {%- endif -%}
+        <div class="rte" style="font-size:.92rem;margin-bottom:.75rem">{{ address | format_address }}</div>
+        {% form 'customer_address', address %}
+          <input type="hidden" name="_method" value="delete">
+          <button class="mono" type="submit" style="color:var(--ink-40)">Remove</button>
+        {% endform %}
+      </div>
+    {%- else -%}
+      <p class="note">No addresses saved yet.</p>
+    {%- endfor -%}
+  {%- endpaginate -%}
+
+  <h2 class="h3" style="margin:2.25rem 0 1rem">Add an address</h2>
+  {% form 'customer_address', customer.new_address %}
+    {{ form.errors | default_errors }}
+    <label class="field"><span>First name</span>
+      <input type="text" name="address[first_name]" autocomplete="given-name"></label>
+    <label class="field"><span>Last name</span>
+      <input type="text" name="address[last_name]" autocomplete="family-name"></label>
+    <label class="field"><span>Address</span>
+      <input type="text" name="address[address1]" autocomplete="address-line1"></label>
+    <label class="field"><span>City</span>
+      <input type="text" name="address[city]" autocomplete="address-level2"></label>
+    <label class="field"><span>Country</span>
+      <input type="text" name="address[country]" autocomplete="country-name" value="Lebanon"></label>
+    <label class="field"><span>Phone</span>
+      <input type="tel" name="address[phone]" autocomplete="tel"></label>
+    <button class="btn btn--full" type="submit">Save address</button>
+  {% endform %}
+
+  <a class="btn btn--ghost" href="{{ routes.account_url }}" style="margin-top:1.25rem">Back to account</a>
+</div></section>
+
+{% schema %}{ "name": "Addresses" }{% endschema %}

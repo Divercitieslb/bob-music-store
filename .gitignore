@@ -1,0 +1,16 @@
+# working files that do not need to ship
+_work/raw/
+_work/raw_new/
+_work/wa/
+_work/clean/
+_work/sheets/
+_work/sheets_clean/
+_work/samples/
+_work/*.jpg
+_work/*.png
+_work/__pycache__/
+.DS_Store
+Thumbs.db
+
+# local preview server config
+.claude/

@@ -1,0 +1,117 @@
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+
+      <div class="footer__brand">
+        <div class="footer__lockup">
+          <img src="{{ 'mark.svg' | asset_url }}" alt="" width="56" height="56" loading="lazy" aria-hidden="true">
+          <p class="nm">BOB</p>
+          <p class="tg">All instruments. One passion.</p>
+        </div>
+        {%- if section.settings.blurb != blank -%}
+          <p>{{ section.settings.blurb }}</p>
+        {%- endif -%}
+
+        <div class="social">
+          {%- if settings.social_instagram != blank -%}
+            <a href="{{ settings.social_instagram }}" aria-label="Instagram" rel="me noopener" target="_blank">{% render 'icon', name: 'instagram', size: 18 %}</a>
+          {%- endif -%}
+          {%- if settings.social_facebook != blank -%}
+            <a href="{{ settings.social_facebook }}" aria-label="Facebook" rel="me noopener" target="_blank">{% render 'icon', name: 'facebook', size: 18 %}</a>
+          {%- endif -%}
+          {%- if settings.social_tiktok != blank -%}
+            <a href="{{ settings.social_tiktok }}" aria-label="TikTok" rel="me noopener" target="_blank">{% render 'icon', name: 'tiktok', size: 18 %}</a>
+          {%- endif -%}
+          {%- if settings.whatsapp_number != blank -%}
+            <a href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}" aria-label="WhatsApp" rel="noopener" target="_blank">{% render 'icon', name: 'whatsapp', size: 18 %}</a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'menu' -%}
+            <div {{ block.shopify_attributes }}>
+              <h4>{{ block.settings.heading }}</h4>
+              <ul>
+                {%- for link in linklists[block.settings.menu].links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+
+          {%- when 'contact' -%}
+            <div {{ block.shopify_attributes }}>
+              <h4>{{ block.settings.heading }}</h4>
+              <ul>
+                {%- if settings.address_street != blank -%}
+                  <li>{{ settings.address_street }}</li>
+                {%- endif -%}
+                {%- if settings.address_city != blank -%}
+                  <li>{{ settings.address_city }}{% if settings.address_country != blank %}, {{ settings.address_country }}{% endif %}</li>
+                {%- endif -%}
+                {%- if settings.phone != blank -%}
+                  <li><a href="tel:{{ settings.phone | remove: ' ' }}">{{ settings.phone }}</a></li>
+                {%- endif -%}
+                {%- if settings.email != blank -%}
+                  <li><a href="mailto:{{ settings.email }}">{{ settings.email }}</a></li>
+                {%- endif -%}
+                {%- if block.settings.hours != blank -%}
+                  <li style="margin-top:.6rem;opacity:.75">{{ block.settings.hours }}</li>
+                {%- endif -%}
+              </ul>
+            </div>
+
+          {%- when 'newsletter' -%}
+            <div {{ block.shopify_attributes }}>
+              <h4>{{ block.settings.heading }}</h4>
+              <p style="font-size:.92rem">{{ block.settings.text }}</p>
+              {% form 'customer' %}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <div class="newsletter">
+                  <label class="visually-hidden" for="footer-email">Email</label>
+                  <input id="footer-email" type="email" name="contact[email]" placeholder="Your email" required>
+                  <button class="btn btn--light btn--sm" type="submit">Join</button>
+                </div>
+                {%- if form.posted_successfully? -%}
+                  <p style="color:var(--brass);font-size:.85rem;margin-top:.75rem">Thank you — you are on the list.</p>
+                {%- endif -%}
+              {% endform %}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+
+    </div>
+
+    <div class="footer__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span>
+      <span>{{ powered_by_link }}</span>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "textarea", "id": "blurb", "label": "About text",
+      "default": "A music shop in Beirut. Arabic percussion and ouds beside guitars, amplification and studio gear — every instrument checked on the bench before it goes out the door." }
+  ],
+  "blocks": [
+    { "type": "menu", "name": "Menu", "settings": [
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
+      { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+    ]},
+    { "type": "contact", "name": "Contact", "settings": [
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Visit us" },
+      { "type": "textarea", "id": "hours", "label": "Opening hours", "default": "Mon–Sat, 9:00–19:00" }
+    ]},
+    { "type": "newsletter", "name": "Newsletter", "settings": [
+      { "type": "text", "id": "heading", "label": "Heading", "default": "New arrivals" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Vintage accordions and one-off ouds go quickly. We email when something good lands." }
+    ]}
+  ],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

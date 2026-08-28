@@ -1,0 +1,35 @@
+<section class="section section--tight">
+  <div class="wrap">
+    <p class="eyebrow">The catalogue</p>
+    <h1 class="h1">Collections</h1>
+    {% render 'ornament', name: 'divider', tone: 'brass' %}
+  </div>
+</section>
+
+<div class="wrap" style="padding-bottom:clamp(3rem,6vw,5rem)">
+  <div class="grid grid--3">
+    {%- for col in collections -%}
+      {%- if col.products_count > 0 -%}
+        <a class="tile" href="{{ col.url }}">
+          {%- if col.featured_image -%}
+            <img src="{{ col.featured_image | image_url: width: 700 }}" alt="{{ col.title | escape }}"
+                 width="700" height="875" loading="lazy">
+          {%- elsif col.products.first.featured_media -%}
+            <img src="{{ col.products.first.featured_media | image_url: width: 700 }}" alt="{{ col.title | escape }}"
+                 width="700" height="875" loading="lazy">
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag }}
+          {%- endif -%}
+          <div class="tile__label">
+            <h3>{{ col.title }}</h3>
+            <span>{{ col.products_count }} product{% if col.products_count != 1 %}s{% endif %}</span>
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Collections list" }
+{% endschema %}

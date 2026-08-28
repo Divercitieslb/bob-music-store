@@ -1,0 +1,20 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "shop":    { "type": "menu",    "settings": { "heading": "Shop", "menu": "footer" } },
+        "help":    { "type": "menu",    "settings": { "heading": "Help", "menu": "footer-help" } },
+        "visit":   { "type": "contact", "settings": { "heading": "Visit us", "hours": "Mon–Sat, 9:00–19:00" } },
+        "news":    { "type": "newsletter", "settings": {
+          "heading": "New arrivals",
+          "text": "Vintage accordions and one-off ouds go quickly. We email when something good lands." } }
+      },
+      "block_order": ["shop", "help", "visit", "news"],
+      "settings": {}
+    }
+  },
+  "order": ["footer"]
+}

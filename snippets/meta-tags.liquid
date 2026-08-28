@@ -1,0 +1,60 @@
+{%- comment -%} Open Graph / Twitter / structured data {%- endcomment -%}
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:title" content="{{ page_title | default: shop.name | escape }}">
+<meta property="og:type" content="{% if request.page_type == 'product' %}product{% elsif request.page_type == 'article' %}article{% else %}website{% endif %}">
+<meta property="og:description" content="{{ page_description | default: shop.description | default: shop.name | escape }}">
+
+{%- if request.page_type == 'product' and product.featured_media -%}
+  <meta property="og:image" content="https:{{ product.featured_media | image_url: width: 1200 }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="1200">
+{%- elsif settings.og_image -%}
+  <meta property="og:image" content="https:{{ settings.og_image | image_url: width: 1200 }}">
+{%- endif -%}
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page_title | default: shop.name | escape }}">
+<meta name="twitter:description" content="{{ page_description | default: shop.description | default: shop.name | escape }}">
+
+{%- if request.page_type == 'product' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "sku": {{ product.selected_or_first_available_variant.sku | json }},
+  "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+  "description": {{ product.description | strip_html | truncate: 400 | json }},
+  {% if product.featured_media %}"image": [{{ product.featured_media | image_url: width: 1200 | prepend: 'https:' | json }}],{% endif %}
+  "offers": {
+    "@type": "Offer",
+    "url": {{ request.origin | append: product.url | json }},
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": "{{ product.price | divided_by: 100.0 }}",
+    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
+  }
+}
+</script>
+{%- endif -%}
+
+{%- if request.page_type == 'index' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MusicStore",
+  "name": {{ shop.name | json }},
+  "url": {{ request.origin | json }},
+  "description": {{ shop.description | default: 'Instruments, amplification and accessories.' | json }}
+  {%- if settings.address_city != blank %},
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": {{ settings.address_street | json }},
+    "addressLocality": {{ settings.address_city | json }},
+    "addressCountry": {{ settings.address_country | json }}
+  }
+  {%- endif -%}
+  {%- if settings.phone != blank %}, "telephone": {{ settings.phone | json }}{% endif -%}
+}
+</script>
+{%- endif -%}

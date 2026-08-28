@@ -1,0 +1,16 @@
+<section class="section"><div class="wrap form-narrow">
+  <h1 class="h1" style="text-align:center">Activate account</h1>
+  <div style="margin:1.25rem 0 2rem">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
+
+  {% form 'activate_customer_password' %}
+    {{ form.errors | default_errors }}
+    <label class="field"><span>Password</span>
+      <input type="password" name="customer[password]" autocomplete="new-password"></label>
+    <label class="field"><span>Confirm password</span>
+      <input type="password" name="customer[password_confirmation]" autocomplete="new-password"></label>
+    <button class="btn btn--full" type="submit">Activate account</button>
+    <button class="btn btn--ghost btn--full" type="submit" name="decline" style="margin-top:.6rem">Decline invitation</button>
+  {% endform %}
+</div></section>
+
+{% schema %}{ "name": "Activate account" }{% endschema %}

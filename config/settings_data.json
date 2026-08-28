@@ -1,0 +1,16 @@
+{
+  "current": {
+    "address_city": "Beirut",
+    "address_country": "Lebanon",
+    "enquiry_only": false,
+    "text_direction": "ltr"
+  },
+  "presets": {
+    "Bob Music Store": {
+      "address_city": "Beirut",
+      "address_country": "Lebanon",
+      "enquiry_only": false,
+      "text_direction": "ltr"
+    }
+  }
+}

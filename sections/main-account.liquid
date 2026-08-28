@@ -1,0 +1,60 @@
+<section class="section"><div class="wrap">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Account</p>
+      <h1 class="h1">{{ customer.name | default: customer.email }}</h1>
+    </div>
+    <a class="link-arrow" href="{{ routes.account_logout_url }}">Log out</a>
+  </div>
+
+  <div class="collection-layout">
+    <div>
+      <h2 class="h3" style="margin-bottom:1rem">Order history</h2>
+      {%- paginate customer.orders by 12 -%}
+        {%- if customer.orders.size > 0 -%}
+          <div class="scroll-x">
+            <table class="acct-table">
+              <thead>
+                <tr><th>Order</th><th>Date</th><th>Total</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                {%- for order in customer.orders -%}
+                  <tr>
+                    <td><a class="num" href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                    <td>{{ order.created_at | date: format: 'date' }}</td>
+                    <td class="num">{{ order.total_price | money }}</td>
+                    <td>{{ order.fulfillment_status_label }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          </div>
+          {%- if paginate.pages > 1 -%}
+            <nav class="pagination" aria-label="Pagination">
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>
+                {%- else -%}<span class="is-current">{{ part.title }}</span>{%- endif -%}
+              {%- endfor -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <p class="note">No orders yet. When you place one it will appear here.</p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+
+    <div>
+      <h2 class="h3" style="margin-bottom:1rem">Default address</h2>
+      {%- if customer.default_address -%}
+        <div class="rte" style="font-size:.92rem">{{ customer.default_address | format_address }}</div>
+      {%- else -%}
+        <p class="note">No address saved yet.</p>
+      {%- endif -%}
+      <a class="btn btn--ghost btn--sm" href="{{ routes.account_addresses_url }}" style="margin-top:1rem">
+        Manage addresses
+      </a>
+    </div>
+  </div>
+</div></section>
+
+{% schema %}{ "name": "Account" }{% endschema %}

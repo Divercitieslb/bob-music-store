@@ -1,0 +1,68 @@
+{%- comment -%}
+  Product card.
+    product        — required
+    show_vendor    — default true
+    loading        — 'lazy' (default) or 'eager'
+{%- endcomment -%}
+
+{%- liquid
+  assign show_vendor = show_vendor | default: true, allow_false: true
+  assign loading = loading | default: 'lazy'
+  assign second = product.media[1]
+  assign is_vintage = false
+  if product.tags contains 'Vintage' or product.tags contains 'vintage'
+    assign is_vintage = true
+  endif
+  assign ask = false
+  if settings.enquiry_only or product.price == 0
+    assign ask = true
+  endif
+-%}
+
+<article class="card">
+  <div class="card__media {% if second %}card__media--alt{% endif %}">
+    {%- if product.featured_media -%}
+      <img src="{{ product.featured_media | image_url: width: 700 }}"
+           srcset="{{ product.featured_media | image_url: width: 350 }} 350w,
+                   {{ product.featured_media | image_url: width: 700 }} 700w,
+                   {{ product.featured_media | image_url: width: 1000 }} 1000w"
+           sizes="(min-width:1100px) 22vw, (min-width:700px) 30vw, 45vw"
+           alt="{{ product.featured_media.alt | escape | default: product.title | escape }}"
+           width="700" height="700" loading="{{ loading }}">
+      {%- if second -%}
+        <img src="{{ second | image_url: width: 700 }}" alt="" width="700" height="700" loading="lazy" aria-hidden="true">
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'card__placeholder' }}
+    {%- endif -%}
+
+    {%- if product.available == false -%}
+      <span class="badge badge--sold">Sold</span>
+    {%- elsif ask == false and product.compare_at_price > product.price -%}
+      <span class="badge badge--sale">Sale</span>
+    {%- elsif is_vintage -%}
+      <span class="badge badge--vintage">Vintage</span>
+    {%- endif -%}
+  </div>
+
+  <div class="card__body">
+    {%- if show_vendor and product.vendor != blank and product.vendor != 'Unbranded' and product.vendor != 'Generic' -%}
+      <p class="card__vendor">{{ product.vendor }}</p>
+    {%- endif -%}
+
+    <h3 class="card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    <p class="card__price">
+      {%- if ask -%}
+        <span class="price--ask">Price on request</span>
+      {%- elsif product.compare_at_price > product.price -%}
+        <span class="price--was">{{ product.compare_at_price | money }}</span>
+        <span class="price--sale">{{ product.price | money }}</span>
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    </p>
+  </div>
+</article>

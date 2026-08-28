@@ -1,0 +1,16 @@
+{%- comment -%} Rendered by fetch() for the search drawer. {%- endcomment -%}
+<div data-predictive-grid>
+  {%- if predictive_search.performed and predictive_search.resources.products.size > 0 -%}
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:1rem">
+      {%- for product in predictive_search.resources.products -%}
+        {% render 'product-card', product: product, show_vendor: false %}
+      {%- endfor -%}
+    </div>
+  {%- elsif predictive_search.performed -%}
+    <p class="mono" style="color:var(--ink-40)">No matches</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Predictive search" }
+{% endschema %}

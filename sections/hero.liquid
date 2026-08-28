@@ -1,0 +1,48 @@
+<section class="hero">
+  {%- if section.settings.image != blank -%}
+    <div class="hero__media">
+      <img src="{{ section.settings.image | image_url: width: 2400 }}"
+           srcset="{{ section.settings.image | image_url: width: 900 }} 900w,
+                   {{ section.settings.image | image_url: width: 1600 }} 1600w,
+                   {{ section.settings.image | image_url: width: 2400 }} 2400w"
+           sizes="100vw" alt="" width="2400" height="1350" loading="eager" fetchpriority="high">
+    </div>
+  {%- endif -%}
+
+  <div class="hero__inner">
+    <div class="hero__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h1 class="h-display">{{ section.settings.heading }}</h1>
+      {%- if section.settings.text != blank -%}
+        <p class="lede">{{ section.settings.text }}</p>
+      {%- endif -%}
+      <div class="hero__cta">
+        {%- if section.settings.cta_label != blank -%}
+          <a class="btn btn--light" href="{{ section.settings.cta_url }}">{{ section.settings.cta_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.cta2_label != blank -%}
+          <a class="btn btn--outline-light" href="{{ section.settings.cta2_url }}">{{ section.settings.cta2_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Beirut · Since 1978" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Where the oud meets the amplifier." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Two hundred and sixty instruments under one roof — hand-inlaid darbukas and Egyptian ouds beside Fender, Shure and BOSS. Set up on the bench, played before it ships." },
+    { "type": "text", "id": "cta_label", "label": "Primary button", "default": "Shop the catalogue" },
+    { "type": "url", "id": "cta_url", "label": "Primary link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary button", "default": "Arabic instruments" },
+    { "type": "url", "id": "cta2_url", "label": "Secondary link" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

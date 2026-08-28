@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "header": { "name": "Header" },
+    "footer": { "name": "Footer" },
+    "hero": { "name": "Hero" },
+    "category_grid": { "name": "Category grid" },
+    "featured_products": { "name": "Featured products" },
+    "brand_story": { "name": "Brand story" },
+    "value_props": { "name": "Value props" }
+  }
+}

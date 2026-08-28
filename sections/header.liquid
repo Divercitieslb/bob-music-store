@@ -1,0 +1,183 @@
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+-%}
+
+<header class="header" data-header>
+  <div class="wrap">
+    <div class="header__bar">
+
+      <button class="icon-btn header__burger" data-open="menu-drawer" aria-label="Open menu" aria-expanded="false">
+        {% render 'icon', name: 'menu', size: 22 %}
+      </button>
+
+      <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} — home">
+        {%- if section.settings.logo != blank -%}
+          <img src="{{ section.settings.logo | image_url: width: 420 }}"
+               alt="{{ shop.name }}" width="210" height="57" loading="eager">
+        {%- else -%}
+          <img src="{{ 'logo-primary.png' | asset_url }}" alt="{{ shop.name }}" width="1147" height="765" loading="eager" fetchpriority="high">
+        {%- endif -%}
+      </a>
+
+      <nav class="header__nav" aria-label="Main">
+        <ul class="nav">
+          {%- for link in menu.links -%}
+            <li class="nav__item">
+              <a class="nav__link" href="{{ link.url }}"
+                 {% if link.active %}aria-current="page"{% endif %}>
+                {{ link.title }}
+                {%- if link.links.size > 0 %} {% render 'icon', name: 'chevron' %}{% endif -%}
+              </a>
+
+              {%- if link.links.size > 0 -%}
+                <div class="mega">
+                  <div class="mega__inner">
+                    {%- for child in link.links -%}
+                      <div class="mega__col">
+                        <h3>{{ child.title }}</h3>
+                        {%- if child.links.size > 0 -%}
+                          <ul class="mega__list">
+                            {%- for gc in child.links -%}
+                              <li><a href="{{ gc.url }}">{{ gc.title }}</a></li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- else -%}
+                          <ul class="mega__list">
+                            <li><a href="{{ child.url }}">Shop all {{ child.title | downcase }}</a></li>
+                          </ul>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+
+                    {%- if section.settings.mega_feature_heading != blank -%}
+                      <div class="mega__feature">
+                        <p class="eyebrow">{{ section.settings.mega_feature_eyebrow }}</p>
+                        <h3 class="h3">{{ section.settings.mega_feature_heading }}</h3>
+                        <p>{{ section.settings.mega_feature_text }}</p>
+                        <a class="link-arrow" href="{{ section.settings.mega_feature_url }}">
+                          Explore {% render 'icon', name: 'arrow' %}
+                        </a>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+
+      <div class="header__actions">
+        <button class="icon-btn" data-open="search-drawer" aria-label="Search" aria-expanded="false">
+          {% render 'icon', name: 'search', size: 21 %}
+        </button>
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="icon-btn" href="{{ routes.account_url }}" aria-label="Account">
+            {% render 'icon', name: 'user', size: 21 %}
+          </a>
+        {%- endif -%}
+        <a class="icon-btn" href="{{ routes.cart_url }}" data-open="cart-drawer"
+           aria-label="Cart ({{ cart.item_count }} items)">
+          {% render 'icon', name: 'cart', size: 21 %}
+          <span class="cart-count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+{%- comment -%} ---------------------------------------------- mobile menu {%- endcomment -%}
+<div class="drawer" id="menu-drawer" aria-hidden="true">
+  <div class="drawer__scrim" data-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="drawer__head">
+      <span class="mono">Menu</span>
+      <button class="icon-btn" data-close aria-label="Close menu">{% render 'icon', name: 'close', size: 22 %}</button>
+    </div>
+    <div class="drawer__body">
+      <ul class="m-nav">
+        {%- for link in menu.links -%}
+          <li>
+            {%- if link.links.size > 0 -%}
+              <details>
+                <summary>{{ link.title }} {% render 'icon', name: 'chevron' %}</summary>
+                <ul class="m-sub">
+                  <li><a href="{{ link.url }}"><strong>Shop all {{ link.title | downcase }}</strong></a></li>
+                  {%- for child in link.links -%}
+                    <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                    {%- for gc in child.links -%}
+                      <li><a href="{{ gc.url }}" style="padding-left:1rem">{{ gc.title }}</a></li>
+                    {%- endfor -%}
+                  {%- endfor -%}
+                </ul>
+              </details>
+            {%- else -%}
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="drawer__foot">
+      {%- if settings.whatsapp_number != blank -%}
+        <a class="btn btn--full" href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}">
+          {% render 'icon', name: 'whatsapp', size: 18 %} Message the shop
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{%- comment -%} ---------------------------------------------------- search {%- endcomment -%}
+<div class="drawer drawer--right" id="search-drawer" aria-hidden="true">
+  <div class="drawer__scrim" data-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="drawer__head">
+      <span class="mono">Search</span>
+      <button class="icon-btn" data-close aria-label="Close search">{% render 'icon', name: 'close', size: 22 %}</button>
+    </div>
+    <div class="drawer__body">
+      <form action="{{ routes.search_url }}" method="get" role="search" data-search-form>
+        <input type="hidden" name="type" value="product">
+        <label class="visually-hidden" for="search-input">Search products</label>
+        <div style="display:flex;gap:.5rem">
+          <input id="search-input" type="search" name="q" placeholder="Oud, darbuka, Shure&hellip;"
+                 autocomplete="off" data-search-input
+                 style="flex:1;padding:.9rem 1rem;border:1px solid var(--rule);background:var(--paper)">
+          <button class="btn btn--sm" type="submit">Go</button>
+        </div>
+      </form>
+      <div data-search-results style="margin-top:1.5rem"></div>
+      {%- if section.settings.search_suggestions != blank -%}
+        <div style="margin-top:2rem">
+          <p class="eyebrow eyebrow--muted">Popular</p>
+          <div class="chiprow">
+            {%- assign terms = section.settings.search_suggestions | split: ',' -%}
+            {%- for t in terms -%}
+              <a class="chip" href="{{ routes.search_url }}?q={{ t | strip | url_encode }}">{{ t | strip }}</a>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Leave empty to use the built-in Bob Music logo." },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "header", "content": "Mega menu feature panel" },
+    { "type": "text", "id": "mega_feature_eyebrow", "label": "Eyebrow", "default": "Since 1978" },
+    { "type": "text", "id": "mega_feature_heading", "label": "Heading", "default": "Come and play it first" },
+    { "type": "textarea", "id": "mega_feature_text", "label": "Text", "default": "Every instrument is set up on the bench before it leaves us." },
+    { "type": "url", "id": "mega_feature_url", "label": "Link" },
+    { "type": "header", "content": "Search" },
+    { "type": "text", "id": "search_suggestions", "label": "Popular searches", "info": "Comma separated.", "default": "Oud, Darbuka, Accordion, Shure, Strings" }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

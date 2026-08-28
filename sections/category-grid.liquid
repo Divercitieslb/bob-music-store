@@ -1,0 +1,75 @@
+<section class="section {{ section.settings.bg }}">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="h1">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<p class="lede">{{ section.settings.text }}</p>{%- endif -%}
+      </div>
+      {%- if section.settings.link_url != blank -%}
+        <a class="link-arrow" href="{{ section.settings.link_url }}">{{ section.settings.link_label }} {% render 'icon', name: 'arrow' %}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="grid grid--3">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign col = collections[block.settings.collection]
+          assign img = block.settings.image
+          if img == blank and col.featured_image
+            assign img = col.featured_image
+          endif
+        -%}
+        <a class="tile" href="{{ col.url | default: block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>
+          {%- if img != blank -%}
+            <img src="{{ img | image_url: width: 700 }}"
+                 srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 700 }} 700w"
+                 sizes="(min-width:900px) 25vw, 45vw"
+                 alt="{{ block.settings.title | default: col.title | escape }}"
+                 width="700" height="875" loading="lazy">
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag }}
+          {%- endif -%}
+          <div class="tile__label">
+            <h3>{{ block.settings.title | default: col.title }}</h3>
+            {%- if col.products_count > 0 -%}
+              <span>{{ col.products_count }} product{% if col.products_count != 1 %}s{% endif %}</span>
+            {%- elsif block.settings.subtitle != blank -%}
+              <span>{{ block.settings.subtitle }}</span>
+            {%- endif -%}
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Category grid",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The catalogue" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by instrument" },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "All collections" },
+    { "type": "url", "id": "link_url", "label": "Link" },
+    { "type": "select", "id": "bg", "label": "Background", "default": "",
+      "options": [
+        { "value": "", "label": "White" },
+        { "value": "section--shell", "label": "Shell" },
+        { "value": "section--ink", "label": "Ink" }
+      ] }
+  ],
+  "blocks": [
+    { "type": "category", "name": "Category", "settings": [
+      { "type": "collection", "id": "collection", "label": "Collection" },
+      { "type": "image_picker", "id": "image", "label": "Image", "info": "Falls back to the collection image." },
+      { "type": "text", "id": "title", "label": "Title override" },
+      { "type": "text", "id": "subtitle", "label": "Subtitle" },
+      { "type": "url", "id": "url", "label": "Link override" }
+    ]}
+  ],
+  "presets": [{ "name": "Category grid", "blocks": [ {"type":"category"},{"type":"category"},{"type":"category"},{"type":"category"} ] }]
+}
+{% endschema %}

@@ -1,0 +1,72 @@
+{%- liquid
+  assign tabs = section.blocks | where: 'type', 'tab'
+-%}
+
+<section class="section {{ section.settings.bg }}" data-tabs>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 class="h1">{{ section.settings.heading }}</h2>
+      </div>
+      {%- if section.settings.link_url != blank -%}
+        <a class="link-arrow" href="{{ section.settings.link_url }}">{{ section.settings.link_label }} {% render 'icon', name: 'arrow' %}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if tabs.size > 1 -%}
+      <div class="chiprow" role="tablist" style="margin-bottom:2rem">
+        {%- for block in tabs -%}
+          <button class="chip" role="tab" type="button"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  aria-controls="panel-{{ block.id }}" id="tab-{{ block.id }}"
+                  data-tab {{ block.shopify_attributes }}>
+            {{ block.settings.label | default: collections[block.settings.collection].title }}
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- for block in tabs -%}
+      {%- assign col = collections[block.settings.collection] -%}
+      <div class="grid grid--products" role="tabpanel" id="panel-{{ block.id }}"
+           aria-labelledby="tab-{{ block.id }}" data-panel
+           {% unless forloop.first %}hidden{% endunless %}>
+        {%- for product in col.products limit: section.settings.count -%}
+          {% render 'product-card', product: product %}
+        {%- else -%}
+          {%- for i in (1..section.settings.count) -%}
+            <article class="card"><div class="card__media">{{ 'product-1' | placeholder_svg_tag }}</div>
+            <div class="card__body"><h3 class="card__title">Example product</h3></div></article>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Featured products" },
+    { "type": "range", "id": "count", "label": "Products per tab", "min": 4, "max": 16, "step": 2, "default": 8 },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "View all" },
+    { "type": "url", "id": "link_url", "label": "Link" },
+    { "type": "select", "id": "bg", "label": "Background", "default": "",
+      "options": [
+        { "value": "", "label": "White" },
+        { "value": "section--shell", "label": "Shell" }
+      ] }
+  ],
+  "blocks": [
+    { "type": "tab", "name": "Tab", "settings": [
+      { "type": "collection", "id": "collection", "label": "Collection" },
+      { "type": "text", "id": "label", "label": "Tab label" }
+    ]}
+  ],
+  "presets": [{ "name": "Featured products", "blocks": [ {"type":"tab"},{"type":"tab"},{"type":"tab"} ] }]
+}
+{% endschema %}

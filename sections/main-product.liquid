@@ -1,0 +1,202 @@
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign ask = false
+  if settings.enquiry_only or product.price == 0
+    assign ask = true
+  endif
+-%}
+
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a> <span aria-hidden="true">/</span>
+    {%- if collection -%}
+      <a href="{{ collection.url }}">{{ collection.title }}</a> <span aria-hidden="true">/</span>
+    {%- endif -%}
+    <span aria-current="page">{{ product.title }}</span>
+  </nav>
+</div>
+
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="pdp">
+
+      <div class="pdp__gallery">
+        <div class="pdp__main" data-gallery-main>
+          {%- if product.featured_media -%}
+            <img src="{{ product.featured_media | image_url: width: 1400 }}"
+                 srcset="{{ product.featured_media | image_url: width: 700 }} 700w,
+                         {{ product.featured_media | image_url: width: 1400 }} 1400w,
+                         {{ product.featured_media | image_url: width: 2048 }} 2048w"
+                 sizes="(min-width:900px) 55vw, 96vw"
+                 alt="{{ product.featured_media.alt | escape | default: product.title | escape }}"
+                 width="1400" height="1400" loading="eager" fetchpriority="high">
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag }}
+          {%- endif -%}
+        </div>
+
+        {%- if product.media.size > 1 -%}
+          <div class="pdp__thumbs" role="list">
+            {%- for media in product.media -%}
+              <button class="pdp__thumb" type="button" role="listitem"
+                      data-gallery-thumb
+                      data-full="{{ media | image_url: width: 2048 }}"
+                      data-alt="{{ media.alt | escape | default: product.title | escape }}"
+                      aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                      aria-label="View image {{ forloop.index }}">
+                <img src="{{ media | image_url: width: 200 }}" alt="" width="200" height="200" loading="lazy">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="pdp__info">
+        {%- if product.vendor != blank and product.vendor != 'Unbranded' and product.vendor != 'Generic' -%}
+          <p class="eyebrow" style="margin:0">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        <h1 class="h1">{{ product.title }}</h1>
+
+        {% render 'ornament', name: 'divider', tone: 'brass' %}
+
+        <p class="pdp__price" data-price>
+          {%- if ask -%}
+            <span class="price--ask">Price on request</span>
+          {%- elsif product.compare_at_price > product.price -%}
+            <span class="price--was">{{ product.compare_at_price | money }}</span>
+            <span class="price--sale">{{ product.price | money }}</span>
+          {%- else -%}
+            {{ product.price | money }}
+          {%- endif -%}
+        </p>
+
+        <p class="stock {% unless product.available %}stock--out{% endunless %}">
+          {%- if product.available -%}
+            {%- if v.inventory_quantity == 1 and v.inventory_management != blank -%}
+              One only — last in stock
+            {%- else -%}
+              In stock, ready to ship
+            {%- endif -%}
+          {%- else -%}
+            Sold — ask us about the next one
+          {%- endif -%}
+        </p>
+
+        {%- form 'product', product, id: 'product-form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ v.id }}" data-variant-id>
+
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <div class="opt" style="margin-bottom:1.1rem">
+                <span class="opt__label">{{ option.name }}</span>
+                <div class="opt__values">
+                  {%- for value in option.values -%}
+                    {%- assign oid = 'opt-' | append: option.position | append: '-' | append: forloop.index -%}
+                    <input type="radio" id="{{ oid }}" name="option{{ option.position }}"
+                           value="{{ value | escape }}" data-option-input
+                           {% if option.selected_value == value %}checked{% endif %}>
+                    <label for="{{ oid }}">{{ value }}</label>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          {%- if ask -%}
+            {%- assign msg = 'Hello Bob Music — I would like a price for: ' | append: product.title -%}
+            {%- if settings.whatsapp_number != blank -%}
+              <a class="btn btn--full"
+                 href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}?text={{ msg | url_encode }}"
+                 target="_blank" rel="noopener">
+                {% render 'icon', name: 'whatsapp', size: 18 %} Ask for a price
+              </a>
+            {%- endif -%}
+            <a class="btn btn--ghost btn--full" style="margin-top:.6rem"
+               href="{{ routes.root_url }}pages/contact?subject={{ product.title | url_encode }}">Email an enquiry</a>
+          {%- else -%}
+            <div style="display:flex;gap:.6rem;align-items:stretch;margin-bottom:.75rem">
+              <div class="qty">
+                <button type="button" data-qty="-1" aria-label="Decrease quantity">{% render 'icon', name: 'minus' %}</button>
+                <label class="visually-hidden" for="qty">Quantity</label>
+                <input id="qty" type="number" name="quantity" value="1" min="1" inputmode="numeric">
+                <button type="button" data-qty="1" aria-label="Increase quantity">{% render 'icon', name: 'plus' %}</button>
+              </div>
+              <button type="submit" class="btn" style="flex:1"
+                      {% unless product.available %}disabled aria-disabled="true"{% endunless %}>
+                {% if product.available %}Add to cart{% else %}Sold out{% endif %}
+              </button>
+            </div>
+            {%- if product.available -%}
+              {{ form | payment_button }}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+
+        <dl class="pdp__meta">
+          {%- if v.sku != blank -%}
+            <div><dt>SKU</dt><dd class="num">{{ v.sku }}</dd></div>
+          {%- endif -%}
+          {%- if product.type != blank -%}
+            <div><dt>Type</dt><dd>{{ product.type }}</dd></div>
+          {%- endif -%}
+        </dl>
+
+        {%- if product.description != blank -%}
+          <div class="rte" style="margin-top:.5rem">{{ product.description }}</div>
+        {%- endif -%}
+
+        <div class="acc" style="margin-top:1rem">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'accordion' -%}
+              <details {{ block.shopify_attributes }}>
+                <summary>{{ block.settings.title }} {% render 'icon', name: 'chevron' %}</summary>
+                <div class="acc__body rte">{{ block.settings.content }}</div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.show_related -%}
+  {%- assign rel = collections[product.type | handleize].products | default: collection.products -%}
+  <section class="section section--shell">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">More like this</p>
+          <h2 class="h2">You may also like</h2>
+        </div>
+      </div>
+      <div class="grid grid--products">
+        {%- assign shown = 0 -%}
+        {%- for p in rel -%}
+          {%- if p.id != product.id and shown < 5 -%}
+            {% render 'product-card', product: p %}
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    { "type": "checkbox", "id": "show_related", "label": "Show related products", "default": true }
+  ],
+  "blocks": [
+    { "type": "accordion", "name": "Accordion row", "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "Shipping & returns" },
+      { "type": "richtext", "id": "content", "label": "Content",
+        "default": "<p>Delivered across Lebanon. We pack instruments ourselves — hard cases where the instrument needs one.</p>" }
+    ]}
+  ]
+}
+{% endschema %}

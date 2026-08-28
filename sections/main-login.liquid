@@ -1,0 +1,49 @@
+<section class="section"><div class="wrap form-narrow">
+  <h1 class="h1" style="text-align:center">Log in</h1>
+  <div style="margin:1.25rem 0 2rem">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
+
+  <div id="recover" style="display:none">
+    {% form 'recover_customer_password' %}
+      {{ form.errors | default_errors }}
+      {%- if form.posted_successfully? -%}
+        <p class="note">If that email is registered, a reset link is on its way.</p>
+      {%- endif -%}
+      <label class="field"><span>Email</span>
+        <input type="email" name="email" required autocomplete="email"></label>
+      <button class="btn btn--full" type="submit">Send reset link</button>
+    {% endform %}
+    <p style="text-align:center;margin-top:1.25rem;font-size:.9rem">
+      <a href="#login" data-show="login" style="border-bottom:1px solid currentColor">Back to log in</a>
+    </p>
+  </div>
+
+  <div id="login">
+    {% form 'customer_login' %}
+      {{ form.errors | default_errors }}
+      <label class="field"><span>Email</span>
+        <input type="email" name="customer[email]" required autocomplete="email"></label>
+      <label class="field"><span>Password</span>
+        <input type="password" name="customer[password]" autocomplete="current-password"></label>
+      <button class="btn btn--full" type="submit">Log in</button>
+    {% endform %}
+    <p style="text-align:center;margin-top:1.25rem;font-size:.9rem">
+      <a href="#recover" data-show="recover" style="border-bottom:1px solid currentColor">Forgotten your password?</a>
+    </p>
+    <p style="text-align:center;font-size:.9rem">
+      New here? <a href="{{ routes.account_register_url }}" style="border-bottom:1px solid currentColor">Create an account</a>
+    </p>
+  </div>
+</div></section>
+
+<script>
+  document.querySelectorAll('[data-show]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var show = a.getAttribute('data-show');
+      document.getElementById('login').style.display = show === 'login' ? '' : 'none';
+      document.getElementById('recover').style.display = show === 'recover' ? '' : 'none';
+    });
+  });
+</script>
+
+{% schema %}{ "name": "Login" }{% endschema %}

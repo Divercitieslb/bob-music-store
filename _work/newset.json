@@ -1,0 +1,844 @@
+{
+ "dupes": [
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.37.jpeg",
+   "best_old": "DRM-02-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.41 (1).jpeg",
+   "best_old": "DRM-06-01.jpg",
+   "score": 0.0014
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.41.jpeg",
+   "best_old": "DRM-07-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.42 (3).jpeg",
+   "best_old": "DRM-10-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.42.jpeg",
+   "best_old": "DRM-11-01.jpg",
+   "score": 0.0013
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.43 (1).jpeg",
+   "best_old": "DRM-12-01.jpg",
+   "score": 0.0837
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.44 (1).jpeg",
+   "best_old": "DRM-15-01.jpg",
+   "score": 0.0083
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.44 (2).jpeg",
+   "best_old": "DRM-16-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.44.jpeg",
+   "best_old": "DRM-17-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.45 (1).jpeg",
+   "best_old": "DRM-18-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.45 (3).jpeg",
+   "best_old": "DRM-20-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.45.jpeg",
+   "best_old": "DRM-21-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.46 (1).jpeg",
+   "best_old": "DRM-22-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.46 (3).jpeg",
+   "best_old": "DRM-24-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.46.jpeg",
+   "best_old": "DRM-25-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.47 (1).jpeg",
+   "best_old": "DRM-26-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.47 (2).jpeg",
+   "best_old": "DRM-27-01.jpg",
+   "score": 0.0013
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.47.jpeg",
+   "best_old": "DRM-28-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.48 (2).jpeg",
+   "best_old": "DRM-30-01.jpg",
+   "score": 0.1379
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.48 (3).jpeg",
+   "best_old": "DRM-31-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.48.jpeg",
+   "best_old": "DRM-32-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.49.jpeg",
+   "best_old": "DRM-33-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\21\\WhatsApp Image 2026-06-22 at 12.52.14 (1).jpeg",
+   "best_old": "GEAR-14-01.jpg",
+   "score": 0.0014
+  },
+  {
+   "new": "wa\\21\\WhatsApp Image 2026-06-22 at 12.52.14.jpeg",
+   "best_old": "GEAR-15-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\21\\WhatsApp Image 2026-06-22 at 12.52.15 (1).jpeg",
+   "best_old": "PA-29-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\21\\WhatsApp Image 2026-06-22 at 12.52.15.jpeg",
+   "best_old": "PA-30-01.jpg",
+   "score": 0.1048
+  },
+  {
+   "new": "wa\\21\\WhatsApp Image 2026-06-22 at 12.52.16 (1).jpeg",
+   "best_old": "DRM-49-01.jpg",
+   "score": 0.1024
+  },
+  {
+   "new": "wa\\21\\WhatsApp Image 2026-06-22 at 12.52.16.jpeg",
+   "best_old": "PA-26-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.37 (1).jpeg",
+   "best_old": "DRM-34-02.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.37.jpeg",
+   "best_old": "DRM-45-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.38 (2).jpeg",
+   "best_old": "DRM-44-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.39 (1).jpeg",
+   "best_old": "DRM-39-01.jpg",
+   "score": 0.1738
+  },
+  {
+   "new": "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.39 (2).jpeg",
+   "best_old": "DRM-40-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.39 (3).jpeg",
+   "best_old": "DRM-48-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.39.jpeg",
+   "best_old": "DRM-41-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.40 (1).jpeg",
+   "best_old": "DRM-46-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.40.jpeg",
+   "best_old": "DRM-47-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.41.jpeg",
+   "best_old": "DRM-43-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.14 (1).jpeg",
+   "best_old": "WND-02-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.14.jpeg",
+   "best_old": "WND-03-01.jpg",
+   "score": 0.0014
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.15 (1).jpeg",
+   "best_old": "WND-04-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.15 (2).jpeg",
+   "best_old": "GEAR-06-01.jpg",
+   "score": 0.0704
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.15 (3).jpeg",
+   "best_old": "GEAR-07-01.jpg",
+   "score": 0.0671
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.15.jpeg",
+   "best_old": "WND-05-01.jpg",
+   "score": 0.0431
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.16 (1).jpeg",
+   "best_old": "PA-35-01.jpg",
+   "score": 0.1292
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.16 (2).jpeg",
+   "best_old": "DRM-34-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.16 (3).jpeg",
+   "best_old": "DRM-35-01.jpg",
+   "score": 0.0013
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.16.jpeg",
+   "best_old": "GEAR-08-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.17 (1).jpeg",
+   "best_old": "DRM-50-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.17 (2).jpeg",
+   "best_old": "DRM-52-01.jpg",
+   "score": 0.1838
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.17 (3).jpeg",
+   "best_old": "DRM-52-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.17.jpeg",
+   "best_old": "DRM-36-01.jpg",
+   "score": 0.1046
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.18 (1).jpeg",
+   "best_old": "DRM-54-01.jpg",
+   "score": 0.0001
+  },
+  {
+   "new": "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.18.jpeg",
+   "best_old": "DRM-55-01.jpg",
+   "score": 0.0014
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.13 (1).jpeg",
+   "best_old": "GEAR-01-01.jpg",
+   "score": 0.0569
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.13.jpeg",
+   "best_old": "GEAR-02-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.16.jpeg",
+   "best_old": "GEAR-03-01.jpg",
+   "score": 0.0608
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.17.jpeg",
+   "best_old": "GEAR-09-01.jpg",
+   "score": 0.0001
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.19.jpeg",
+   "best_old": "GEAR-04-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.20 (1).jpeg",
+   "best_old": "GEAR-05-01.jpg",
+   "score": 0.0753
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.20.jpeg",
+   "best_old": "WND-01-01.jpg",
+   "score": 0.013
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.21 (1).jpeg",
+   "best_old": "GEAR-10-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.21 (2).jpeg",
+   "best_old": "GEAR-11-01.jpg",
+   "score": 0.0872
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.21 (3).jpeg",
+   "best_old": "PA-33-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.21 (4).jpeg",
+   "best_old": "PA-25-01.jpg",
+   "score": 0.0001
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.21.jpeg",
+   "best_old": "PA-27-01.jpg",
+   "score": 0.0014
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.22 (1).jpeg",
+   "best_old": "PA-18-01.jpg",
+   "score": 0.1389
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.22 (2).jpeg",
+   "best_old": "PA-34-01.jpg",
+   "score": 0.0014
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.22 (3).jpeg",
+   "best_old": "PA-09-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.22.jpeg",
+   "best_old": "PA-31-01.jpg",
+   "score": 0.0001
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.23 (1).jpeg",
+   "best_old": "PA-01-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.23 (2).jpeg",
+   "best_old": "PA-02-01.jpg",
+   "score": 0.1039
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.23 (3).jpeg",
+   "best_old": "PA-03-01.jpg",
+   "score": 0.0013
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.23 (4).jpeg",
+   "best_old": "PA-04-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.23.jpeg",
+   "best_old": "PA-05-01.jpg",
+   "score": 0.0919
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.24 (1).jpeg",
+   "best_old": "PA-06-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.24 (2).jpeg",
+   "best_old": "PA-07-01.jpg",
+   "score": 0.0968
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.24 (3).jpeg",
+   "best_old": "PA-08-01.jpg",
+   "score": 0.0674
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.24.jpeg",
+   "best_old": "PA-10-01.jpg",
+   "score": 0.1489
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.25 (1).jpeg",
+   "best_old": "PA-19-01.jpg",
+   "score": 0.1292
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.25 (2).jpeg",
+   "best_old": "PA-11-01.jpg",
+   "score": 0.0041
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.25 (3).jpeg",
+   "best_old": "PA-14-01.jpg",
+   "score": 0.0027
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.25 (4).jpeg",
+   "best_old": "PA-15-01.jpg",
+   "score": 0.0787
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.25.jpeg",
+   "best_old": "GEAR-12-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.26 (1).jpeg",
+   "best_old": "PA-28-01.jpg",
+   "score": 0.0013
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.26 (2).jpeg",
+   "best_old": "GEAR-13-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.26.jpeg",
+   "best_old": "PA-32-01.jpg",
+   "score": 0.1312
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.27 (1).jpeg",
+   "best_old": "PA-12-01.jpg",
+   "score": 0.0001
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.27 (2).jpeg",
+   "best_old": "PA-13-01.jpg",
+   "score": 0.0001
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.27 (3).jpeg",
+   "best_old": "PA-16-01.jpg",
+   "score": 0.0001
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.27 (4).jpeg",
+   "best_old": "PA-17-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.27.jpeg",
+   "best_old": "PA-20-01.jpg",
+   "score": 0.0972
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.28 (1).jpeg",
+   "best_old": "PA-21-01.jpg",
+   "score": 0.0014
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.28 (2).jpeg",
+   "best_old": "PA-23-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.28 (3).jpeg",
+   "best_old": "PA-24-01.jpg",
+   "score": 0.0014
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.28 (4).jpeg",
+   "best_old": "PA-15-02.jpg",
+   "score": 0.0916
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.28.jpeg",
+   "best_old": "PA-22-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\32\\WhatsApp Image 2026-06-22 at 12.43.29.jpeg",
+   "best_old": "STR-26-01.jpg",
+   "score": 0.0976
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.27.jpeg",
+   "best_old": "STR-01-01.jpg",
+   "score": 0.1501
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.31.jpeg",
+   "best_old": "STR-02-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.33 (1).jpeg",
+   "best_old": "STR-03-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.33 (2).jpeg",
+   "best_old": "STR-04-01.jpg",
+   "score": 0.1578
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.33.jpeg",
+   "best_old": "STR-05-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.34 (1).jpeg",
+   "best_old": "STR-07-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.34 (2).jpeg",
+   "best_old": "STR-08-01.jpg",
+   "score": 0.1716
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.34 (3).jpeg",
+   "best_old": "STR-09-01.jpg",
+   "score": 0.1861
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.34.jpeg",
+   "best_old": "STR-06-01.jpg",
+   "score": 0.1908
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.35 (1).jpeg",
+   "best_old": "STR-10-01.jpg",
+   "score": 0.1558
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.35.jpeg",
+   "best_old": "STR-11-01.jpg",
+   "score": 0.1504
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.36 (2).jpeg",
+   "best_old": "STR-12-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.36 (3).jpeg",
+   "best_old": "STR-13-01.jpg",
+   "score": 0.155
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.36 (4).jpeg",
+   "best_old": "STR-14-01.jpg",
+   "score": 0.1481
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.36.jpeg",
+   "best_old": "STR-15-01.jpg",
+   "score": 0.0001
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.37 (1).jpeg",
+   "best_old": "STR-17-01.jpg",
+   "score": 0.1402
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.37 (2).jpeg",
+   "best_old": "STR-18-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.37 (3).jpeg",
+   "best_old": "STR-19-01.jpg",
+   "score": 0.1227
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.37.jpeg",
+   "best_old": "STR-16-01.jpg",
+   "score": 0.1761
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.38 (1).jpeg",
+   "best_old": "STR-21-01.jpg",
+   "score": 0.0
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.38 (2).jpeg",
+   "best_old": "STR-22-01.jpg",
+   "score": 0.0836
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.38.jpeg",
+   "best_old": "STR-20-01.jpg",
+   "score": 0.0041
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.39 (1).jpeg",
+   "best_old": "STR-24-01.jpg",
+   "score": 0.0001
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.39 (2).jpeg",
+   "best_old": "STR-25-01.jpg",
+   "score": 0.1949
+  },
+  {
+   "new": "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.39.jpeg",
+   "best_old": "STR-23-01.jpg",
+   "score": 0.1628
+  }
+ ],
+ "groups": [
+  [
+   "wa\\05\\WhatsApp Image 2026-06-22 at 13.29.42.jpeg"
+  ],
+  [
+   "wa\\05\\WhatsApp Image 2026-06-22 at 13.29.43 (1).jpeg"
+  ],
+  [
+   "wa\\05\\WhatsApp Image 2026-06-22 at 13.29.43 (2).jpeg"
+  ],
+  [
+   "wa\\05\\WhatsApp Image 2026-06-22 at 13.29.43.jpeg"
+  ],
+  [
+   "wa\\05\\WhatsApp Image 2026-06-22 at 13.29.44.jpeg"
+  ],
+  [
+   "wa\\09\\WhatsApp Image 2026-06-22 at 13.28.20 (1).jpeg"
+  ],
+  [
+   "wa\\09\\WhatsApp Image 2026-06-22 at 13.28.20.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.30.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.31 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.31.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.32 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.32 (2).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.32.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.33 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.33.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.34.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.35.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.36.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.37 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.37 (2).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.37.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.38 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.38 (2).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.38 (3).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.38.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.39 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.39 (2).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.39 (3).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.39 (4).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.39.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.40 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.40.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.41 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.41 (2).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.41.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.42 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.42 (2).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.42 (3).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.42 (4).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.42.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.43 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.43 (2).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.43 (3).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.43.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.44 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.44 (2).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.44 (3).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.44 (4).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.44.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.45 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.45 (2).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.45 (3).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.45.jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.46 (1).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.46 (2).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.46 (3).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.46 (4).jpeg"
+  ],
+  [
+   "wa\\13\\WhatsApp Image 2026-06-22 at 12.58.46.jpeg"
+  ],
+  [
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.37 (1).jpeg",
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.38.jpeg",
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.39 (1).jpeg",
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.39.jpeg",
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.42 (1).jpeg",
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.42 (2).jpeg",
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.43 (2).jpeg",
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.43.jpeg"
+  ],
+  [
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.45 (2).jpeg"
+  ],
+  [
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.46 (2).jpeg"
+  ],
+  [
+   "wa\\17\\WhatsApp Image 2026-06-22 at 12.52.48 (1).jpeg"
+  ],
+  [
+   "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.38 (1).jpeg"
+  ],
+  [
+   "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.38.jpeg"
+  ],
+  [
+   "wa\\24\\WhatsApp Image 2026-06-22 at 12.51.40 (2).jpeg"
+  ],
+  [
+   "wa\\28\\WhatsApp Image 2026-06-22 at 12.47.17 (4).jpeg"
+  ],
+  [
+   "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.29.jpeg"
+  ],
+  [
+   "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.36 (1).jpeg"
+  ],
+  [
+   "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.39 (3).jpeg"
+  ],
+  [
+   "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.39 (4).jpeg"
+  ],
+  [
+   "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.40 (1).jpeg"
+  ],
+  [
+   "wa\\36\\WhatsApp Image 2026-06-22 at 12.41.40.jpeg"
+  ]
+ ]
+}

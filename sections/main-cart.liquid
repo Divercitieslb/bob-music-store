@@ -1,0 +1,83 @@
+<section class="section section--tight">
+  <div class="wrap">
+    <h1 class="h1">Cart</h1>
+    {% render 'ornament', name: 'divider', tone: 'brass' %}
+  </div>
+</section>
+
+<div class="wrap" style="padding-bottom:clamp(3rem,6vw,5rem)">
+  {%- if cart.item_count > 0 -%}
+    <form action="{{ routes.cart_url }}" method="post" novalidate>
+      <div class="grid" style="grid-template-columns:1fr;gap:clamp(1.5rem,4vw,3rem)">
+        <div class="collection-layout" style="grid-template-columns:1fr">
+          <div>
+            {%- for item in cart.items -%}
+              <div class="cart-line" data-line="{{ forloop.index }}">
+                <a class="cart-line__media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+                  {%- if item.image -%}
+                    <img src="{{ item.image | image_url: width: 200 }}" alt="" width="200" height="200" loading="lazy">
+                  {%- endif -%}
+                </a>
+
+                <div>
+                  <h2 class="h3" style="font-size:1.1rem"><a href="{{ item.url }}">{{ item.product.title }}</a></h2>
+                  {%- unless item.product.has_only_default_variant -%}
+                    <p class="mono" style="color:var(--ink-60);margin:.35rem 0 0">{{ item.variant.title }}</p>
+                  {%- endunless -%}
+                  {%- if item.variant.sku != blank -%}
+                    <p class="num" style="font-size:.75rem;color:var(--ink-40);margin:.35rem 0 0">{{ item.variant.sku }}</p>
+                  {%- endif -%}
+
+                  <div style="display:flex;gap:.75rem;align-items:center;margin-top:.85rem;flex-wrap:wrap">
+                    <div class="qty">
+                      <button type="button" data-cart-qty="-1" aria-label="Decrease quantity">{% render 'icon', name: 'minus' %}</button>
+                      <label class="visually-hidden" for="q{{ forloop.index }}">Quantity for {{ item.product.title }}</label>
+                      <input id="q{{ forloop.index }}" type="number" name="updates[]"
+                             value="{{ item.quantity }}" min="0" inputmode="numeric" data-cart-input>
+                      <button type="button" data-cart-qty="1" aria-label="Increase quantity">{% render 'icon', name: 'plus' %}</button>
+                    </div>
+                    <a href="{{ item.url_to_remove }}" class="mono" style="color:var(--ink-40)">Remove</a>
+                  </div>
+                </div>
+
+                <p class="num" style="font-size:.95rem">{{ item.final_line_price | money }}</p>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <div class="cart-summary" style="margin-top:2rem">
+            <div class="cart-summary__row">
+              <span>Subtotal</span><span class="num">{{ cart.total_price | money }}</span>
+            </div>
+            {%- if cart.total_discount > 0 -%}
+              <div class="cart-summary__row" style="color:var(--sale)">
+                <span>Discount</span><span class="num">-{{ cart.total_discount | money }}</span>
+              </div>
+            {%- endif -%}
+            <div class="cart-summary__row cart-summary__total">
+              <span>Total</span><span class="num">{{ cart.total_price | money }}</span>
+            </div>
+            <p style="font-size:.85rem;color:var(--ink-60);margin:0">Shipping and taxes calculated at checkout.</p>
+
+            <label class="visually-hidden" for="cart-note">Order note</label>
+            <textarea id="cart-note" name="note" rows="2" placeholder="Order note (optional)"
+                      style="width:100%;padding:.75rem;border:1px solid var(--rule);background:var(--paper)">{{ cart.note }}</textarea>
+
+            <button type="submit" name="checkout" class="btn btn--full">Checkout</button>
+            <a class="btn btn--ghost btn--full" href="{{ routes.all_products_collection_url }}">Keep shopping</a>
+          </div>
+        </div>
+      </div>
+    </form>
+  {%- else -%}
+    <div class="empty">
+      <h2 class="h2">Your cart is empty</h2>
+      <p class="lede" style="margin-inline:auto">Nothing in here yet. The darbukas are a good place to start.</p>
+      <a class="btn" href="{{ routes.all_products_collection_url }}">Shop the catalogue</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Cart" }
+{% endschema %}
