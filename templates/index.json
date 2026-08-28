@@ -130,8 +130,8 @@
         "t5": {
           "type": "tab",
           "settings": {
-            "collection": "microphones",
-            "label": "Microphones"
+            "collection": "button-accordions-copy",
+            "label": "Violins"
           }
         }
       },
