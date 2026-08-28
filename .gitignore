@@ -1,16 +1,14 @@
-# working files that do not need to ship
-_work/raw/
-_work/raw_new/
-_work/wa/
-_work/clean/
-_work/sheets/
-_work/sheets_clean/
-_work/samples/
-_work/*.jpg
-_work/*.png
-_work/__pycache__/
-.DS_Store
-Thumbs.db
+# The Shopify GitHub integration syncs this whole branch as the theme and
+# enforces a 50MB limit, so everything that is not a theme file lives on the
+# 'catalogue' branch instead: product images, the import CSVs, the build
+# scripts and the static design previews.
+import/
+_work/
+scripts/
+preview-*.html
 
 # local preview server config
 .claude/
+
+.DS_Store
+Thumbs.db
