@@ -54,7 +54,7 @@
         "c4": {
           "type": "category",
           "settings": {
-            "collection": "accordions",
+            "collection": "percussion-copy",
             "title": "Accordions",
             "subtitle": "",
             "url": ""
@@ -63,8 +63,8 @@
         "c5": {
           "type": "category",
           "settings": {
-            "collection": "audio-studio",
-            "title": "Audio & Studio",
+            "collection": "accordions-copy",
+            "title": "Violins & Wind",
             "subtitle": "",
             "url": ""
           }
