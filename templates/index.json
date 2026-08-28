@@ -24,6 +24,15 @@
     "categories": {
       "type": "category-grid",
       "blocks": {
+        "category_PX4wRh": {
+          "type": "category",
+          "settings": {
+            "collection": "audio-studio-copy",
+            "title": "Strings & Accessories",
+            "subtitle": "",
+            "url": ""
+          }
+        },
         "category_cqpEcc": {
           "type": "category",
           "settings": {
@@ -89,6 +98,7 @@
         }
       },
       "block_order": [
+        "category_PX4wRh",
         "category_cqpEcc",
         "c1",
         "c2",
