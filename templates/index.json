@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -15,14 +24,69 @@
     "categories": {
       "type": "category-grid",
       "blocks": {
-        "c1": { "type": "category", "settings": { "collection": "darbuka", "title": "Darbuka" } },
-        "c2": { "type": "category", "settings": { "collection": "oud", "title": "Oud" } },
-        "c3": { "type": "category", "settings": { "collection": "guitars", "title": "Guitars & Bass" } },
-        "c4": { "type": "category", "settings": { "collection": "accordions", "title": "Accordions" } },
-        "c5": { "type": "category", "settings": { "collection": "audio-studio", "title": "Audio & Studio" } },
-        "c6": { "type": "category", "settings": { "collection": "violins-wind", "title": "Violins & Wind" } }
+        "c1": {
+          "type": "category",
+          "settings": {
+            "collection": "darbuka",
+            "title": "Darbuka",
+            "subtitle": "",
+            "url": ""
+          }
+        },
+        "c2": {
+          "type": "category",
+          "settings": {
+            "collection": "oud",
+            "title": "Oud",
+            "subtitle": "",
+            "url": ""
+          }
+        },
+        "c3": {
+          "type": "category",
+          "settings": {
+            "collection": "guitars",
+            "title": "Guitars & Bass",
+            "subtitle": "",
+            "url": ""
+          }
+        },
+        "c4": {
+          "type": "category",
+          "settings": {
+            "collection": "accordions",
+            "title": "Accordions",
+            "subtitle": "",
+            "url": ""
+          }
+        },
+        "c5": {
+          "type": "category",
+          "settings": {
+            "collection": "audio-studio",
+            "title": "Audio & Studio",
+            "subtitle": "",
+            "url": ""
+          }
+        },
+        "c6": {
+          "type": "category",
+          "settings": {
+            "collection": "violins-wind",
+            "title": "Violins & Wind",
+            "subtitle": "",
+            "url": ""
+          }
+        }
       },
-      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"],
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6"
+      ],
       "settings": {
         "eyebrow": "The catalogue",
         "heading": "Shop by instrument",
@@ -35,19 +99,55 @@
     "featured": {
       "type": "featured-products",
       "blocks": {
-        "t1": { "type": "tab", "settings": { "collection": "darbuka", "label": "Darbuka" } },
-        "t2": { "type": "tab", "settings": { "collection": "oud", "label": "Oud" } },
-        "t3": { "type": "tab", "settings": { "collection": "guitars", "label": "Guitars" } },
-        "t4": { "type": "tab", "settings": { "collection": "accordions", "label": "Accordions" } },
-        "t5": { "type": "tab", "settings": { "collection": "microphones", "label": "Microphones" } }
+        "t1": {
+          "type": "tab",
+          "settings": {
+            "collection": "darbuka",
+            "label": "Darbuka"
+          }
+        },
+        "t2": {
+          "type": "tab",
+          "settings": {
+            "collection": "oud",
+            "label": "Oud"
+          }
+        },
+        "t3": {
+          "type": "tab",
+          "settings": {
+            "collection": "guitars",
+            "label": "Guitars"
+          }
+        },
+        "t4": {
+          "type": "tab",
+          "settings": {
+            "collection": "accordions",
+            "label": "Accordions"
+          }
+        },
+        "t5": {
+          "type": "tab",
+          "settings": {
+            "collection": "microphones",
+            "label": "Microphones"
+          }
+        }
       },
-      "block_order": ["t1", "t2", "t3", "t4", "t5"],
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5"
+      ],
       "settings": {
         "eyebrow": "In the shop now",
         "heading": "Featured products",
         "count": 10,
         "link_label": "View all",
-        "link_url": "/collections/all",
+        "link_url": "shopify://collections/frontpage",
         "bg": "section--shell"
       }
     },
@@ -66,14 +166,56 @@
     "props": {
       "type": "value-props",
       "blocks": {
-        "p1": { "type": "prop", "settings": { "icon": "tune", "title": "Set up on the bench", "text": "Checked, tuned and adjusted by hand before it leaves the shop." } },
-        "p2": { "type": "prop", "settings": { "icon": "truck", "title": "Delivered in Lebanon", "text": "Packed properly, with a hard case where the instrument needs one." } },
-        "p3": { "type": "prop", "settings": { "icon": "note", "title": "Makers we know", "text": "Ouds and darbukas from workshops in Egypt, Syria and Lebanon." } },
-        "p4": { "type": "prop", "settings": { "icon": "whatsapp", "title": "Ask us anything", "text": "Message the shop on WhatsApp — a player will answer, not a bot." } }
+        "p1": {
+          "type": "prop",
+          "settings": {
+            "icon": "tune",
+            "title": "Set up on the bench",
+            "text": "Checked, tuned and adjusted by hand before it leaves the shop."
+          }
+        },
+        "p2": {
+          "type": "prop",
+          "settings": {
+            "icon": "truck",
+            "title": "Delivered in Lebanon",
+            "text": "Packed properly, with a hard case where the instrument needs one."
+          }
+        },
+        "p3": {
+          "type": "prop",
+          "settings": {
+            "icon": "note",
+            "title": "Makers we know",
+            "text": "Ouds and darbukas from workshops in Egypt, Syria and Lebanon."
+          }
+        },
+        "p4": {
+          "type": "prop",
+          "settings": {
+            "icon": "whatsapp",
+            "title": "Ask us anything",
+            "text": "Message the shop on WhatsApp — a player will answer, not a bot."
+          }
+        }
       },
-      "block_order": ["p1", "p2", "p3", "p4"],
-      "settings": { "heading": "Why buy here", "bg": "section--ink" }
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "heading": "Why buy here",
+        "bg": "section--ink"
+      }
     }
   },
-  "order": ["hero", "categories", "featured", "story", "props"]
+  "order": [
+    "hero",
+    "categories",
+    "featured",
+    "story",
+    "props"
+  ]
 }
