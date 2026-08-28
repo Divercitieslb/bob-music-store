@@ -36,8 +36,8 @@
         "c2": {
           "type": "category",
           "settings": {
-            "collection": "oud",
-            "title": "Oud",
+            "collection": "oud-copy",
+            "title": "Percussion",
             "subtitle": "",
             "url": ""
           }
