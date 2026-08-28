@@ -102,14 +102,14 @@
         "t1": {
           "type": "tab",
           "settings": {
-            "collection": "frontpage",
+            "collection": "kids-guitars-copy",
             "label": "Darbuka"
           }
         },
         "t2": {
           "type": "tab",
           "settings": {
-            "collection": "oud",
+            "collection": "guitars-bass-copy",
             "label": "Oud"
           }
         },
