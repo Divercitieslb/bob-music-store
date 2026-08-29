@@ -132,35 +132,45 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Rating, reviews, address, phone, hours and photos are read live from your Google listing, so they stay current on their own. Two values are needed: the Place ID of the listing, and a Maps Platform API key restricted to this domain. Without them the theme falls back to whatever is typed under Shop details."
+        "content": "The map, the live star rating and the review count need only the Place ID — no Google Cloud project, no API key, no billing. Google draws that card itself, so it stays current on its own. An API key is optional and buys one extra thing: the review TEXT and the listing photos rendered on this site rather than on Google's."
       },
       {
         "type": "text",
         "id": "google_place_id",
         "label": "Place ID",
-        "info": "Looks like ChIJ… — find it with Google's Place ID Finder."
+        "info": "ChIJ… — from Google's Place ID Finder. This alone powers the map, the rating, Directions and the review links."
       },
       {
         "type": "text",
-        "id": "google_maps_key",
-        "label": "Maps Platform API key",
-        "info": "Restrict it to HTTP referrers bobmusic.shop/* and to the Places API, or anyone can spend your quota. It is visible in the page source by design; the referrer restriction is what protects it."
+        "id": "google_map_query",
+        "label": "Map search text",
+        "info": "What the embedded map searches for. Leave blank to use the shop name and address below. Set it if the listing's name differs from the store name."
       },
       {
         "type": "url",
         "id": "google_maps_url",
         "label": "Google Maps link",
-        "info": "Used for Directions before the Place ID is set, and as the fallback if the API is unreachable."
+        "info": "Optional override. Built from the Place ID when left blank."
       },
       {
         "type": "header",
-        "content": "Fallback values"
+        "content": "Optional — review text and photos on this site"
+      },
+      {
+        "type": "text",
+        "id": "google_maps_key",
+        "label": "Places API key",
+        "info": "Only needed to show review text and listing photos on this site; everything else works without it. Requires a Google Cloud project with billing enabled, the Places API (New) turned on, and the key restricted to HTTP referrers bobmusic.shop/*. Leave blank and the reviews section shows the live map card instead."
+      },
+      {
+        "type": "header",
+        "content": "Typed-in fallbacks"
       },
       {
         "type": "text",
         "id": "google_rating",
         "label": "Rating",
-        "info": "Shown only until the API answers. e.g. 4.8"
+        "info": "Optional and MANUAL — it will go stale. The map card already shows the live figure. Only fill this if you want a number in the footer too."
       },
       {
         "type": "text",

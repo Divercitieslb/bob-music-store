@@ -1,25 +1,39 @@
 {%- comment -%}
-  What people say on Google — live from the Business Profile.
+  On Google — the map, the live rating, and (only if an API key exists) the
+  review text and photos.
 
-  The whole section is hidden until the API answers, because a reviews block
-  with nothing in it is worse than no reviews block. assets/google-place.js
-  fills [data-gp-reviews] and unhides it; the rating line above works from the
-  fallback values under Theme settings in the meantime.
+  TWO TIERS, deliberately. The Place ID alone is enough for the map card, and
+  Google renders the star rating and review count inside it — live, no key, no
+  billing, nothing to maintain. That is the section's floor and it is a real
+  section on its own. An API key adds the review TEXT and the listing photos on
+  this page; without one the visitor gets the map and a link, which is honest
+  and costs nothing.
 
-  Google returns AT MOST FIVE reviews and does not let you choose which — the
-  "all reviews" link is not a nicety, it is the only route to the rest.
+  Google returns AT MOST FIVE reviews even with a key, and does not let you
+  choose which — the "all reviews" link is not a nicety, it is the only route
+  to the rest.
 {%- endcomment -%}
 
 {%- liquid
+  assign has_id = false
+  if settings.google_place_id != blank
+    assign has_id = true
+  endif
   assign has_api = false
-  if settings.google_place_id != blank and settings.google_maps_key != blank
+  if has_id and settings.google_maps_key != blank
     assign has_api = true
   endif
-  assign maps_url = settings.google_maps_url | default: '#'
+  if settings.google_maps_url != blank
+    assign maps_url = settings.google_maps_url
+  elsif has_id
+    assign maps_url = 'https://www.google.com/maps/place/?q=place_id:' | append: settings.google_place_id
+  else
+    assign maps_url = '#'
+  endif
 -%}
 
 <section class="section grevs {{ section.settings.bg }}" data-gp-section
-         {% unless has_api or request.design_mode %}hidden{% endunless %}>
+         {% unless has_id or request.design_mode %}hidden{% endunless %}>
   <div class="wrap">
 
     <div class="section-head">
@@ -29,7 +43,12 @@
         {%- endif -%}
         <h2 class="h1" data-split>{{ section.settings.heading }}</h2>
 
-        <div class="grevs__score">
+        {%- comment -%}
+          Only rendered when a manual figure was typed or the API is live. The
+          map card below shows Google's own current rating either way, so an
+          empty "— / 5" here would be worse than nothing.
+        {%- endcomment -%}
+        <div class="grevs__score"{% unless has_api or settings.google_rating != blank %} hidden{% endunless %}>
           <span data-gp="stars">
             {%- if settings.google_rating != blank -%}
               <span class="gstars" role="img" aria-label="{{ settings.google_rating }} out of 5">
@@ -53,10 +72,15 @@
       </a>
     </div>
 
+    {%- if section.settings.show_map and has_id -%}
+      {% render 'google-map', height: section.settings.map_height %}
+    {%- endif -%}
+
     {%- comment -%}
       Hidden until the fetch lands, then unhidden by the script. The rail
       primitive does the mobile work — reviews are browsable peer items, which
-      is exactly what a rail is for.
+      is exactly what a rail is for. Stays hidden forever without an API key,
+      which is the intended state, not a failure.
     {%- endcomment -%}
     <div class="grid grid--reviews rail" data-gp-reviews
          data-min-rating="{{ section.settings.min_rating }}" hidden></div>
@@ -85,18 +109,32 @@
     {%- endif -%}
 
     <p class="grevs__source">
-      Ratings and reviews come straight from our Google Business Profile and
-      refresh on their own. Google shows at most five here —
-      <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">read them all on Google</a>.
+      {%- if has_api -%}
+        Ratings and reviews come straight from our Google Business Profile and
+        refresh on their own. Google shows at most five here —
+        <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">read them all on Google</a>.
+      {%- else -%}
+        The rating and the review count on the map above are drawn by Google and
+        are always current.
+        <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">Read the reviews on Google</a>.
+      {%- endif -%}
     </p>
 
-    {%- if request.design_mode and has_api == false -%}
-      <p class="grevs__setup">
-        <strong>Not connected yet.</strong> Add the Place ID and a Maps Platform
-        API key under <strong>Theme settings → Google Business Profile</strong>.
-        Until then this section is hidden from visitors and only visible here in
-        the editor.
-      </p>
+    {%- if request.design_mode -%}
+      {%- if has_id == false -%}
+        <p class="grevs__setup">
+          <strong>No Place ID yet.</strong> Add it under
+          <strong>Theme settings → Google Business Profile</strong>. Until then
+          this section is hidden from visitors and only visible here in the editor.
+        </p>
+      {%- elsif has_api == false -%}
+        <p class="grevs__setup">
+          <strong>Map and live rating are on.</strong> Review text and photos on
+          this page need a Places API key, which needs a Google Cloud project
+          with billing. Without one, everything above is exactly what visitors
+          see — and Google keeps the rating on the map current by itself.
+        </p>
+      {%- endif -%}
     {%- endif -%}
 
   </div>
@@ -111,8 +149,13 @@
     { "type": "text", "id": "link_label", "label": "Link label", "default": "All reviews on Google" },
     { "type": "range", "id": "min_rating", "label": "Hide reviews below", "min": 0, "max": 5, "step": 1, "default": 0,
       "info": "0 shows every review Google returns. Hiding poor reviews is legal but visitors notice a wall of five stars — 0 or 3 is the honest setting." },
+    { "type": "header", "content": "Map" },
+    { "type": "checkbox", "id": "show_map", "label": "Show the map", "default": true,
+      "info": "Google draws the card, including the current star rating and review count. No API key involved." },
+    { "type": "range", "id": "map_height", "label": "Map height", "min": 240, "max": 520, "step": 20, "default": 340 },
     { "type": "header", "content": "Photos from Google" },
-    { "type": "checkbox", "id": "show_photos", "label": "Show photos", "default": true },
+    { "type": "checkbox", "id": "show_photos", "label": "Show photos", "default": true,
+      "info": "Needs the optional API key. Nothing renders without one." },
     { "type": "text", "id": "photos_label", "label": "Caption", "default": "Photographed in the shop by customers and by us" },
     { "type": "range", "id": "photos_count", "label": "How many", "min": 3, "max": 12, "step": 1, "default": 8 },
     { "type": "range", "id": "photos_skip", "label": "Skip the first", "min": 0, "max": 10, "step": 1, "default": 0,

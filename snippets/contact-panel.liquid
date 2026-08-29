@@ -27,7 +27,19 @@
   if settings.google_place_id != blank and settings.google_maps_key != blank
     assign has_gp = true
   endif
-  assign g_maps = map_url | default: settings.google_maps_url | default: '#'
+  assign has_id = false
+  if settings.google_place_id != blank
+    assign has_id = true
+  endif
+  if map_url != blank
+    assign g_maps = map_url
+  elsif settings.google_maps_url != blank
+    assign g_maps = settings.google_maps_url
+  elsif has_id
+    assign g_maps = 'https://www.google.com/maps/place/?q=place_id:' | append: settings.google_place_id
+  else
+    assign g_maps = '#'
+  endif
 -%}
 
 <div class="contact">
@@ -111,8 +123,8 @@
               {%- if settings.address_street != blank -%}{{ settings.address_street }}<br>{%- endif -%}
               {{ settings.address_city | default: 'Beirut' }}{% if settings.address_country != blank %}, {{ settings.address_country }}{% endif %}
             </span>
-            {%- if g_maps != '#' or has_gp -%}
-              <br><a class="contact__map" data-gp="maps" href="{{ g_maps }}" rel="noopener" target="_blank">Directions {% render 'icon', name: 'arrow' %}</a>
+            {%- if g_maps != '#' -%}
+              <br><a class="contact__map" data-gp="maps" href="{{ g_maps }}" rel="noopener" target="_blank">Open in Google Maps {% render 'icon', name: 'arrow' %}</a>
             {%- endif -%}
           </dd>
         </div>
@@ -194,6 +206,16 @@
         How we work {% render 'icon', name: 'arrow' %}
       </a>
     </aside>
+
+    {%- comment -%}
+      Full width under both columns. Google draws the card — name, address,
+      current star rating, review count, Directions — with no API key involved.
+    {%- endcomment -%}
+    {%- if has_id -%}
+      <div class="contact__map-full">
+        {% render 'google-map', height: 380 %}
+      </div>
+    {%- endif -%}
 
   </div>
 </div>

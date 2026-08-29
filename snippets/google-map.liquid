@@ -1,0 +1,79 @@
+{%- comment -%}
+  The Google map card — and, more importantly, the only part of the Google
+  integration that needs NO API key, NO Google Cloud project and NO billing.
+
+  maps.google.com/maps?q=<name and address>&output=embed is the legacy embed
+  route. It refuses top-level navigation but works inside an iframe, and Google
+  renders the business card itself: name, address, star rating, review count,
+  a Directions button and an Open in Maps button. Because Google draws it, the
+  rating and the count are live — a new review changes them with nothing to
+  maintain here.
+
+  Two things it will not do, and neither has a keyless workaround:
+    - the review TEXT cannot be read out of the iframe (cross-origin, and
+      scraping it would be against Google's terms even if it were possible)
+    - place_id: as the query does NOT resolve on this route — tested, it
+      returns a world map. The query has to be the name and address as text.
+      The Place ID is still used for every LINK below, where it is exact.
+
+  args: place_id, query, name, height, eager
+{%- endcomment -%}
+
+{%- liquid
+  assign pid = place_id | default: settings.google_place_id
+  assign q = query | default: settings.google_map_query
+  if q == blank
+    capture q
+      echo shop.name
+      if settings.address_street != blank
+        echo ' '
+        echo settings.address_street
+      endif
+      if settings.address_city != blank
+        echo ' '
+        echo settings.address_city
+      endif
+      if settings.address_country != blank
+        echo ' '
+        echo settings.address_country
+      endif
+    endcapture
+  endif
+  assign q_enc = q | strip | url_encode
+  assign label = name | default: shop.name
+
+  # Every one of these works without a key. Verified: /maps/place, /maps/search,
+  # /maps/dir and /local/writereview all answer 200 for this Place ID.
+  if pid != blank
+    assign url_place = 'https://www.google.com/maps/place/?q=place_id:' | append: pid
+    assign url_dir = 'https://www.google.com/maps/dir/?api=1&destination=' | append: q_enc | append: '&destination_place_id=' | append: pid
+    assign url_write = 'https://search.google.com/local/writereview?placeid=' | append: pid
+  else
+    assign url_place = 'https://www.google.com/maps/search/?api=1&query=' | append: q_enc
+    assign url_dir = 'https://www.google.com/maps/dir/?api=1&destination=' | append: q_enc
+    assign url_write = url_place
+  endif
+-%}
+
+<div class="gmap">
+  <div class="gmap__frame" style="--gmap-h:{{ height | default: 340 }}px">
+    <iframe
+      src="https://maps.google.com/maps?q={{ q_enc }}&output=embed"
+      title="{{ label | escape }} on Google Maps"
+      {% unless eager %}loading="lazy"{% endunless %}
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen></iframe>
+  </div>
+
+  <div class="gmap__actions">
+    <a class="btn btn--ghost btn--sm" href="{{ url_dir }}" target="_blank" rel="noopener">
+      Directions {% render 'icon', name: 'arrow' %}
+    </a>
+    <a class="gmap__link" href="{{ url_place }}" target="_blank" rel="noopener">
+      Reviews on Google
+    </a>
+    <a class="gmap__link" href="{{ url_write }}" target="_blank" rel="noopener">
+      Write a review
+    </a>
+  </div>
+</div>

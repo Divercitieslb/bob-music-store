@@ -54,7 +54,13 @@
               rather than making somebody copy a street name.
             {%- endcomment -%}
             {%- liquid
-              assign maps_url = settings.google_maps_url | default: '#'
+              if settings.google_maps_url != blank
+                assign maps_url = settings.google_maps_url
+              elsif settings.google_place_id != blank
+                assign maps_url = 'https://www.google.com/maps/place/?q=place_id:' | append: settings.google_place_id
+              else
+                assign maps_url = '#'
+              endif
               assign has_gp = false
               if settings.google_place_id != blank and settings.google_maps_key != blank
                 assign has_gp = true

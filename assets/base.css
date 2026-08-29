@@ -1719,3 +1719,42 @@ html:not(.js) .nav__item:hover>.mega,
   .gshots__strip.rail{--rail-card:42vw}
   .gshots__strip{grid-template-columns:none}
 }
+
+/* --- the Google map card (snippets/google-map.liquid) ----------------------
+   No API key is involved. Google renders the business card inside the iframe —
+   name, address, current star rating, review count — so those stay live with
+   nothing here to maintain.
+   -------------------------------------------------------------------------- */
+.gmap{margin-top:clamp(1.5rem,3vw,2.25rem)}
+.gmap__frame{
+  position:relative;height:var(--gmap-h,340px);
+  border:1px solid var(--rule);background:var(--shell);overflow:hidden;
+}
+.gmap__frame iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:0;display:block;
+  /* NO filter here, deliberately. A warm grade did settle the cool default map
+     into the paper palette, but a filter on the iframe also tints Google's logo
+     and the "Map data ©" line inside it, and the Maps Platform terms forbid
+     altering or obscuring either. The frame and the surrounding type do the
+     integrating instead. */
+}
+.gmap__actions{
+  display:flex;align-items:center;flex-wrap:wrap;gap:.8rem 1.4rem;
+  margin-top:1rem;
+}
+.gmap__actions .btn{display:inline-flex;align-items:center;gap:.55rem}
+.gmap__link{
+  font-family:var(--f-sans);font-size:.64rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--brass-text);
+  border-bottom:1px solid var(--rule-strong);padding-bottom:2px;
+  transition:color var(--t-fast),border-color var(--t-fast);
+}
+.gmap__link:hover{color:var(--ink);border-color:var(--brass)}
+
+/* On the contact page the map spans both columns — it answers "where", and
+   "where" is the question the whole details card exists for. */
+.contact__map-full{grid-column:1/-1}
+@media(max-width:899px){
+  .contact__map-full{grid-column:auto}
+  .gmap__frame{height:min(var(--gmap-h,340px),300px)}
+}

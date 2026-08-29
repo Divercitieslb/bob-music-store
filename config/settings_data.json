@@ -3,14 +3,20 @@
     "address_city": "Beirut",
     "address_country": "Lebanon",
     "enquiry_only": false,
-    "text_direction": "ltr"
+    "text_direction": "ltr",
+    "google_place_id": "ChIJQcKz4FAZHxURb6fG5-otlRA",
+    "google_map_query": "Bob Music Old Saida Rd Lebanon",
+    "address_street": "Old Saida Rd"
   },
   "presets": {
     "Bob Music Store": {
       "address_city": "Beirut",
       "address_country": "Lebanon",
       "enquiry_only": false,
-      "text_direction": "ltr"
+      "text_direction": "ltr",
+      "google_place_id": "ChIJQcKz4FAZHxURb6fG5-otlRA",
+      "google_map_query": "Bob Music Old Saida Rd Lebanon",
+      "address_street": "Old Saida Rd"
     }
   }
 }
