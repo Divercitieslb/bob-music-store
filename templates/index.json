@@ -71,7 +71,7 @@
           "settings": {
             "image": "shopify://shop_images/look-accordion.jpg",
             "default_asset": "look-accordion.jpg",
-            "collection": "percussion-copy",
+            "collection": "accordions",
             "eyebrow": "Vintage",
             "title": "Italian & German accordions",
             "text": "Castelfidardo, Klingenthal, and a Soviet bayan.",
@@ -157,7 +157,7 @@
         "t4": {
           "type": "tab",
           "settings": {
-            "collection": "percussion-copy",
+            "collection": "accordions",
             "label": "Accordions"
           }
         },
