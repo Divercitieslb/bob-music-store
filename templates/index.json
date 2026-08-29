@@ -218,7 +218,7 @@
         "stat_3": "",
         "stat_3_label": "",
         "cta_label": "Shop percussion",
-        "cta_url": "/collections/percussion",
+        "cta_url": "shopify://collections/oud-copy",
         "bg": "section--ink"
       }
     },
