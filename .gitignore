@@ -1,14 +1,41 @@
-# The Shopify GitHub integration syncs this whole branch as the theme and
-# enforces a 50MB limit, so everything that is not a theme file lives on the
-# 'catalogue' branch instead: product images, the import CSVs, the build
-# scripts and the static design previews.
-import/
-_work/
-scripts/
+# The Shopify GitHub integration syncs this WHOLE branch as the theme and
+# enforces a 50MB limit, so the heavy things stay off it: the 123MB of source
+# and retouched product photography, and the intermediate image directories.
+#
+# The small text artefacts do NOT stay off it. They used to live only on the
+# 'catalogue' branch, which meant every `git checkout main` deleted them from
+# disk — the price sheet, the import CSVs and the setup checklists would simply
+# vanish, and the build scripts silently reverted to an older revision. They are
+# a few hundred KB. They live here now.
+
+# --- heavy image working directories (never on any branch) ---
+import/images/
+_work/clean/
+_work/raw/
+_work/raw_new/
+_work/wa/
+_work/sheets/
+_work/sheets_clean/
+_work/samples/
+_work/out/
+_work/*.jpg
+_work/*.png
+_work/*.zip
+__pycache__/
+*.pyc
+
+# An unzipped copy of the theme ZIP. Committing it would put a second full copy
+# of the theme inside the theme.
+bob-music-store-theme/
+bob-music-store-theme.zip
+
+# --- generated design previews ---
 preview-*.html
 page-*.html
+_work/preview.html
+scripts/
 
-# local preview server config
+# --- local editor / tooling config ---
 .claude/
 
 .DS_Store

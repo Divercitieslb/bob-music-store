@@ -1,0 +1,43 @@
+Handle,Title,Body HTML,Sort Order,Published,Must Match,Rule: Product Column,Rule: Relation,Rule: Condition
+guitars-bass,Guitars & Bass,,best-selling,TRUE,all,Tag,Equals,Guitars & Bass
+oud,Oud,"Handmade ouds from workshops in Egypt, Syria and Lebanon. No two sound the same.",best-selling,TRUE,all,Tag,Equals,Oud
+percussion,Percussion,"Darbuka, riq, tabl and bendir — the instruments that carry Arabic rhythm.",best-selling,TRUE,all,Tag,Equals,Percussion
+accordions,Accordions,"Vintage Italian and German piano accordions, and a Soviet bayan.",best-selling,TRUE,all,Tag,Equals,Accordions
+violins-wind,Violins & Wind,"Violins, flutes, ney and recorders for students and players.",best-selling,TRUE,all,Tag,Equals,Violins & Wind
+audio-studio,Audio & Studio,"Microphones, amplifiers, speakers, pedals and studio gear.",best-selling,TRUE,all,Tag,Equals,Audio & Studio
+strings-accessories,Strings & Accessories,,best-selling,TRUE,all,Tag,Equals,Strings & Accessories
+acoustic-guitars,Acoustic Guitars,,best-selling,TRUE,all,Tag,Equals,Acoustic Guitars
+classical-guitars,Classical Guitars,,best-selling,TRUE,all,Tag,Equals,Classical Guitars
+electric-guitars,Electric Guitars,,best-selling,TRUE,all,Tag,Equals,Electric Guitars
+bass-guitars,Bass Guitars,,best-selling,TRUE,all,Tag,Equals,Bass Guitars
+kids-guitars,Kids' Guitars,,best-selling,TRUE,all,Tag,Equals,Kids' Guitars
+darbuka,Darbuka,"Hand-inlaid goblet drums. Cast aluminium shells, tuneable heads, mother-of-pearl mosaic set one tessera at a time.",best-selling,TRUE,all,Tag,Equals,Darbuka
+riq-frame-drums,Riq & Frame Drums,,best-selling,TRUE,all,Tag,Equals,Riq & Frame Drums
+tabl-bass-drums,Tabl & Bass Drums,,best-selling,TRUE,all,Tag,Equals,Tabl & Bass Drums
+drum-kits-bongos,Drum Kits & Bongos,,best-selling,TRUE,all,Tag,Equals,Drum Kits & Bongos
+drum-heads,Drum Heads,,best-selling,TRUE,all,Tag,Equals,Drum Heads
+piano-accordions,Piano Accordions,,best-selling,TRUE,all,Tag,Equals,Piano Accordions
+button-accordions,Button Accordions,,best-selling,TRUE,all,Tag,Equals,Button Accordions
+violins,Violins,,best-selling,TRUE,all,Tag,Equals,Violins
+electric-violins,Electric Violins,,best-selling,TRUE,all,Tag,Equals,Electric Violins
+flutes-ney,Flutes & Ney,,best-selling,TRUE,all,Tag,Equals,Flutes & Ney
+recorders,Recorders,,best-selling,TRUE,all,Tag,Equals,Recorders
+saxophones-brass,Saxophones & Brass,,best-selling,TRUE,all,Tag,Equals,Saxophones & Brass
+microphones,Microphones,,best-selling,TRUE,all,Tag,Equals,Microphones
+amplifiers,Amplifiers,,best-selling,TRUE,all,Tag,Equals,Amplifiers
+speakers-pa,Speakers & PA,,best-selling,TRUE,all,Tag,Equals,Speakers & PA
+effects-pedals,Effects Pedals,,best-selling,TRUE,all,Tag,Equals,Effects Pedals
+studio-recording,Studio & Recording,,best-selling,TRUE,all,Tag,Equals,Studio & Recording
+midi-controllers,MIDI Controllers,,best-selling,TRUE,all,Tag,Equals,MIDI Controllers
+footswitches,Footswitches,,best-selling,TRUE,all,Tag,Equals,Footswitches
+guitar-strings,Guitar Strings,,best-selling,TRUE,all,Tag,Equals,Guitar Strings
+oud-saz-strings,Oud & Saz Strings,,best-selling,TRUE,all,Tag,Equals,Oud & Saz Strings
+violin-bass-strings,Violin & Bass Strings,,best-selling,TRUE,all,Tag,Equals,Violin & Bass Strings
+straps,Straps,,best-selling,TRUE,all,Tag,Equals,Straps
+stands,Stands,,best-selling,TRUE,all,Tag,Equals,Stands
+tuners-pickups,Tuners & Pickups,,best-selling,TRUE,all,Tag,Equals,Tuners & Pickups
+cases-care,Cases & Care,,best-selling,TRUE,all,Tag,Equals,Cases & Care
+arabic-instruments,Arabic Instruments,"The Arabic half of the shop — oud, darbuka, riq, tabl, ney and the strings that go with them.",best-selling,TRUE,all,Tag,Equals,Arabic Instruments
+vintage-collectible,Vintage & Collectible,"Instruments with a history. Sold as they are, described honestly.",best-selling,TRUE,all,Tag,Equals,Vintage & Collectible
+new-arrivals,New Arrivals,The most recent additions to the shop.,best-selling,TRUE,all,Tag,Equals,New Arrivals
+beginner-student,Beginner & Student,,best-selling,TRUE,all,Tag,Equals,Beginner & Student

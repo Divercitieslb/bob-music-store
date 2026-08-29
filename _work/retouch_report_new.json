@@ -1,0 +1,906 @@
+[
+ {
+  "file": "ACC-09-90.jpg",
+  "stem": "ACC-09-90",
+  "src": [
+   1600,
+   1380
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum84)"
+  ]
+ },
+ {
+  "file": "DRM-56-01.jpg",
+  "stem": "DRM-56-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 1.73,
+  "notes": [
+   "bg-flood(lum255)",
+   "deskew+1.7"
+  ]
+ },
+ {
+  "file": "DRM-57-01.jpg",
+  "stem": "DRM-57-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "DRM-58-01.jpg",
+  "stem": "DRM-58-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "DRM-59-01.jpg",
+  "stem": "DRM-59-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "DRM-60-01.jpg",
+  "stem": "DRM-60-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "DRM-61-01.jpg",
+  "stem": "DRM-61-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 1.44,
+  "notes": [
+   "bg-flood(lum255)",
+   "deskew+1.4"
+  ]
+ },
+ {
+  "file": "DRM-62-01.jpg",
+  "stem": "DRM-62-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "DRM-63-01.jpg",
+  "stem": "DRM-63-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "DRM-64-01.jpg",
+  "stem": "DRM-64-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "DRM-65-01.jpg",
+  "stem": "DRM-65-01",
+  "src": [
+   992,
+   1600
+  ],
+  "angle": 0.78,
+  "notes": [
+   "bg-flood(lum255)",
+   "deskew+0.8"
+  ]
+ },
+ {
+  "file": "DRM-66-01.jpg",
+  "stem": "DRM-66-01",
+  "src": [
+   1125,
+   1422
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "DRM-67-01.jpg",
+  "stem": "DRM-67-01",
+  "src": [
+   1125,
+   1463
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-13-90.jpg",
+  "stem": "GEAR-13-90",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-16-01.jpg",
+  "stem": "GEAR-16-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-17-01.jpg",
+  "stem": "GEAR-17-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-18-01.jpg",
+  "stem": "GEAR-18-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-19-01.jpg",
+  "stem": "GEAR-19-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-20-01.jpg",
+  "stem": "GEAR-20-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-21-01.jpg",
+  "stem": "GEAR-21-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-21-02.jpg",
+  "stem": "GEAR-21-02",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-22-01.jpg",
+  "stem": "GEAR-22-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-23-01.jpg",
+  "stem": "GEAR-23-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-24-01.jpg",
+  "stem": "GEAR-24-01",
+  "src": [
+   1600,
+   498
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GEAR-24-02.jpg",
+  "stem": "GEAR-24-02",
+  "src": [
+   1600,
+   506
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GTR-25-01.jpg",
+  "stem": "GTR-25-01",
+  "src": [
+   804,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GTR-26-01.jpg",
+  "stem": "GTR-26-01",
+  "src": [
+   682,
+   1600
+  ],
+  "angle": 4.55,
+  "notes": [
+   "bg-flood(lum255)",
+   "deskew+4.6"
+  ]
+ },
+ {
+  "file": "GTR-27-01.jpg",
+  "stem": "GTR-27-01",
+  "src": [
+   800,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "GTR-28-01.jpg",
+  "stem": "GTR-28-01",
+  "src": [
+   960,
+   1280
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-28-90.jpg",
+  "stem": "PA-28-90",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-29-90.jpg",
+  "stem": "PA-29-90",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-33-90.jpg",
+  "stem": "PA-33-90",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-36-01.jpg",
+  "stem": "PA-36-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-37-01.jpg",
+  "stem": "PA-37-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-38-01.jpg",
+  "stem": "PA-38-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-39-01.jpg",
+  "stem": "PA-39-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-40-01.jpg",
+  "stem": "PA-40-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-41-01.jpg",
+  "stem": "PA-41-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-42-01.jpg",
+  "stem": "PA-42-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-43-01.jpg",
+  "stem": "PA-43-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-44-01.jpg",
+  "stem": "PA-44-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-45-01.jpg",
+  "stem": "PA-45-01",
+  "src": [
+   1200,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum24)"
+  ]
+ },
+ {
+  "file": "PA-46-01.jpg",
+  "stem": "PA-46-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-47-01.jpg",
+  "stem": "PA-47-01",
+  "src": [
+   1088,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum1)"
+  ]
+ },
+ {
+  "file": "PA-48-01.jpg",
+  "stem": "PA-48-01",
+  "src": [
+   1142,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum45)"
+  ]
+ },
+ {
+  "file": "PA-48-02.jpg",
+  "stem": "PA-48-02",
+  "src": [
+   792,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum42)"
+  ]
+ },
+ {
+  "file": "PA-49-01.jpg",
+  "stem": "PA-49-01",
+  "src": [
+   1600,
+   1096
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum1)"
+  ]
+ },
+ {
+  "file": "PA-50-01.jpg",
+  "stem": "PA-50-01",
+  "src": [
+   1170,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum22)"
+  ]
+ },
+ {
+  "file": "PA-51-01.jpg",
+  "stem": "PA-51-01",
+  "src": [
+   1600,
+   1492
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum50)"
+  ]
+ },
+ {
+  "file": "PA-52-01.jpg",
+  "stem": "PA-52-01",
+  "src": [
+   812,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum4)"
+  ]
+ },
+ {
+  "file": "PA-53-01.jpg",
+  "stem": "PA-53-01",
+  "src": [
+   1130,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum1)"
+  ]
+ },
+ {
+  "file": "PA-54-01.jpg",
+  "stem": "PA-54-01",
+  "src": [
+   1600,
+   1580
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum50)"
+  ]
+ },
+ {
+  "file": "PA-55-01.jpg",
+  "stem": "PA-55-01",
+  "src": [
+   1600,
+   1508
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum139)"
+  ]
+ },
+ {
+  "file": "PA-56-01.jpg",
+  "stem": "PA-56-01",
+  "src": [
+   1600,
+   1066
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum217)"
+  ]
+ },
+ {
+  "file": "PA-57-01.jpg",
+  "stem": "PA-57-01",
+  "src": [
+   1600,
+   944
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "PA-58-01.jpg",
+  "stem": "PA-58-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "STR-27-01.jpg",
+  "stem": "STR-27-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "STR-28-01.jpg",
+  "stem": "STR-28-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "STR-29-01.jpg",
+  "stem": "STR-29-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "STR-30-01.jpg",
+  "stem": "STR-30-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "STR-31-01.jpg",
+  "stem": "STR-31-01",
+  "src": [
+   1512,
+   1512
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-06-01.jpg",
+  "stem": "WND-06-01",
+  "src": [
+   898,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-06-02.jpg",
+  "stem": "WND-06-02",
+  "src": [
+   1076,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-07-01.jpg",
+  "stem": "WND-07-01",
+  "src": [
+   1600,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-08-01.jpg",
+  "stem": "WND-08-01",
+  "src": [
+   1600,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-09-01.jpg",
+  "stem": "WND-09-01",
+  "src": [
+   1300,
+   1432
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-10-01.jpg",
+  "stem": "WND-10-01",
+  "src": [
+   1600,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-11-01.jpg",
+  "stem": "WND-11-01",
+  "src": [
+   1600,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-12-01.jpg",
+  "stem": "WND-12-01",
+  "src": [
+   260,
+   280
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-13-01.jpg",
+  "stem": "WND-13-01",
+  "src": [
+   800,
+   534
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-14-01.jpg",
+  "stem": "WND-14-01",
+  "src": [
+   1600,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-15-01.jpg",
+  "stem": "WND-15-01",
+  "src": [
+   1600,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-16-01.jpg",
+  "stem": "WND-16-01",
+  "src": [
+   1600,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-17-01.jpg",
+  "stem": "WND-17-01",
+  "src": [
+   1600,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ },
+ {
+  "file": "WND-18-01.jpg",
+  "stem": "WND-18-01",
+  "src": [
+   1600,
+   1600
+  ],
+  "angle": 0.0,
+  "notes": [
+   "bg-flood(lum255)"
+  ]
+ }
+]
