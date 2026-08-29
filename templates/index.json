@@ -43,6 +43,7 @@
         "l1": {
           "type": "look",
           "settings": {
+            "image": "shopify://shop_images/look-oud.jpg",
             "default_asset": "look-oud.jpg",
             "collection": "guitars-bass-copy",
             "eyebrow": "Made by hand",
@@ -55,6 +56,7 @@
         "l2": {
           "type": "look",
           "settings": {
+            "image": "shopify://shop_images/look-darbuka.jpg",
             "default_asset": "look-darbuka.jpg",
             "collection": "kids-guitars-copy",
             "eyebrow": "45 in stock",
@@ -67,6 +69,7 @@
         "l3": {
           "type": "look",
           "settings": {
+            "image": "shopify://shop_images/look-accordion.jpg",
             "default_asset": "look-accordion.jpg",
             "collection": "percussion-copy",
             "eyebrow": "Vintage",
@@ -79,6 +82,7 @@
         "l4": {
           "type": "look",
           "settings": {
+            "image": "shopify://shop_images/look-audio.jpg",
             "default_asset": "look-audio.jpg",
             "collection": "violins-wind-copy",
             "eyebrow": "For the stage",
@@ -109,7 +113,7 @@
       "settings": {
         "default_asset": "feature-oud.jpg",
         "image_alt": "A handmade oud on the workbench",
-        "collection": "oud",
+        "collection": "guitars-bass-copy",
         "flip": false,
         "watermark": "oud-outline",
         "eyebrow": "The oud room",
