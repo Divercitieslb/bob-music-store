@@ -126,7 +126,7 @@
         "stat_3": "1",
         "stat_3_label": "Of each, exactly",
         "cta_label": "See the ouds",
-        "cta_url": "/collections/oud",
+        "cta_url": "shopify://collections/guitars-bass-copy",
         "bg": "section--shell"
       }
     },
