@@ -1,0 +1,56 @@
+{%- comment -%}
+  Contact — for a page with the "contact" template assigned.
+
+  The page as it stands today sits on the default template, so
+  sections/main-page.liquid renders the same snippet for it with these defaults.
+  Assigning this template is what unlocks the settings below.
+{%- endcomment -%}
+
+<section class="section {{ section.settings.bg }}">
+  <div class="wrap">
+    {%- if section.settings.eyebrow != blank or section.settings.title != blank -%}
+      <div class="contact__head" data-reveal>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <h1 class="h1" data-split>{{ section.settings.title }}</h1>
+        {%- endif -%}
+        {% render 'ornament', name: 'divider', tone: 'brass' %}
+      </div>
+    {%- endif -%}
+
+    {% render 'contact-panel',
+       heading: section.settings.heading,
+       intro: section.settings.intro,
+       hours: section.settings.hours,
+       map_url: section.settings.map_url,
+       response: section.settings.response,
+       subjects: section.settings.subjects %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Bob Music Store — Beirut" },
+    { "type": "text", "id": "title", "label": "Page title", "default": "Contact" },
+    { "type": "text", "id": "heading", "label": "Form heading", "default": "Send us a message" },
+    { "type": "textarea", "id": "intro", "label": "Form intro",
+      "default": "Tell us what you play and what you are looking for. A person who plays, repairs and sells reads every message — there is no call centre here." },
+    { "type": "text", "id": "hours", "label": "Opening hours", "default": "Mon–Sat, 9:00–19:00" },
+    { "type": "url", "id": "map_url", "label": "Map link", "info": "A Google or Apple Maps link to the shop." },
+    { "type": "textarea", "id": "response", "label": "Response note",
+      "default": "We answer WhatsApp within the hour during shop hours, and email the same day." },
+    { "type": "textarea", "id": "subjects", "label": "Subject options", "info": "Comma separated.",
+      "default": "A specific instrument,Repairs and set-up,Trade-in or valuation,Lessons and teachers,Something else" },
+    { "type": "select", "id": "bg", "label": "Background", "default": "",
+      "options": [
+        { "value": "", "label": "Paper" },
+        { "value": "section--shell", "label": "Shell" }
+      ] }
+  ],
+  "presets": [{ "name": "Contact" }]
+}
+{% endschema %}

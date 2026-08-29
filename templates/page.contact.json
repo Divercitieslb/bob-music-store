@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "contact",
+      "settings": {
+        "eyebrow": "Bob Music Store — Beirut",
+        "title": "Contact",
+        "heading": "Send us a message",
+        "intro": "Tell us what you play and what you are looking for. A person who plays, repairs and sells reads every message — there is no call centre here.",
+        "hours": "Mon–Sat, 9:00–19:00",
+        "response": "We answer WhatsApp within the hour during shop hours, and email the same day.",
+        "subjects": "A specific instrument,Repairs and set-up,Trade-in or valuation,Lessons and teachers,Something else",
+        "bg": ""
+      }
+    }
+  },
+  "order": ["main"]
+}

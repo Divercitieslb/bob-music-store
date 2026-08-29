@@ -1,0 +1,166 @@
+{%- comment -%}
+  The contact page's body: enquiry form on the left, shop details on the right.
+
+  Lives in a snippet rather than a section because it is rendered from two
+  places — sections/contact.liquid (for a merchant who assigns the "contact"
+  template) and sections/main-page.liquid (for the page as it exists today, on
+  the default template with empty content). Neither can render the other, and
+  two copies of a form is how they drift apart.
+
+  Every argument is optional. Defaults match what the footer already shows.
+
+    heading, intro, hours, map_url, response, subjects
+{%- endcomment -%}
+
+{%- liquid
+  assign c_hours = hours | default: 'Mon–Sat, 9:00–19:00'
+  assign c_response = response | default: 'We answer WhatsApp within the hour during shop hours, and email the same day.'
+  assign subject_list = subjects | default: 'A specific instrument,Repairs and set-up,Trade-in or valuation,Lessons and teachers,Something else'
+  assign wa = settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-'
+  assign has_details = false
+  if settings.phone != blank or settings.email != blank or settings.whatsapp_number != blank or settings.address_street != blank
+    assign has_details = true
+  endif
+-%}
+
+<div class="contact">
+
+  {%- if settings.whatsapp_number != blank -%}
+    {%- comment -%}
+      On a phone this is the thing people actually want, so it sits above the
+      form rather than in the column beside it, where it would land two screens
+      down. Hidden on desktop, where the details column is already in view.
+    {%- endcomment -%}
+    <a class="contact__wa-lead" href="https://wa.me/{{ wa }}" rel="noopener" target="_blank">
+      {% render 'icon', name: 'whatsapp', size: 20 %}
+      <span>
+        <strong>Message us on WhatsApp</strong>
+        <small>Usually answered within the hour</small>
+      </span>
+      {% render 'icon', name: 'arrow' %}
+    </a>
+  {%- endif -%}
+
+  <div class="contact__grid">
+
+    {%- comment -%} ------------------------------------------------ form {%- endcomment -%}
+    <div class="contact__form">
+      {%- if heading != blank -%}<h2 class="h3 contact__h">{{ heading }}</h2>{%- endif -%}
+      {%- if intro != blank -%}<p class="contact__intro">{{ intro }}</p>{%- endif -%}
+
+      {% form 'contact', id: 'contact-form' %}
+        {%- if form.posted_successfully? -%}
+          <p class="contact__ok" role="status">
+            {% render 'ornament', name: 'khatam', tone: 'brass', size: 16 %}
+            Thank you — your message is with us. We will come back to you shortly.
+          </p>
+        {%- endif -%}
+        {{ form.errors | default_errors }}
+
+        <div class="contact__row">
+          <label class="field"><span>Name</span>
+            <input type="text" name="contact[name]" autocomplete="name" required
+                   value="{{ form.name | default: customer.name }}"></label>
+          <label class="field"><span>Email</span>
+            <input type="email" name="contact[email]" autocomplete="email" required
+                   value="{{ form.email | default: customer.email }}"></label>
+        </div>
+
+        <div class="contact__row">
+          <label class="field"><span>Phone or WhatsApp <em>optional</em></span>
+            <input type="tel" name="contact[phone]" autocomplete="tel"
+                   value="{{ form.phone }}"></label>
+          <label class="field"><span>What is this about?</span>
+            <select class="select" name="contact[Subject]">
+              {%- assign subject_arr = subject_list | split: ',' -%}
+              {%- for s in subject_arr -%}
+                <option value="{{ s | strip | escape }}">{{ s | strip }}</option>
+              {%- endfor -%}
+            </select></label>
+        </div>
+
+        <label class="field"><span>Message</span>
+          <textarea name="contact[body]" rows="6" required
+                    placeholder="Tell us what you play, what you play it for, and roughly what you would like to spend.">{{ form.body }}</textarea></label>
+
+        <button class="btn contact__send" type="submit">Send the message</button>
+        <p class="contact__note">{{ c_response }}</p>
+      {% endform %}
+    </div>
+
+    {%- comment -%} --------------------------------------------- details {%- endcomment -%}
+    <aside class="contact__details">
+      <div class="contact__corner" aria-hidden="true">
+        {% render 'illustration', name: 'arabesque-corner', tone: 'brass', size: 66 %}
+      </div>
+
+      <h2 class="contact__dh">The shop</h2>
+
+      <dl class="contact__dl">
+        <div>
+          <dt>Where</dt>
+          <dd>
+            {%- if settings.address_street != blank -%}{{ settings.address_street }}<br>{%- endif -%}
+            {{ settings.address_city | default: 'Beirut' }}{% if settings.address_country != blank %}, {{ settings.address_country }}{% endif %}
+            {%- if map_url != blank -%}
+              <br><a class="contact__map" href="{{ map_url }}" rel="noopener" target="_blank">Open in maps {% render 'icon', name: 'arrow' %}</a>
+            {%- endif -%}
+          </dd>
+        </div>
+
+        <div>
+          <dt>Hours</dt>
+          <dd>{{ c_hours }}</dd>
+        </div>
+
+        {%- if settings.phone != blank -%}
+          <div>
+            <dt>Phone</dt>
+            <dd><a href="tel:{{ settings.phone | remove: ' ' }}">{{ settings.phone }}</a></dd>
+          </div>
+        {%- endif -%}
+
+        {%- if settings.email != blank -%}
+          <div>
+            <dt>Email</dt>
+            <dd><a href="mailto:{{ settings.email }}">{{ settings.email }}</a></dd>
+          </div>
+        {%- endif -%}
+
+        {%- if settings.whatsapp_number != blank -%}
+          <div>
+            <dt>WhatsApp</dt>
+            <dd><a href="https://wa.me/{{ wa }}" rel="noopener" target="_blank">{{ settings.whatsapp_number }}</a></dd>
+          </div>
+        {%- endif -%}
+      </dl>
+
+      {%- if settings.social_instagram != blank or settings.social_facebook != blank or settings.social_tiktok != blank -%}
+        <div class="contact__social">
+          {%- if settings.social_instagram != blank -%}
+            <a href="{{ settings.social_instagram }}" aria-label="Instagram" rel="me noopener" target="_blank">{% render 'icon', name: 'instagram', size: 18 %}</a>
+          {%- endif -%}
+          {%- if settings.social_facebook != blank -%}
+            <a href="{{ settings.social_facebook }}" aria-label="Facebook" rel="me noopener" target="_blank">{% render 'icon', name: 'facebook', size: 18 %}</a>
+          {%- endif -%}
+          {%- if settings.social_tiktok != blank -%}
+            <a href="{{ settings.social_tiktok }}" aria-label="TikTok" rel="me noopener" target="_blank">{% render 'icon', name: 'tiktok', size: 18 %}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if request.design_mode and has_details == false -%}
+        <p class="contact__hint">
+          No phone, email or WhatsApp number is set yet. Add them in
+          <strong>Theme settings → Shop details</strong> and they will appear here,
+          in the footer and on every product page.
+        </p>
+      {%- endif -%}
+
+      <a class="link-arrow contact__hiw" href="/pages/how-it-works">
+        How we work {% render 'icon', name: 'arrow' %}
+      </a>
+    </aside>
+
+  </div>
+</div>

@@ -1,12 +1,37 @@
+{%- liquid
+  # A page whose handle is "contact" gets the contact panel whether or not the
+  # merchant has assigned the "contact" template. The Contact page already
+  # existed on the default template with an empty body, which rendered as a
+  # title, a divider, and then nothing at all. A page in the main navigation
+  # should not be able to come out empty.
+  assign is_contact = false
+  if page.handle contains 'contact'
+    assign is_contact = true
+  endif
+-%}
+
 <section class="section section--tight">
-  <div class="wrap wrap--narrow">
+  <div class="wrap {% unless is_contact %}wrap--narrow{% endunless %}">
     <h1 class="h1">{{ page.title }}</h1>
     {% render 'ornament', name: 'divider', tone: 'brass' %}
   </div>
 </section>
-<div class="wrap wrap--narrow" style="padding-bottom:clamp(3rem,7vw,6rem)">
-  <div class="rte">{{ page.content }}</div>
-</div>
+
+{%- if is_contact -%}
+  <div class="wrap" style="padding-bottom:clamp(3rem,7vw,6rem)">
+    {%- if page.content != blank -%}
+      <div class="rte contact__page-copy">{{ page.content }}</div>
+    {%- endif -%}
+    {% render 'contact-panel',
+       heading: 'Send us a message',
+       intro: 'Tell us what you play and what you are looking for. A person who plays, repairs and sells reads every message — there is no call centre here.' %}
+  </div>
+{%- else -%}
+  <div class="wrap wrap--narrow" style="padding-bottom:clamp(3rem,7vw,6rem)">
+    <div class="rte">{{ page.content }}</div>
+  </div>
+{%- endif -%}
+
 {% schema %}
 { "name": "Page" }
 {% endschema %}

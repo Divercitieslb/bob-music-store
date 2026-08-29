@@ -32,12 +32,17 @@
     {%- for block in tabs -%}
       {%- assign col = block.settings.collection -%}
       {%- comment -%}
-        No `hidden` here. The panels must all render visible so a visitor with
-        JavaScript off sees every tab's products stacked; theme.js hides the
-        non-first panels once it has taken over the tab behaviour.
+        Non-first panels ship hidden so the correct one is on screen at first
+        paint. Waiting for theme.js to collapse them meant every tab's products
+        rendered first and the page jumped; and while `p.hidden = true` was
+        being set correctly, `.grid{display:grid}` outranked the UA stylesheet's
+        [hidden] rule, so they never actually went away. base.css now carries an
+        author-origin [hidden] rule, and restores every panel when .js is absent
+        from <html> — so a visitor without JavaScript still reaches every tab.
       {%- endcomment -%}
       <div class="grid grid--products" data-reveal-stagger role="tabpanel" id="panel-{{ block.id }}"
-           aria-labelledby="tab-{{ block.id }}" data-panel tabindex="0">
+           aria-labelledby="tab-{{ block.id }}" data-panel tabindex="0"
+           {% unless forloop.first %}hidden{% endunless %}>
         {%- for product in col.products limit: section.settings.count -%}
           {% render 'product-card', product: product %}
         {%- else -%}

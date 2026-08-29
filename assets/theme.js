@@ -102,8 +102,10 @@
       var panels = $$('[data-panel]', wrap);
       if (tabs.length < 2 || !panels.length) return;
 
-      // The panels ship visible so no-JS sees every tab's products. Now that
-      // JS is running, collapse to the selected one.
+      // Non-first panels ship with the hidden attribute; base.css restores
+      // them when <html> has no .js class. Setting .hidden here is enough —
+      // it was already correct, what was missing was a CSS rule that outranks
+      // the UA stylesheet, since .grid{display:grid} beat it.
       function select(i) {
         tabs.forEach(function (t, j) {
           t.setAttribute('aria-selected', String(i === j));
