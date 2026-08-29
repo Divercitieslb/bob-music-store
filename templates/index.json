@@ -58,7 +58,7 @@
           "settings": {
             "image": "shopify://shop_images/look-darbuka.jpg",
             "default_asset": "look-darbuka.jpg",
-            "collection": "kids-guitars-copy",
+            "collection": "darbuka",
             "eyebrow": "45 in stock",
             "title": "Darbuka",
             "text": "No two shells alike.",
@@ -355,13 +355,13 @@
         "heading": "What people say",
         "link_label": "All reviews on Google",
         "min_rating": 0,
+        "show_map": true,
+        "map_height": 340,
         "show_photos": false,
         "photos_label": "Photographed in the shop by customers and by us",
         "photos_count": 8,
         "photos_skip": 0,
-        "bg": "",
-        "show_map": true,
-        "map_height": 340
+        "bg": ""
       }
     }
   },
