@@ -1,0 +1,250 @@
+{%- comment -%}
+  Bob Music Store — inline SVG illustration set.
+  Same contract as snippets/ornament.liquid: a case on `name`, a `tone` that maps to a
+  brand hex, a `size`, everything aria-hidden and unfocusable, no raster, no text.
+
+    name: 'rosette-draw'     — 12-fold pierced oud rosette, draws itself on .is-in
+          'waveform'         — equaliser bars, animates on .is-playing
+          'soundwave-line'   — seamless tiling sine divider
+          'arabesque-corner' — corner flourish for framing panels
+          'darbuka-outline'  — darbuka in profile, line drawing
+          'oud-outline'      — oud in profile, line drawing
+          'tile-pattern'     — seamless 8-point star tessellation (SVG <pattern>)
+          'plectrum'         — risha, usable as a bullet / list marker
+
+    tone: 'brass' (default) | 'oud' | 'ink' | 'bone' | 'current'
+    size: pixel size. For the three full-bleed names ('soundwave-line', 'tile-pattern',
+          'waveform') this is the HEIGHT and the width comes from the container.
+          Each name carries its own sensible default.
+    uid:  optional suffix for generated <pattern> / <defs> ids. Defaults to the tone.
+          Only matters if you render two tessellations of the same tone on one page.
+    opacity: 'tile-pattern' only — default 0.28. It is a background panel, so it is
+          drawn faint; push it to 0.5+ only on a small accent block.
+
+  EXAMPLES (wrap each line in Liquid tag delimiters; they are written bare here so that
+  nothing inside this comment is ever tokenised)
+    render 'illustration', name: 'oud-outline', tone: 'brass', size: 240
+    render 'illustration', name: 'tile-pattern', tone: 'bone', size: 420, opacity: 0.2
+
+  MOTION
+    Nothing animates on its own. Two opt-in hooks:
+      .ill-rosette  → add .is-in       (IntersectionObserver) to draw the rosette
+      .ill-eq       → add .is-playing  to run the equaliser
+    Both branches ship their own prefers-reduced-motion kill switch, because the
+    global rule in base.css only clamps duration to .01ms — for a looping keyframe
+    that is a strobe, not a stop, so we set animation:none explicitly.
+    The rosette's hidden start state lives inside @media (scripting: enabled), so with
+    JavaScript off the artwork renders fully drawn instead of vanishing.
+{%- endcomment -%}
+
+{%- liquid
+  assign t = tone | default: 'brass'
+  case t
+    when 'brass'   then assign c = '#B0854A'
+    when 'oud'     then assign c = '#6C4824'
+    when 'ink'     then assign c = '#14100C'
+    when 'bone'    then assign c = '#EFE6D6'
+    else                assign c = 'currentColor'
+  endcase
+  assign u = uid | default: t
+-%}
+
+{%- case name -%}
+
+{%- when 'rosette-draw' -%}
+  {%- assign s = size | default: 200 -%}
+  <style>
+    .ill-rosette .ill-draw{stroke-dasharray:100;stroke-dashoffset:0;
+      transition:stroke-dashoffset 1.5s cubic-bezier(.16,1,.3,1);
+      transition-delay:calc(var(--i,0) * .11s)}
+    @media (scripting: enabled){
+      .ill-rosette:not(.is-in) .ill-draw{stroke-dashoffset:100}
+    }
+    .no-js .ill-rosette .ill-draw{stroke-dashoffset:0}
+    .ill-rosette.is-in .ill-draw{stroke-dashoffset:0}
+    @media (prefers-reduced-motion:reduce){
+      .ill-rosette .ill-draw{stroke-dashoffset:0!important;transition:none!important}
+    }
+  </style>
+  <svg class="ill ill-rosette" width="{{ s }}" height="{{ s }}" viewBox="0 0 200 200" fill="none"
+       stroke="{{ c }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <circle class="ill-draw" style="--i:0" cx="100" cy="100" r="92" pathLength="100" stroke-width="1.4"/>
+    <path class="ill-draw" style="--i:1" pathLength="100" stroke-width="1.6"
+          d="M100 22 L139 167.55 L32.45 61 L178 100 L32.45 139 L139 32.45 L100 178 L61 32.45 L167.55 139 L22 100 L167.55 61 L61 167.55 Z"/>
+    <path class="ill-draw" style="--i:2" pathLength="100" stroke-width="1.2" opacity=".85"
+          d="M100 44 L148.5 72 L148.5 128 L100 156 L51.5 128 L51.5 72 Z"/>
+    <path class="ill-draw" style="--i:3" pathLength="100" stroke-width="1.2" opacity=".85"
+          d="M128 51.5 L156 100 L128 148.5 L72 148.5 L44 100 L72 51.5 Z"/>
+    <path class="ill-draw" style="--i:4" pathLength="100" stroke-width="1" opacity=".6"
+          d="M100 74 L100 56 M113 77.48 L122 61.89 M122.52 87 L138.11 78 M126 100 L144 100 M122.52 113 L138.11 122 M113 122.52 L122 138.11 M100 126 L100 144 M87 122.52 L78 138.11 M77.48 113 L61.89 122 M74 100 L56 100 M77.48 87 L61.89 78 M87 77.48 L78 61.89"/>
+    <circle class="ill-draw" style="--i:5" cx="100" cy="100" r="26" pathLength="100" stroke-width="1.4"/>
+    <circle class="ill-draw" style="--i:6" cx="100" cy="100" r="9" pathLength="100" stroke-width="1.4"/>
+  </svg>
+
+{%- when 'waveform' -%}
+  {%- assign s = size | default: 64 -%}
+  {%- assign amps = '5,9,15,8,19,25,15,9,20,27,17,11,6,13,22,17,8,5,12,20,26,16,10,7,14,22,28,19,12,6,10,16,24,18,9,5,11,19,13,7,15,9,6,11,7,4' | split: ',' -%}
+  <style>
+    .ill-eq__bar{transform-box:fill-box;transform-origin:center}
+    @keyframes ill-eq{0%,100%{transform:scaleY(.34)}50%{transform:scaleY(1)}}
+    .ill-eq.is-playing .ill-eq__bar{
+      animation:ill-eq var(--d,1s) cubic-bezier(.45,0,.55,1) infinite;
+      animation-delay:var(--dl,0s)}
+    @media (prefers-reduced-motion:reduce){
+      .ill-eq .ill-eq__bar{animation:none!important;transform:none!important}
+    }
+  </style>
+  {%- comment -%}
+    Sized by its own 240:64 aspect rather than width="100%". With width:100% + `meet` the
+    bars would sit at natural size in a centred island with dead gutters either side; with
+    `none` they would fatten horizontally. Declaring the intrinsic width and letting CSS
+    shrink it keeps the bar rhythm exactly as drawn at every width.
+  {%- endcomment -%}
+  {%- assign w = s | times: 3.75 -%}
+  <svg class="ill ill-eq" width="{{ w }}" height="{{ s }}" viewBox="0 0 240 64" fill="{{ c }}"
+       style="max-width:100%;height:auto" aria-hidden="true" focusable="false">
+    {%- for a in amps -%}
+      {%- liquid
+        assign x = forloop.index0 | times: 5 | plus: 5
+        assign hh = a | times: 2
+        assign y = 32 | minus: a
+        assign m = forloop.index0 | modulo: 5
+        assign d = m | times: 0.15 | plus: 0.82
+        assign n = forloop.index0 | modulo: 7
+        assign dl = n | times: 0.09
+      -%}
+      <rect class="ill-eq__bar" style="--d:{{ d }}s;--dl:-{{ dl }}s" x="{{ x }}" y="{{ y }}" width="2.8" height="{{ hh }}" rx="1.4"/>
+    {%- endfor -%}
+  </svg>
+
+{%- when 'soundwave-line' -%}
+  {%- assign s = size | default: 48 -%}
+  <div class="ill-wave" style="--ill-h:{{ s }}px" role="presentation">
+    {%- comment -%}
+      preserveAspectRatio="none" is deliberate, not laziness. `slice` (the convention in
+      ornament.liquid's band) crops vertically the moment the container is wider than the
+      viewBox, which decapitates the wave crests. `none` locks the y-scale to the declared
+      height so the crests can never clip; the wave simply stretches in x. The stroke is
+      held to a true 1.4px by vector-effect, so the non-uniform scale never fattens it.
+    {%- endcomment -%}
+    <svg width="100%" height="{{ s }}" viewBox="0 0 960 48" fill="none"
+         preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <defs>
+        <pattern id="ill-wave-{{ u }}" width="240" height="48" patternUnits="userSpaceOnUse">
+          <path d="M0 24 C9.36 13.36 16.64 13.36 26 24 C38.24 42.62 47.76 42.62 60 24 C67.92 14.69 74.08 14.69 82 24 C95.68 45.28 106.32 45.28 120 24 C133.68 10.7 144.32 10.7 158 24 C165.92 30.65 172.08 30.65 180 24 C192.24 6.71 201.76 6.71 214 24 C223.36 34.64 230.64 34.64 240 24"
+                stroke="{{ c }}" stroke-width="1.4" stroke-linecap="round" fill="none"
+                vector-effect="non-scaling-stroke"/>
+        </pattern>
+      </defs>
+      <rect width="960" height="48" fill="url(#ill-wave-{{ u }})"/>
+    </svg>
+  </div>
+
+{%- when 'arabesque-corner' -%}
+  {%- assign s = size | default: 120 -%}
+  <svg class="ill ill-corner" width="{{ s }}" height="{{ s }}" viewBox="0 0 120 120" fill="none"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <path d="M4 118 L4 20 A16 16 0 0 1 20 4 L118 4" stroke="{{ c }}" stroke-width="1.4"/>
+    <path d="M12 118 L12 24 A12 12 0 0 1 24 12 L118 12" stroke="{{ c }}" stroke-width="1" opacity=".5"/>
+    <path d="M14 104 C14 56 56 14 104 14" stroke="{{ c }}" stroke-width="1" opacity=".55"/>
+    <path d="M22 74 Q40 70 56 58 Q42 78 22 74 Z" fill="{{ c }}" opacity=".55"/>
+    <path d="M74 22 Q70 40 58 56 Q78 42 74 22 Z" fill="{{ c }}" opacity=".55"/>
+    <path d="M18 92 Q26 84 34 82 Q28 92 18 92 Z" fill="{{ c }}" opacity=".35"/>
+    <path d="M92 18 Q84 26 82 34 Q92 28 92 18 Z" fill="{{ c }}" opacity=".35"/>
+    <path d="M33 20 L35.07 28.01 L42.19 23.81 L37.99 30.93 L46 33 L37.99 35.07 L42.19 42.19 L35.07 37.99 L33 46 L30.93 37.99 L23.81 42.19 L28.01 35.07 L20 33 L28.01 30.93 L23.81 23.81 L30.93 28.01 Z M36.4 33 A3.4 3.4 0 1 1 29.6 33 A3.4 3.4 0 1 1 36.4 33 Z"
+          fill="{{ c }}" fill-rule="evenodd" opacity=".9"/>
+    <circle cx="104" cy="8" r="2" fill="{{ c }}" opacity=".7"/>
+    <circle cx="8" cy="104" r="2" fill="{{ c }}" opacity=".7"/>
+    <path d="M60 8 L64 12 L60 16 L56 12 Z" fill="{{ c }}" opacity=".45"/>
+    <path d="M8 60 L12 56 L16 60 L12 64 Z" fill="{{ c }}" opacity=".45"/>
+  </svg>
+
+{%- when 'darbuka-outline' -%}
+  {%- assign s = size | default: 160 -%}
+  <svg class="ill ill-darbuka" width="{{ s }}" height="{{ s }}" viewBox="0 0 120 170" fill="none"
+       stroke="{{ c }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <path d="M20 24 C19 56 41 78 44 104 C46 122 39 141 29 150 C29 158 91 158 91 150 C81 141 74 122 76 104 C79 78 101 56 100 24 C100 36 20 36 20 24 Z"
+          stroke-width="1.8"/>
+    <ellipse cx="60" cy="24" rx="40" ry="10" stroke-width="1.8"/>
+    <ellipse cx="60" cy="24" rx="33" ry="8" stroke-width="1" opacity=".55"/>
+    <path d="M22 43 C36 51 84 51 98 43" stroke-width="1" opacity=".5"/>
+    <path d="M25 33 L25 39 M40 36.5 L40 42.5 M60 38 L60 44 M80 36.5 L80 42.5 M95 33 L95 39" stroke-width="1" opacity=".55"/>
+    <path d="M44 104 C52 108 68 108 76 104" stroke-width="1" opacity=".5"/>
+    <path d="M43 98 C52 102 68 102 77 98" stroke-width="1" opacity=".35"/>
+    <path d="M29 150 C41 144 79 144 91 150" stroke-width="1" opacity=".5"/>
+    <path d="M36 66 L40 60 L44 66 L40 72 Z" fill="{{ c }}" stroke="none" opacity=".7"/>
+    <path d="M56 62 L60 56 L64 62 L60 68 Z" fill="{{ c }}" stroke="none" opacity=".7"/>
+    <path d="M76 66 L80 60 L84 66 L80 72 Z" fill="{{ c }}" stroke="none" opacity=".7"/>
+    <path d="M46 78 L49 74 L52 78 L49 82 Z" fill="{{ c }}" stroke="none" opacity=".45"/>
+    <path d="M68 78 L71 74 L74 78 L71 82 Z" fill="{{ c }}" stroke="none" opacity=".45"/>
+  </svg>
+
+{%- when 'oud-outline' -%}
+  {%- assign s = size | default: 200 -%}
+  <svg class="ill ill-oud" width="{{ s }}" height="{{ s }}" viewBox="0 0 100 210" fill="none"
+       stroke="{{ c }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <path d="M50 205 C24 205 7 182 7 154 C7 128 21 106 35 98 L35 94 L65 94 L65 98 C79 106 93 128 93 154 C93 182 76 205 50 205 Z"
+          stroke-width="1.8"/>
+    <path d="M50 200 C27 200 12 180 12 155 C12 131 25 111 37 104" stroke-width="1" opacity=".4"/>
+    <path d="M35 94 L38 42 L62 42 L65 94 Z" stroke-width="1.8"/>
+    <path d="M36.5 36 L63.5 36 L64 42 L36 42 Z" stroke-width="1.4"/>
+    <path d="M38 42 L11 8 L37 8 L64 42 Z" stroke-width="1.8"/>
+    <path d="M29.9 31.8 L22.9 37.4 M24.5 25 L17.5 30.6 M19.1 18.2 L12.1 23.8" stroke-width="1.6"/>
+    <path d="M55.9 31.8 L62.9 26.2 M50.5 25 L57.5 19.4 M45.1 18.2 L52.1 12.6" stroke-width="1.6"/>
+    <circle cx="50" cy="140" r="16" stroke-width="1.4"/>
+    <path d="M50 124 L61.31 151.31 L34 140 L61.31 128.69 L50 156 L38.69 128.69 L66 140 L38.69 151.31 Z"
+          stroke-width=".9" opacity=".6"/>
+    <circle cx="50" cy="140" r="6.5" stroke-width=".9" opacity=".6"/>
+    <circle cx="26" cy="166" r="6" stroke-width="1.2" opacity=".75"/>
+    <circle cx="74" cy="166" r="6" stroke-width="1.2" opacity=".75"/>
+    <path d="M31 180 L69 180 L69 186 L31 186 Z" stroke-width="1.4"/>
+    <path d="M36 180 L41 42 M43 180 L45.5 42 M50 180 L50 42 M57 180 L54.5 42 M64 180 L59 42" stroke-width=".7" opacity=".5"/>
+  </svg>
+
+{%- when 'tile-pattern' -%}
+  {%- assign s = size | default: 320 -%}
+  {%- assign op = opacity | default: 0.28 -%}
+  <div class="ill-tile" style="--ill-h:{{ s }}px" role="presentation">
+    <svg width="100%" height="{{ s }}" viewBox="0 0 480 480" fill="none"
+         preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+      <defs>
+        <path id="ill-star-{{ u }}"
+              d="M40 24 L35.32 28.69 L35.31 35.31 L28.69 35.32 L24 40 L19.31 35.32 L12.69 35.31 L12.68 28.69 L8 24 L12.68 19.31 L12.69 12.69 L19.31 12.68 L24 8 L28.69 12.68 L35.31 12.69 L35.32 19.31 Z"/>
+        <pattern id="ill-tile-{{ u }}" width="48" height="48" patternUnits="userSpaceOnUse">
+          <g stroke="{{ c }}" stroke-width="1.1" fill="none" stroke-linejoin="round">
+            <use href="#ill-star-{{ u }}"/>
+            <use href="#ill-star-{{ u }}" transform="translate(-24,-24)"/>
+            <use href="#ill-star-{{ u }}" transform="translate(24,-24)"/>
+            <use href="#ill-star-{{ u }}" transform="translate(-24,24)"/>
+            <use href="#ill-star-{{ u }}" transform="translate(24,24)"/>
+            <path d="M31 0 L24 7 L17 0 L24 -7 Z"/>
+            <path d="M31 48 L24 55 L17 48 L24 41 Z"/>
+            <path d="M0 17 L7 24 L0 31 L-7 24 Z"/>
+            <path d="M48 17 L55 24 L48 31 L41 24 Z"/>
+            <circle cx="24" cy="24" r="3.4" fill="{{ c }}" stroke="none"/>
+            <circle cx="0" cy="0" r="3.4" fill="{{ c }}" stroke="none"/>
+            <circle cx="48" cy="0" r="3.4" fill="{{ c }}" stroke="none"/>
+            <circle cx="0" cy="48" r="3.4" fill="{{ c }}" stroke="none"/>
+            <circle cx="48" cy="48" r="3.4" fill="{{ c }}" stroke="none"/>
+          </g>
+        </pattern>
+      </defs>
+      <rect width="480" height="480" fill="url(#ill-tile-{{ u }})" opacity="{{ op }}"/>
+    </svg>
+  </div>
+
+{%- when 'plectrum' -%}
+  {%- assign s = size | default: 24 -%}
+  <svg class="ill ill-plectrum" width="{{ s }}" height="{{ s }}" viewBox="0 0 24 24" fill="none"
+       aria-hidden="true" focusable="false">
+    {%- comment -%}
+      A single solid silhouette, no light-coloured overlay and no knockout: a risha is a
+      strip of horn, and at 16px bullet size any interior detail collapses into a smudge.
+      The blade is bowed — the tip sits right of the head — so it reads as a plectrum
+      rather than a leaf.
+    {%- endcomment -%}
+    <path d="M12 1.8 C15.4 3.5 16.4 7 15.4 11.2 C14.7 15 14.1 18.8 13.6 22.4 C11.9 19 10.2 15 9.2 11.2 C8.1 7 8.6 3.5 12 1.8 Z"
+          fill="{{ c }}"/>
+  </svg>
+
+{%- endcase -%}

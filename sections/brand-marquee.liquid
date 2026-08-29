@@ -1,10 +1,39 @@
 {%- liquid
   assign names = section.settings.brands | split: ','
 -%}
+{%- comment -%}
+  WCAG 2.2.2: motion that starts automatically and runs beyond five seconds
+  needs a mechanism to pause it. prefers-reduced-motion does not satisfy this.
+{%- endcomment -%}
+<style>
+  .marquee{position:relative}
+  .marquee__pause{
+    position:absolute;top:.5rem;right:.75rem;z-index:2;
+    width:26px;height:26px;display:grid;place-items:center;
+    border:1px solid var(--rule-strong);background:var(--paper);opacity:.55;
+    transition:opacity var(--t-fast);
+  }
+  .marquee__pause:hover,.marquee__pause:focus-visible{opacity:1}
+  .marquee__pause-icon{
+    width:8px;height:9px;border-left:2.5px solid var(--ink);border-right:2.5px solid var(--ink);
+  }
+  .marquee__pause[aria-pressed=true] .marquee__pause-icon{
+    width:0;height:0;border:0;
+    border-left:8px solid var(--ink);border-top:5px solid transparent;border-bottom:5px solid transparent;
+  }
+  .marquee__track.is-paused{animation-play-state:paused}
+  .marquee:hover .marquee__track{animation-play-state:paused}
+  .marquee.section--ink .marquee__pause{background:var(--ink);border-color:rgba(239,230,214,.3)}
+  .marquee.section--ink .marquee__pause-icon{border-color:var(--bone)}
+</style>
 <section class="marquee {{ section.settings.bg }}" aria-label="{{ section.settings.label }}">
   {%- if section.settings.label != blank -%}
     <p class="eyebrow marquee__label">{{ section.settings.label }}</p>
   {%- endif -%}
+  <button class="marquee__pause" type="button" data-marquee-pause
+          aria-pressed="false" aria-label="Pause the scrolling brand list">
+    <span class="marquee__pause-icon" aria-hidden="true"></span>
+  </button>
   <div class="marquee__track" aria-hidden="true">
     {%- for pass in (1..2) -%}
       {%- for n in names -%}
@@ -15,6 +44,23 @@
   </div>
   <span class="visually-hidden">{{ section.settings.brands }}</span>
 </section>
+
+<script>
+  (function () {
+    var s = document.currentScript && document.currentScript.previousElementSibling;
+    var sec = document.querySelector('.marquee');
+    if (!sec) return;
+    var btn = sec.querySelector('[data-marquee-pause]');
+    var track = sec.querySelector('.marquee__track');
+    if (!btn || !track) return;
+    btn.addEventListener('click', function () {
+      var paused = track.classList.toggle('is-paused');
+      btn.setAttribute('aria-pressed', String(paused));
+      btn.setAttribute('aria-label', paused ? 'Resume the scrolling brand list'
+                                            : 'Pause the scrolling brand list');
+    });
+  })();
+</script>
 
 {% schema %}
 {

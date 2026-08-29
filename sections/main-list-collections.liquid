@@ -7,15 +7,13 @@
 </section>
 
 <div class="wrap" style="padding-bottom:clamp(3rem,6vw,5rem)">
+  {%- paginate collections by 24 -%}
   <div class="grid grid--3">
     {%- for col in collections -%}
       {%- if col.products_count > 0 -%}
         <a class="tile" href="{{ col.url }}">
           {%- if col.featured_image -%}
             <img src="{{ col.featured_image | image_url: width: 700 }}" alt="{{ col.title | escape }}"
-                 width="700" height="875" loading="lazy">
-          {%- elsif col.products.first.featured_media -%}
-            <img src="{{ col.products.first.featured_media | image_url: width: 700 }}" alt="{{ col.title | escape }}"
                  width="700" height="875" loading="lazy">
           {%- else -%}
             {{ 'collection-1' | placeholder_svg_tag }}
@@ -28,6 +26,16 @@
       {%- endif -%}
     {%- endfor -%}
   </div>
+
+  {%- if paginate.pages > 1 -%}
+    <nav class="pagination" aria-label="Pagination">
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>
+        {%- else -%}<span class="is-current">{{ part.title }}</span>{%- endif -%}
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
+  {%- endpaginate -%}
 </div>
 
 {% schema %}

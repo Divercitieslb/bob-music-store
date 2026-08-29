@@ -19,19 +19,24 @@
         {%- for block in tabs -%}
           <button class="chip" role="tab" type="button"
                   aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
                   aria-controls="panel-{{ block.id }}" id="tab-{{ block.id }}"
                   data-tab {{ block.shopify_attributes }}>
-            {{ block.settings.label | default: collections[block.settings.collection].title }}
+            {{ block.settings.label | default: block.settings.collection.title }}
           </button>
         {%- endfor -%}
       </div>
     {%- endif -%}
 
     {%- for block in tabs -%}
-      {%- assign col = collections[block.settings.collection] -%}
+      {%- assign col = block.settings.collection -%}
+      {%- comment -%}
+        No `hidden` here. The panels must all render visible so a visitor with
+        JavaScript off sees every tab's products stacked; theme.js hides the
+        non-first panels once it has taken over the tab behaviour.
+      {%- endcomment -%}
       <div class="grid grid--products" role="tabpanel" id="panel-{{ block.id }}"
-           aria-labelledby="tab-{{ block.id }}" data-panel
-           {% unless forloop.first %}hidden{% endunless %}>
+           aria-labelledby="tab-{{ block.id }}" data-panel tabindex="0">
         {%- for product in col.products limit: section.settings.count -%}
           {% render 'product-card', product: product %}
         {%- else -%}

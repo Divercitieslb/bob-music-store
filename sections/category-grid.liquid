@@ -14,7 +14,7 @@
     <div class="grid grid--3">
       {%- for block in section.blocks -%}
         {%- liquid
-          assign col = collections[block.settings.collection]
+          assign col = block.settings.collection
           assign img = block.settings.image
           if img == blank and col.featured_image
             assign img = col.featured_image

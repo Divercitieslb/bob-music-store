@@ -20,6 +20,10 @@
                sizes="(min-width:900px) 45vw, 92vw"
                alt="{{ section.settings.image_alt | escape }}"
                width="1200" height="900" loading="lazy" style="width:100%">
+        {%- elsif section.settings.default_asset != blank -%}
+          <img src="{{ section.settings.default_asset | asset_url }}"
+               alt="{{ section.settings.image_alt | escape }}"
+               width="1800" height="1344" loading="lazy" style="width:100%">
         {%- else -%}
           <div style="background:var(--shell);aspect-ratio:4/3;display:grid;place-items:center">
             {{ 'lifestyle-1' | placeholder_svg_tag }}
@@ -40,6 +44,7 @@
     { "type": "richtext", "id": "text", "label": "Text",
       "default": "<p>Bob Music sits where two musical worlds overlap. On one wall, hand-inlaid darbukas and ouds built by makers in Egypt, Syria and Lebanon. On the other, the guitars, microphones and pedals any working band needs on a Friday night.</p><p>We do not drop-ship. Everything here has been unboxed, checked and set up by hand — and if it needs a fret dressed or a head tuned before it leaves, that happens first.</p>" },
     { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "default_asset", "label": "Packaged image", "default": "story-shop.jpg", "info": "Filename from the theme's assets folder, used when no image is chosen." },
     { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "Inside the Bob Music shop" },
     { "type": "text", "id": "cta_label", "label": "Button", "default": "Our story" },
     { "type": "url", "id": "cta_url", "label": "Button link" },

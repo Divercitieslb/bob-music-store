@@ -1,0 +1,64 @@
+<article>
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a> <span aria-hidden="true">/</span>
+      <a href="{{ blog.url }}">{{ blog.title }}</a> <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ article.title }}</span>
+    </nav>
+  </div>
+
+  <section class="section section--tight">
+    <div class="wrap wrap--narrow" style="text-align:center">
+      <p class="eyebrow">{{ article.published_at | date: format: 'date' }}</p>
+      <h1 class="h1">{{ article.title }}</h1>
+      {%- if article.author != blank -%}
+        <p class="mono" style="color:var(--ink-60);margin-top:.75rem">{{ article.author }}</p>
+      {%- endif -%}
+      <div style="margin-top:1.5rem">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
+    </div>
+  </section>
+
+  {%- if article.image -%}
+    <div class="wrap" style="margin-bottom:clamp(2rem,4vw,3.5rem)">
+      <img src="{{ article.image | image_url: width: 1800 }}"
+           srcset="{{ article.image | image_url: width: 900 }} 900w,
+                   {{ article.image | image_url: width: 1800 }} 1800w"
+           sizes="(min-width:1100px) 1100px, 96vw"
+           alt="{{ article.image.alt | escape | default: article.title | escape }}"
+           width="1800" height="1013" loading="eager" style="width:100%">
+    </div>
+  {%- endif -%}
+
+  <div class="wrap wrap--narrow" style="padding-bottom:clamp(3rem,7vw,6rem)">
+    <div class="rte">{{ article.content }}</div>
+
+    {%- if blog.comments_enabled? -%}
+      <div style="margin-top:clamp(2.5rem,5vw,4rem);padding-top:2rem;border-top:1px solid var(--rule)">
+        <h2 class="h3" style="margin-bottom:1.25rem">
+          {{ article.comments_count }} comment{% if article.comments_count != 1 %}s{% endif %}
+        </h2>
+        {%- for comment in article.comments -%}
+          <div style="padding:1.15rem 0;border-bottom:1px solid var(--rule-soft)">
+            <p class="mono" style="color:var(--ink-60)">{{ comment.author }} &middot; {{ comment.created_at | date: format: 'date' }}</p>
+            <div class="rte">{{ comment.content }}</div>
+          </div>
+        {%- endfor -%}
+
+        {% form 'new_comment', article %}
+          {{ form.errors | default_errors }}
+          {%- if form.posted_successfully? -%}
+            <p class="note">Thank you — your comment is awaiting moderation.</p>
+          {%- endif -%}
+          <label class="field"><span>Name</span><input type="text" name="comment[author]" required></label>
+          <label class="field"><span>Email</span><input type="email" name="comment[email]" required></label>
+          <label class="field"><span>Comment</span><textarea name="comment[body]" rows="4" required></textarea></label>
+          <button class="btn" type="submit">Post comment</button>
+        {% endform %}
+      </div>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{ "name": "Article" }
+{% endschema %}

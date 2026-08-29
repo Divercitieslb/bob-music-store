@@ -13,11 +13,13 @@
           <div>
             {%- for item in cart.items -%}
               <div class="cart-line" data-line="{{ forloop.index }}">
-                <a class="cart-line__media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+                {%- comment -%} aria-hidden must never sit on a focusable element; the
+                     title beside this is already a link to the same product. {%- endcomment -%}
+                <div class="cart-line__media">
                   {%- if item.image -%}
                     <img src="{{ item.image | image_url: width: 200 }}" alt="" width="200" height="200" loading="lazy">
                   {%- endif -%}
-                </a>
+                </div>
 
                 <div>
                   <h2 class="h3" style="font-size:1.1rem"><a href="{{ item.url }}">{{ item.product.title }}</a></h2>
@@ -25,18 +27,22 @@
                     <p class="mono" style="color:var(--ink-60);margin:.35rem 0 0">{{ item.variant.title }}</p>
                   {%- endunless -%}
                   {%- if item.variant.sku != blank -%}
-                    <p class="num" style="font-size:.75rem;color:var(--ink-40);margin:.35rem 0 0">{{ item.variant.sku }}</p>
+                    <p class="num" style="font-size:.75rem;color:var(--ink-60);margin:.35rem 0 0">{{ item.variant.sku }}</p>
                   {%- endif -%}
 
                   <div style="display:flex;gap:.75rem;align-items:center;margin-top:.85rem;flex-wrap:wrap">
                     <div class="qty">
                       <button type="button" data-cart-qty="-1" aria-label="Decrease quantity">{% render 'icon', name: 'minus' %}</button>
                       <label class="visually-hidden" for="q{{ forloop.index }}">Quantity for {{ item.product.title }}</label>
-                      <input id="q{{ forloop.index }}" type="number" name="updates[]"
+                      <input id="q{{ forloop.index }}" type="number" name="updates[{{ item.key }}]"
                              value="{{ item.quantity }}" min="0" inputmode="numeric" data-cart-input>
                       <button type="button" data-cart-qty="1" aria-label="Increase quantity">{% render 'icon', name: 'plus' %}</button>
                     </div>
-                    <a href="{{ item.url_to_remove }}" class="mono" style="color:var(--ink-40)">Remove</a>
+                    {%- comment -%} A POST button, not a GET link: link prefetchers and
+                         crawlers can follow a GET and silently empty a shopper's cart. {%- endcomment -%}
+                    <button type="submit" name="updates[{{ item.key }}]" value="0" class="mono"
+                            style="color:var(--ink-60);text-decoration:underline"
+                            aria-label="Remove {{ item.product.title | escape }}">Remove</button>
                   </div>
                 </div>
 
@@ -47,7 +53,7 @@
 
           <div class="cart-summary" style="margin-top:2rem">
             <div class="cart-summary__row">
-              <span>Subtotal</span><span class="num">{{ cart.total_price | money }}</span>
+              <span>Subtotal</span><span class="num">{{ cart.items_subtotal_price | money }}</span>
             </div>
             {%- if cart.total_discount > 0 -%}
               <div class="cart-summary__row" style="color:var(--sale)">
@@ -61,8 +67,15 @@
 
             <label class="visually-hidden" for="cart-note">Order note</label>
             <textarea id="cart-note" name="note" rows="2" placeholder="Order note (optional)"
-                      style="width:100%;padding:.75rem;border:1px solid var(--rule);background:var(--paper)">{{ cart.note }}</textarea>
+                      style="width:100%;padding:.75rem;border:1px solid var(--rule-strong);background:var(--paper)">{{ cart.note }}</textarea>
 
+            {%- comment -%}
+              Update must precede Checkout: it is the form's first submit button,
+              so pressing Enter in a quantity field updates the cart instead of
+              jumping to checkout. theme.js clicks it on change; without JS it is
+              the visible way to apply a quantity edit.
+            {%- endcomment -%}
+            <button type="submit" name="update" class="btn btn--ghost btn--full">Update cart</button>
             <button type="submit" name="checkout" class="btn btn--full">Checkout</button>
             <a class="btn btn--ghost btn--full" href="{{ routes.all_products_collection_url }}">Keep shopping</a>
           </div>

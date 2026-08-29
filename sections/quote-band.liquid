@@ -1,0 +1,217 @@
+{%- comment -%}
+  Quote band — a single pull-quote set in Cormorant, with the rule-and-star
+  divider above it and an optional portrait bleeding off one edge.
+
+  Deliberately not a testimonial widget: one voice, no stars, no card, no
+  avatar circle. The grid carries no inline padding of its own, which is what
+  lets the media column run to the viewport edge without any width arithmetic.
+
+  Motion is one class toggle on a transition, so the base.css reduced-motion
+  kill switch already neutralises it; the explicit block at the end of the
+  stylesheet makes that a promise rather than a side effect.
+{%- endcomment -%}
+
+{%- liquid
+  assign has_media = false
+  if section.settings.image != blank or section.settings.default_asset != blank
+    assign has_media = true
+  endif
+-%}
+
+<style>
+  .quote-band{position:relative;overflow:hidden}
+  .quote-band__grid{display:grid;gap:clamp(2rem,5vw,3.5rem)}
+
+  .quote-band__body{
+    padding-inline:var(--pad);
+    max-width:900px;margin-inline:auto;
+    display:flex;flex-direction:column;justify-content:center;
+    text-align:center;
+  }
+  .quote-band--media .quote-band__body{max-width:680px}
+
+  .quote-band__orn{display:flex;justify-content:center;margin-bottom:clamp(1.5rem,3vw,2.25rem)}
+  .quote-band__orn .orn-divider{margin-inline:auto}
+
+  .quote-band__quote{
+    position:relative;margin:0;
+    font-family:var(--f-display);font-weight:500;
+    line-height:1.12;letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .quote-band__quote.q--md{font-size:clamp(1.7rem,3vw,2.7rem)}
+  .quote-band__quote.q--lg{font-size:clamp(2.1rem,4.2vw,3.6rem)}
+  .quote-band__quote.q--xl{font-size:clamp(2.5rem,6vw,5rem);line-height:1.02}
+  .quote-band__quote p{margin:0 0 .45em}
+  .quote-band__quote p:last-child{margin-bottom:0}
+
+  /* Oversized opening mark, purely decorative. */
+  .quote-band__mark{
+    display:block;font-family:var(--f-display);font-size:clamp(4rem,9vw,7.5rem);
+    line-height:.5;color:var(--brass);opacity:.34;margin-bottom:.25em;
+    user-select:none;
+  }
+
+  .quote-band__by{
+    margin-top:clamp(1.75rem,3.5vw,2.5rem);
+    font-family:var(--f-sans);font-size:.72rem;font-weight:600;
+    letter-spacing:.24em;text-transform:uppercase;color:var(--brass);
+  }
+  .quote-band__role{
+    display:block;margin-top:.5rem;font-size:.7rem;font-weight:400;
+    letter-spacing:.14em;color:var(--ink-40);
+  }
+  .quote-band.section--ink .quote-band__role,
+  .quote-band.section--espresso .quote-band__role{color:#A99C8B}
+  .quote-band__cta{margin-top:clamp(1.75rem,3vw,2.25rem);align-self:center}
+
+  .quote-band__media{position:relative;background:var(--bone);overflow:hidden}
+  .quote-band__media img{width:100%;height:100%;object-fit:cover;display:block}
+
+  @media (max-width:899px){
+    .quote-band__media{aspect-ratio:16/10;order:-1}
+  }
+
+  @media (min-width:900px){
+    .quote-band--media .quote-band__grid{
+      grid-template-columns:minmax(0,1fr) minmax(0,var(--quote-media-w,40%));
+      align-items:stretch;gap:clamp(2rem,5vw,5rem);
+    }
+    .quote-band--media.quote-band--left .quote-band__media{order:-1}
+    .quote-band--media .quote-band__media{min-height:min(78vh,720px)}
+  }
+
+  /* arrival */
+  .quote-band__fig{opacity:0;transform:translateY(28px);
+    transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+  .quote-band__fig.is-in{opacity:1;transform:none}
+  .quote-band:not(.is-enhanced) .quote-band__fig{opacity:1;transform:none}
+
+  @media (prefers-reduced-motion:reduce){
+    .quote-band__fig{opacity:1;transform:none;transition:none}
+  }
+</style>
+
+<section class="quote-band section {{ section.settings.bg }}{% if has_media %} quote-band--media quote-band--{{ section.settings.media_side }}{% endif %}"
+         id="QuoteBand-{{ section.id }}"
+         style="--quote-media-w:{{ section.settings.media_width | default: 40 }}%"
+         {{ section.shopify_attributes }}>
+
+  <div class="quote-band__grid">
+    <div class="quote-band__body">
+      <figure class="quote-band__fig" style="margin:0">
+
+        {%- if section.settings.show_divider -%}
+          <div class="quote-band__orn">
+            {% render 'ornament', name: 'divider', tone: 'brass' %}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_mark -%}
+          <span class="quote-band__mark" aria-hidden="true">&ldquo;</span>
+        {%- endif -%}
+
+        <blockquote class="quote-band__quote q--{{ section.settings.size }}">
+          {{ section.settings.quote }}
+        </blockquote>
+
+        {%- if section.settings.attribution != blank -%}
+          <figcaption class="quote-band__by">
+            {{ section.settings.attribution }}
+            {%- if section.settings.role != blank -%}
+              <span class="quote-band__role">{{ section.settings.role }}</span>
+            {%- endif -%}
+          </figcaption>
+        {%- endif -%}
+
+        {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+          <a class="btn {% if section.settings.bg == 'section--ink' or section.settings.bg == 'section--espresso' %}btn--outline-light{% else %}btn--ghost{% endif %} quote-band__cta"
+             href="{{ section.settings.cta_url }}">{{ section.settings.cta_label }}</a>
+        {%- endif -%}
+      </figure>
+    </div>
+
+    {%- if has_media -%}
+      <div class="quote-band__media">
+        {%- if section.settings.image != blank -%}
+          <img src="{{ section.settings.image | image_url: width: 1400 }}"
+               srcset="{{ section.settings.image | image_url: width: 700 }} 700w,
+                       {{ section.settings.image | image_url: width: 1000 }} 1000w,
+                       {{ section.settings.image | image_url: width: 1400 }} 1400w"
+               sizes="(min-width:900px) 40vw, 100vw"
+               alt="{{ section.settings.image_alt | escape }}"
+               width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}"
+               loading="lazy">
+        {%- else -%}
+          <img src="{{ section.settings.default_asset | asset_url }}"
+               alt="{{ section.settings.image_alt | escape }}" loading="lazy">
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('QuoteBand-{{ section.id }}');
+    if (!root || !('IntersectionObserver' in window)) return;
+    var fig = root.querySelector('.quote-band__fig');
+    if (!fig) return;
+
+    // Only now is the hidden start state allowed to apply — without JS the
+    // :not(.is-enhanced) rule keeps the quote fully visible.
+    root.classList.add('is-enhanced');
+
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (!entries[i].isIntersecting) continue;
+        entries[i].target.classList.add('is-in');
+        io.unobserve(entries[i].target);
+      }
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    io.observe(fig);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Quote band",
+  "tag": "section",
+  "settings": [
+    { "type": "richtext", "id": "quote", "label": "Quote", "default": "<p>An oud is finished when it stops arguing with your hands.</p>" },
+    { "type": "text", "id": "attribution", "label": "Attribution", "default": "Bob" },
+    { "type": "text", "id": "role", "label": "Role or place", "default": "Founder, Beirut" },
+    { "type": "select", "id": "size", "label": "Quote size", "default": "lg",
+      "options": [
+        { "value": "md", "label": "Medium" },
+        { "value": "lg", "label": "Large" },
+        { "value": "xl", "label": "Display" }
+      ] },
+    { "type": "checkbox", "id": "show_divider", "label": "Show the rule-and-star divider", "default": true },
+    { "type": "checkbox", "id": "show_mark", "label": "Show the oversized quote mark", "default": false },
+    { "type": "header", "content": "Image (optional)" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Bleeds to the edge of the screen. A portrait crop works best." },
+    { "type": "text", "id": "default_asset", "label": "Packaged image", "info": "A filename from the theme's assets folder, used when no image is chosen above." },
+    { "type": "text", "id": "image_alt", "label": "Image alt text" },
+    { "type": "select", "id": "media_side", "label": "Image side", "default": "right",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ] },
+    { "type": "range", "id": "media_width", "label": "Image width", "min": 28, "max": 50, "step": 2, "unit": "%", "default": 40 },
+    { "type": "header", "content": "Button (optional)" },
+    { "type": "text", "id": "cta_label", "label": "Button" },
+    { "type": "url", "id": "cta_url", "label": "Button link" },
+    { "type": "header", "content": "Appearance" },
+    { "type": "select", "id": "bg", "label": "Background", "default": "section--espresso",
+      "options": [
+        { "value": "", "label": "White" },
+        { "value": "section--shell", "label": "Shell" },
+        { "value": "section--ink", "label": "Ink" },
+        { "value": "section--espresso", "label": "Espresso" }
+      ] }
+  ],
+  "presets": [{ "name": "Quote band", "settings": { "default_asset": "feature-oud.jpg", "image_alt": "Hands holding an oud" } }]
+}
+{% endschema %}

@@ -31,14 +31,19 @@
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'menu' -%}
-            <div {{ block.shopify_attributes }}>
-              <h4>{{ block.settings.heading }}</h4>
-              <ul>
-                {%- for link in linklists[block.settings.menu].links -%}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                {%- endfor -%}
-              </ul>
-            </div>
+            {%- comment -%} A menu handle that was never created would otherwise
+                 render a heading above an empty list on every page. {%- endcomment -%}
+            {%- assign fmenu = linklists[block.settings.menu] -%}
+            {%- if fmenu.links.size > 0 -%}
+              <div {{ block.shopify_attributes }}>
+                <h4>{{ block.settings.heading }}</h4>
+                <ul>
+                  {%- for link in fmenu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
 
           {%- when 'contact' -%}
             <div {{ block.shopify_attributes }}>

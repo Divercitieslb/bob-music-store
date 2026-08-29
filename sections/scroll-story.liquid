@@ -1,0 +1,340 @@
+{%- comment -%}
+  Scroll story — a pinned media column that cross-fades between chapter images
+  while the copy scrolls past it.
+
+  Progressive enhancement, in this order:
+    1. No JS / no IntersectionObserver → the .ss__media stack is display:none and
+       every chapter renders its own inline image above its text. A plain
+       stacked list. Nothing is hidden, every link works.
+    2. JS present → the script adds .is-enhanced to the section root, which
+       (at >=900px only) turns on the two-column grid, pins the media column and
+       hides the inline images.
+    3. Reduced motion → the cross-fade and the marker transitions are switched
+       off explicitly below; the image still swaps, it just swaps instantly.
+       Nothing here uses a scroll-driven animation or a rAF loop.
+{%- endcomment -%}
+
+{%- liquid
+  assign blocks = section.blocks
+  assign onDark = false
+  if section.settings.bg == 'section--ink' or section.settings.bg == 'section--espresso'
+    assign onDark = true
+  endif
+-%}
+
+<style>
+  .scroll-story{position:relative}
+  .scroll-story__head{max-width:60ch;margin-bottom:clamp(2rem,5vw,3.5rem)}
+  .scroll-story__head .rte{color:var(--ink-80)}
+  .scroll-story.section--ink .scroll-story__head .rte,
+  .scroll-story.section--espresso .scroll-story__head .rte{color:#CFC3B0}
+  .scroll-story__orn{margin:1.25rem 0 1.4rem}
+
+  /* --- chapter index rail (JS only) ---------------------------------- */
+  .ss__rail{display:none;gap:.5rem;flex-wrap:wrap;margin-bottom:clamp(1.5rem,4vw,2.5rem)}
+  .ss__dot{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:2.6rem;padding:.45rem .2rem;border:1px solid var(--rule);
+    font-family:var(--f-mono);font-size:.72rem;letter-spacing:.04em;
+    color:var(--ink-40);background:transparent;
+    transition:color var(--t-fast),border-color var(--t-fast),background var(--t-fast);
+  }
+  .ss__dot:hover{color:var(--ink);border-color:var(--brass)}
+  .ss__dot[aria-current="true"]{color:var(--ink);border-color:var(--brass);background:rgba(176,133,74,.1)}
+  .scroll-story.section--ink .ss__dot,
+  .scroll-story.section--espresso .ss__dot{border-color:rgba(239,230,214,.2);color:#A99C8B}
+  .scroll-story.section--ink .ss__dot:hover,
+  .scroll-story.section--espresso .ss__dot:hover,
+  .scroll-story.section--ink .ss__dot[aria-current="true"],
+  .scroll-story.section--espresso .ss__dot[aria-current="true"]{color:var(--bone);border-color:var(--brass)}
+
+  /* --- base (no-JS / mobile) ----------------------------------------- */
+  .ss__grid{display:grid;gap:clamp(2rem,5vw,4.5rem)}
+  .ss__media{display:none}
+  .ss__copy{list-style:none;margin:0;padding:0;counter-reset:ss}
+  .ss__step + .ss__step{margin-top:clamp(2.5rem,6vw,4rem)}
+  .ss__inline{margin-bottom:1.5rem;background:var(--bone);overflow:hidden}
+  .ss__inline img{width:100%;height:auto;object-fit:cover}
+  .ss__ph{aspect-ratio:4/5;background:var(--bone)}
+  .ss__num{
+    display:block;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;
+    color:var(--brass);margin-bottom:.75rem;
+  }
+  .ss__step h3{margin-bottom:.9rem}
+  .ss__text{color:var(--ink-80);max-width:52ch}
+  .scroll-story.section--ink .ss__text,
+  .scroll-story.section--espresso .ss__text{color:#CFC3B0}
+  .ss__link{margin-top:1.25rem}
+
+  /* --- enhanced (JS + >=900px) --------------------------------------- */
+  @media (min-width:900px){
+    .scroll-story.is-enhanced .ss__rail{display:flex}
+    .scroll-story.is-enhanced .ss__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+    .scroll-story.is-enhanced .ss__inline{display:none}
+
+    .scroll-story.is-enhanced .ss__media{
+      display:block;overflow:hidden;background:var(--bone);
+      position:sticky;
+      top:calc(var(--header-h) + clamp(1.5rem,6vh,3.5rem));
+      height:calc(100vh - var(--header-h) - clamp(3rem,12vh,7rem));
+      min-height:380px;
+    }
+    .scroll-story.is-enhanced.ss--media-right .ss__media{order:2}
+
+    .ss__frame{
+      position:absolute;inset:0;margin:0;opacity:0;
+      transform:scale(1.03);
+      transition:opacity .9s cubic-bezier(.16,1,.3,1),transform 1.4s cubic-bezier(.16,1,.3,1);
+      will-change:opacity,transform;
+    }
+    .ss__frame.is-active{opacity:1;transform:none}
+    .ss__frame img{width:100%;height:100%;object-fit:cover}
+
+    .scroll-story.is-enhanced .ss__copy{padding-block:clamp(2rem,14vh,9rem)}
+    .scroll-story.is-enhanced .ss__step{
+      padding-left:clamp(1.25rem,2vw,2rem);
+      border-left:1px solid var(--rule);
+      transition:border-color .6s cubic-bezier(.16,1,.3,1);
+    }
+    .scroll-story.is-enhanced.section--ink .ss__step,
+    .scroll-story.is-enhanced.section--espresso .ss__step{border-left-color:rgba(239,230,214,.18)}
+    .scroll-story.is-enhanced .ss__step.is-active{border-left-color:var(--brass)}
+    .scroll-story.is-enhanced .ss__step + .ss__step{margin-top:min(34vh,20rem)}
+    .scroll-story.is-enhanced .ss__copy > :last-child{margin-bottom:0}
+  }
+
+  /* The global kill switch in base.css collapses transitions, but a scroll
+     enhancement deserves an explicit stop of its own. */
+  @media (prefers-reduced-motion:reduce){
+    .ss__frame{transition:none;transform:none}
+    .ss__frame.is-active{transform:none}
+    .scroll-story.is-enhanced .ss__step{transition:none}
+  }
+</style>
+
+<section class="scroll-story section {{ section.settings.bg }} ss--media-{{ section.settings.media_side }}"
+         id="ScrollStory-{{ section.id }}"
+         {{ section.shopify_attributes }}>
+  <div class="wrap">
+
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
+      <div class="scroll-story__head">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="h1">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        <div class="scroll-story__orn">
+          {% render 'ornament', name: 'divider', tone: 'brass' %}
+        </div>
+        {%- if section.settings.text != blank -%}
+          <div class="rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_index and blocks.size > 1 -%}
+      <nav class="ss__rail" aria-label="{{ section.settings.heading | default: 'Story' | escape }} chapters">
+        {%- for block in blocks -%}
+          <button type="button" class="ss__dot"
+                  data-ss-go="{{ forloop.index0 }}"
+                  aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+            <span aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            <span class="visually-hidden">{{ block.settings.heading | default: forloop.index | escape }}</span>
+          </button>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+
+    <div class="ss__grid">
+
+      {%- comment -%} The pinned stack. Hidden until JS + a wide viewport. {%- endcomment -%}
+      <div class="ss__media">
+        {%- for block in blocks -%}
+          <figure class="ss__frame {% if forloop.first %}is-active{% endif %}" data-ss-frame="{{ forloop.index0 }}">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 1600 }}"
+                   srcset="{{ block.settings.image | image_url: width: 800 }} 800w,
+                           {{ block.settings.image | image_url: width: 1200 }} 1200w,
+                           {{ block.settings.image | image_url: width: 1600 }} 1600w"
+                   sizes="(min-width:900px) 48vw, 100vw"
+                   alt="{{ block.settings.image_alt | escape }}"
+                   width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}"
+                   loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+            {%- elsif block.settings.default_asset != blank -%}
+              <img src="{{ block.settings.default_asset | asset_url }}"
+                   alt="{{ block.settings.image_alt | escape }}"
+                   loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+            {%- else -%}
+              <div class="ss__ph tile-bg"></div>
+            {%- endif -%}
+          </figure>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} role="list" keeps the list semantics that list-style:none strips in Safari. {%- endcomment -%}
+      <ol class="ss__copy" role="list">
+        {%- for block in blocks -%}
+          <li class="ss__step {% if forloop.first %}is-active{% endif %}"
+              data-ss-step="{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}>
+
+            {%- comment -%} The no-JS / mobile image. Hidden once enhanced. {%- endcomment -%}
+            <div class="ss__inline">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 1200 }}"
+                     srcset="{{ block.settings.image | image_url: width: 600 }} 600w,
+                             {{ block.settings.image | image_url: width: 1200 }} 1200w"
+                     sizes="100vw"
+                     alt="{{ block.settings.image_alt | escape }}"
+                     width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}"
+                     loading="lazy">
+              {%- elsif block.settings.default_asset != blank -%}
+                <img src="{{ block.settings.default_asset | asset_url }}"
+                     alt="{{ block.settings.image_alt | escape }}" loading="lazy">
+              {%- else -%}
+                <div class="ss__ph tile-bg"></div>
+              {%- endif -%}
+            </div>
+
+            <span class="ss__num" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+
+            {%- if block.settings.eyebrow != blank -%}
+              <p class="eyebrow">{{ block.settings.eyebrow }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.heading != blank -%}
+              <h3 class="h2">{{ block.settings.heading }}</h3>
+            {%- endif -%}
+
+            {%- if block.settings.text != blank -%}
+              <div class="rte ss__text">{{ block.settings.text }}</div>
+            {%- endif -%}
+
+            {%- if block.settings.link_label != blank and block.settings.link_url != blank -%}
+              <p class="ss__link">
+                <a class="link-arrow" href="{{ block.settings.link_url }}">
+                  {{ block.settings.link_label }}
+                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true" focusable="false">
+                    <path d="M9 1l4 4-4 4M13 5H0" stroke="currentColor" stroke-width="1.2"/>
+                  </svg>
+                </a>
+              </p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('ScrollStory-{{ section.id }}');
+    if (!root || !('IntersectionObserver' in window)) return;
+
+    var frames = root.querySelectorAll('[data-ss-frame]');
+    var steps  = root.querySelectorAll('[data-ss-step]');
+    var dots   = root.querySelectorAll('[data-ss-go]');
+    if (frames.length < 2 || steps.length < 2) return;
+
+    // Only now does the pinned layout switch on — CSS keeps the stacked
+    // fallback until this line runs.
+    root.classList.add('is-enhanced');
+
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var reduce = mq.matches;
+    if (mq.addEventListener) {
+      mq.addEventListener('change', function (e) { reduce = e.matches; });
+    } else if (mq.addListener) {
+      mq.addListener(function (e) { reduce = e.matches; });
+    }
+
+    var current = -1;
+    function activate(i) {
+      if (i === current || i < 0) return;
+      current = i;
+      var k;
+      for (k = 0; k < frames.length; k++) frames[k].classList.toggle('is-active', k === i);
+      for (k = 0; k < steps.length; k++)  steps[k].classList.toggle('is-active', k === i);
+      for (k = 0; k < dots.length; k++)   dots[k].setAttribute('aria-current', k === i ? 'true' : 'false');
+    }
+
+    // A thin band across the middle of the viewport. The topmost step touching
+    // it wins; when no step touches it (short chapters, fast flicks) the last
+    // active one simply stays — never a blank frame.
+    var visible = {};
+    var io = new IntersectionObserver(function (entries) {
+      for (var e = 0; e < entries.length; e++) {
+        visible[entries[e].target.getAttribute('data-ss-step')] = entries[e].isIntersecting;
+      }
+      for (var k = 0; k < steps.length; k++) {
+        if (visible[String(k)]) { activate(k); return; }
+      }
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+    for (var i = 0; i < steps.length; i++) io.observe(steps[i]);
+    activate(0);
+
+    for (var d = 0; d < dots.length; d++) {
+      dots[d].addEventListener('click', function () {
+        var t = steps[parseInt(this.getAttribute('data-ss-go'), 10)];
+        if (!t) return;
+        t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Scroll story",
+  "tag": "section",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "How it is made" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From the workbench to your hands" },
+    { "type": "richtext", "id": "text", "label": "Intro text" },
+    { "type": "select", "id": "media_side", "label": "Pinned image side", "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ] },
+    { "type": "checkbox", "id": "show_index", "label": "Show the chapter index", "default": true, "info": "A numbered rail that jumps between chapters. Only appears when JavaScript is available." },
+    { "type": "select", "id": "bg", "label": "Background", "default": "section--shell",
+      "options": [
+        { "value": "", "label": "White" },
+        { "value": "section--shell", "label": "Shell" },
+        { "value": "section--ink", "label": "Ink" },
+        { "value": "section--espresso", "label": "Espresso" }
+      ] }
+  ],
+  "blocks": [
+    {
+      "type": "chapter",
+      "name": "Chapter",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Portrait crops read best in the pinned column." },
+        { "type": "text", "id": "default_asset", "label": "Packaged image", "info": "A filename from the theme's assets folder, used when no image is chosen above." },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "The wood is chosen first" },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "text", "id": "link_label", "label": "Link label" },
+        { "type": "url", "id": "link_url", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scroll story",
+      "blocks": [
+        { "type": "chapter", "settings": { "default_asset": "feature-oud.jpg", "eyebrow": "One", "heading": "The wood is chosen first", "image_alt": "Hands holding an oud" } },
+        { "type": "chapter", "settings": { "default_asset": "feature-percussion.jpg", "eyebrow": "Two", "heading": "Mother-of-pearl, set by hand", "image_alt": "Mother-of-pearl inlay detail" } },
+        { "type": "chapter", "settings": { "default_asset": "story-shop.jpg", "eyebrow": "Three", "heading": "Played before it leaves Beirut", "image_alt": "Inside the shop" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

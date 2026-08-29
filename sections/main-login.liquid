@@ -2,7 +2,19 @@
   <h1 class="h1" style="text-align:center">Log in</h1>
   <div style="margin:1.25rem 0 2rem">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
 
-  <div id="recover" style="display:none">
+  {%- comment -%}
+    :target drives this without JS — "Forgotten your password?" is a real
+    #recover link, so the form opens on a plain anchor jump. The .js rules only
+    take over once scripting is available.
+  {%- endcomment -%}
+  <style>
+    #recover{display:block}
+    .js #recover{display:none}
+    .js #recover:target,.js #recover.is-shown{display:block}
+    .js #login.is-hidden{display:none}
+    #recover:target ~ #login{display:none}
+  </style>
+  <div id="recover">
     {% form 'recover_customer_password' %}
       {{ form.errors | default_errors }}
       {%- if form.posted_successfully? -%}
@@ -40,8 +52,8 @@
     a.addEventListener('click', function (e) {
       e.preventDefault();
       var show = a.getAttribute('data-show');
-      document.getElementById('login').style.display = show === 'login' ? '' : 'none';
-      document.getElementById('recover').style.display = show === 'recover' ? '' : 'none';
+      document.getElementById('login').classList.toggle('is-hidden', show !== 'login');
+      document.getElementById('recover').classList.toggle('is-shown', show === 'recover');
     });
   });
 </script>

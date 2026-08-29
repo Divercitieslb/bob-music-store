@@ -1,6 +1,6 @@
 {%- liquid
   assign flip = section.settings.flip
-  assign col = collections[section.settings.collection]
+  assign col = section.settings.collection
 -%}
 
 <section class="split {{ section.settings.bg }} {% if flip %}split--flip{% endif %}">
@@ -13,6 +13,10 @@
            sizes="(min-width:900px) 55vw, 100vw"
            alt="{{ section.settings.image_alt | escape }}"
            width="1800" height="2000" loading="lazy">
+    {%- elsif section.settings.default_asset != blank -%}
+      <img src="{{ section.settings.default_asset | asset_url }}"
+           alt="{{ section.settings.image_alt | escape }}"
+           width="1800" height="1344" loading="lazy">
     {%- else -%}
       <div class="split__placeholder tile-bg"></div>
     {%- endif -%}
@@ -36,9 +40,15 @@
           {%- for i in (1..3) -%}
             {%- liquid
               case i
-                when 1 then assign sv = section.settings.stat_1 | assign sl = section.settings.stat_1_label
-                when 2 then assign sv = section.settings.stat_2 | assign sl = section.settings.stat_2_label
-                when 3 then assign sv = section.settings.stat_3 | assign sl = section.settings.stat_3_label
+                when 1
+                  assign sv = section.settings.stat_1
+                  assign sl = section.settings.stat_1_label
+                when 2
+                  assign sv = section.settings.stat_2
+                  assign sl = section.settings.stat_2_label
+                when 3
+                  assign sv = section.settings.stat_3
+                  assign sl = section.settings.stat_3_label
               endcase
             -%}
             {%- if sv != blank -%}
@@ -61,6 +71,7 @@
   "name": "Split feature",
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Image", "info": "Portrait or square. See IMAGE-PROMPTS.md for the prompt that fits this slot." },
+    { "type": "text", "id": "default_asset", "label": "Packaged image", "info": "A filename from the theme's assets folder, used when no image is chosen above." },
     { "type": "text", "id": "image_alt", "label": "Image alt text" },
     { "type": "collection", "id": "collection", "label": "Collection", "info": "Sets the button link." },
     { "type": "checkbox", "id": "flip", "label": "Image on the right", "default": false },

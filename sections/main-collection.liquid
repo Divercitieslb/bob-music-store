@@ -1,3 +1,170 @@
+{%- comment -%}
+  Collection page.
+
+  Everything Shopify-critical is unchanged in behaviour: collection.filters drive
+  the facet form (data-facet-form), the sort select keeps data-sort / data-sort-form,
+  and paginate still wraps collection.products. The upgrade is editorial framing,
+  a condensing sticky bar, and reveal hooks.
+{%- endcomment -%}
+
+{%- liquid
+  assign banner = section.settings.banner
+  assign banner_asset = section.settings.default_asset
+  assign count = collection.products_count
+  assign cur_sort = collection.sort_by | default: collection.default_sort_by
+
+  assign active_count = 0
+  for f in collection.filters
+    assign active_count = active_count | plus: f.active_values.size
+    if f.type == 'price_range'
+      if f.min_value.value != blank
+        assign active_count = active_count | plus: 1
+      endif
+      if f.max_value.value != blank
+        assign active_count = active_count | plus: 1
+      endif
+    endif
+  endfor
+-%}
+
+<style>
+  .coll-hero,.coll-intro,.coll-bar,.coll-grid,.coll-empty,.coll-facets{
+    --e:cubic-bezier(.16,1,.3,1);
+  }
+
+  /* --- editorial header ---------------------------------------------------- */
+  .coll-hero{position:relative;background:var(--ink);overflow:hidden;isolation:isolate}
+  .coll-hero__media{position:absolute;inset:0;z-index:0}
+  .coll-hero__media img{width:100%;height:100%;object-fit:cover;opacity:.62}
+  .coll-hero::after{
+    content:'';position:absolute;inset:0;z-index:1;
+    background:linear-gradient(175deg,rgba(20,16,12,.30) 0%,rgba(20,16,12,.58) 52%,rgba(20,16,12,.90) 100%);
+  }
+  .coll-hero__inner{
+    position:relative;z-index:2;
+    min-height:clamp(200px,26vw,340px);
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding-block:clamp(2rem,5vw,3.5rem);
+  }
+  .coll-hero .eyebrow{color:var(--brass);margin:0}
+  .coll-hero__title{color:var(--bone);margin-top:.45rem}
+  .coll-hero__orn{margin-top:1.15rem;max-width:300px}
+  .coll-hero__orn .orn-divider{max-width:300px}
+
+  /* --- intro: title / count on the left, the description set as copy ------- */
+  .coll-intro__grid{display:grid;gap:clamp(1.1rem,3vw,3.5rem)}
+  @media(min-width:900px){
+    .coll-intro__grid{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:end}
+    .coll-intro__grid--solo{grid-template-columns:minmax(0,1fr)}
+  }
+  .coll-count{display:flex;align-items:baseline;gap:.55rem;margin:0 0 .4rem}
+  .coll-count__n{font-family:var(--f-mono);font-size:.95rem;color:var(--brass);letter-spacing:.02em}
+  .coll-count__l{
+    font-family:var(--f-sans);font-size:.64rem;font-weight:600;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--ink-40);
+  }
+  .coll-intro__orn{margin-top:1.3rem}
+  .coll-desc{max-width:60ch}
+  .coll-desc > :first-child{margin-top:0}
+  .coll-desc > p:first-of-type{
+    font-family:var(--f-display);font-size:clamp(1.15rem,1.75vw,1.55rem);
+    line-height:1.5;color:var(--ink-80);
+  }
+
+  /* --- sticky, condensing bar ---------------------------------------------- */
+  .coll-sentinel{height:1px;margin:0}
+  .coll-bar{
+    position:sticky;top:var(--header-h);z-index:60;
+    background:var(--paper);border-bottom:1px solid var(--rule);
+    transition:box-shadow .32s var(--e),background-color .32s var(--e);
+  }
+  .coll-bar__inner{
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+    padding-block:1.15rem;transition:padding .32s var(--e);
+  }
+  .coll-bar__left{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  .coll-bar__count{display:flex;align-items:baseline;gap:.45rem}
+  .coll-bar__n{font-family:var(--f-mono);font-size:.86rem;letter-spacing:.02em;color:var(--ink)}
+  .coll-bar__label{
+    font-family:var(--f-sans);font-size:.64rem;font-weight:600;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ink-40);white-space:nowrap;
+    transition:opacity .32s var(--e);
+  }
+  .coll-bar__jump{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-family:var(--f-sans);font-size:.64rem;font-weight:600;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ink-80);
+    border-bottom:1px solid var(--rule);padding-bottom:2px;
+    transition:color var(--t-fast),border-color var(--t-fast);
+  }
+  .coll-bar__jump:hover{color:var(--ink);border-color:var(--brass)}
+  .coll-bar__jump-n{font-family:var(--f-mono);color:var(--brass)}
+  @media(min-width:1000px){.coll-bar__jump{display:none}}
+
+  .coll-bar.is-stuck{
+    background:rgba(251,248,242,.94);
+    box-shadow:0 1px 0 rgba(20,16,12,.07),0 14px 26px -24px rgba(20,16,12,.65);
+  }
+  @supports (backdrop-filter:blur(6px)){
+    .coll-bar.is-stuck{backdrop-filter:blur(9px)}
+  }
+  .coll-bar.is-stuck .coll-bar__inner{padding-block:.62rem}
+  .coll-bar.is-stuck .coll-bar__label{opacity:0}
+  .coll-bar.is-stuck .coll-active{padding-bottom:.62rem}
+  .coll-bar.is-stuck .select{padding-block:.5rem}
+
+  /* --- active filter chips -------------------------------------------------- */
+  .coll-active{
+    display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;
+    padding-bottom:1.1rem;transition:padding .32s var(--e);
+  }
+  .coll-chip{
+    display:inline-flex;align-items:center;gap:.55rem;
+    padding:.4rem .7rem;background:var(--shell);border:1px solid var(--rule);
+    font-family:var(--f-sans);font-size:.63rem;font-weight:600;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-80);
+    transition:border-color var(--t-fast),color var(--t-fast),background-color var(--t-fast);
+  }
+  .coll-chip:hover{border-color:var(--ink);color:var(--ink);background:var(--paper)}
+  .coll-chip svg{opacity:.5;flex-shrink:0}
+  .coll-chip:hover svg{opacity:1}
+  .coll-clear{
+    font-family:var(--f-sans);font-size:.63rem;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--oud);border-bottom:1px solid currentColor;
+    margin-left:.35rem;
+  }
+
+  /* --- facets --------------------------------------------------------------- */
+  .coll-facets{scroll-margin-top:calc(var(--header-h) + 1.5rem)}
+  .coll-facets__head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+    padding-bottom:1.1rem;border-bottom:1px solid var(--rule);
+  }
+  .coll-facets__head h2{
+    font-family:var(--f-sans);font-size:.68rem;font-weight:700;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--ink);margin:0;
+  }
+  @media(min-width:1000px){
+    .coll-facets{position:sticky;top:calc(var(--header-h) + 1.5rem);max-height:calc(100vh - var(--header-h) - 3rem);overflow-y:auto;padding-right:.35rem}
+  }
+  .coll-price{display:flex;gap:.5rem;align-items:center}
+  .coll-price input{
+    width:100%;padding:.55rem;border:1px solid var(--rule);background:var(--paper);
+    font-family:var(--f-mono);font-size:.8rem;
+  }
+  .coll-price input:focus-visible{outline:2px solid var(--brass);outline-offset:1px}
+
+  /* --- grid ----------------------------------------------------------------- */
+  .coll-grid{padding-top:1.9rem}
+
+  /* --- empty state ---------------------------------------------------------- */
+  .coll-empty{max-width:560px}
+  .coll-empty__cta{
+    display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-top:1.9rem;
+  }
+  .coll-empty .lede{margin-inline:auto}
+</style>
+
 <div class="wrap">
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="{{ routes.root_url }}">Home</a> <span aria-hidden="true">/</span>
@@ -6,22 +173,75 @@
   </nav>
 </div>
 
-<section class="section section--tight">
-  <div class="wrap">
-    <p class="eyebrow">{{ collection.products_count }} product{% if collection.products_count != 1 %}s{% endif %}</p>
-    <h1 class="h1">{{ collection.title }}</h1>
-    {%- if collection.description != blank -%}
-      <div class="lede rte" style="margin-top:1rem">{{ collection.description }}</div>
-    {%- endif -%}
-    <div style="margin-top:1.5rem">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
-  </div>
-</section>
+{%- if banner -%}
+  <section class="coll-hero">
+    <div class="coll-hero__media">
+      <img src="{{ banner | image_url: width: 1800 }}"
+           srcset="{{ banner | image_url: width: 900 }} 900w,
+                   {{ banner | image_url: width: 1400 }} 1400w,
+                   {{ banner | image_url: width: 2200 }} 2200w"
+           sizes="100vw"
+           alt=""
+           width="{{ banner.width }}" height="{{ banner.height }}"
+           loading="eager" fetchpriority="high">
+    </div>
+    <div class="coll-hero__inner wrap">
+      <p class="eyebrow">{{ count }} product{% if count != 1 %}s{% endif %}</p>
+      <h1 class="h1 coll-hero__title">{{ collection.title }}</h1>
+      <div class="coll-hero__orn">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
+    </div>
+  </section>
+{%- endif -%}
+
+{%- liquid
+  assign show_intro = true
+  if banner
+    if collection.description == blank
+      assign show_intro = false
+    endif
+  endif
+-%}
+
+{%- if show_intro -%}
+  <section class="section section--tight coll-intro">
+    <div class="wrap">
+      <div class="coll-intro__grid{% if collection.description == blank %} coll-intro__grid--solo{% endif %}">
+        <div>
+          {%- if banner -%}
+            <p class="eyebrow eyebrow--muted" style="margin:0">About this collection</p>
+            <div class="coll-intro__orn">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
+          {%- else -%}
+            <p class="coll-count">
+              <span class="coll-count__n num">{{ count }}</span>
+              <span class="coll-count__l">product{% if count != 1 %}s{% endif %} in this collection</span>
+            </p>
+            <h1 class="h1">{{ collection.title }}</h1>
+            <div class="coll-intro__orn">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
+          {%- endif -%}
+        </div>
+
+        {%- if collection.description != blank -%}
+          <div class="coll-desc rte">{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
 
 <div class="wrap">
   <div class="collection-layout">
 
-    <aside class="facets" aria-label="Filters">
+    <aside class="facets coll-facets" id="coll-filters" aria-label="Filters">
       {%- if section.settings.show_filters -%}
+        {%- if collection.filters.size > 0 -%}
+          <div class="coll-facets__head">
+            <h2>Refine</h2>
+            {%- if active_count > 0 -%}
+              <a class="coll-clear" href="{{ collection.url }}?sort_by={{ cur_sort }}">Clear all</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
         <form data-facet-form>
           {%- for filter in collection.filters -%}
             <details class="facet" open>
@@ -40,16 +260,14 @@
                     {%- endfor -%}
                   </div>
                 {%- when 'price_range' -%}
-                  <div style="display:flex;gap:.5rem;align-items:center">
+                  <div class="coll-price">
                     <label class="visually-hidden" for="pmin">Minimum price</label>
                     <input id="pmin" type="number" name="{{ filter.min_value.param_name }}" placeholder="Min"
-                           value="{{ filter.min_value.value | default: '' }}"
-                           style="width:100%;padding:.55rem;border:1px solid var(--rule);background:var(--paper)">
-                    <span>–</span>
+                           value="{{ filter.min_value.value | default: '' }}">
+                    <span aria-hidden="true">–</span>
                     <label class="visually-hidden" for="pmax">Maximum price</label>
                     <input id="pmax" type="number" name="{{ filter.max_value.param_name }}" placeholder="Max"
-                           value="{{ filter.max_value.value | default: '' }}"
-                           style="width:100%;padding:.55rem;border:1px solid var(--rule);background:var(--paper)">
+                           value="{{ filter.max_value.value | default: '' }}">
                   </div>
               {%- endcase -%}
             </details>
@@ -64,24 +282,77 @@
     </aside>
 
     <div>
-      <div class="toolbar">
-        <span class="mono">{{ collection.products_count }} result{% if collection.products_count != 1 %}s{% endif %}</span>
-        <form data-sort-form>
-          <label class="visually-hidden" for="sort">Sort by</label>
-          <select class="select" id="sort" name="sort_by" data-sort>
-            {%- assign cur = collection.sort_by | default: collection.default_sort_by -%}
-            {%- for opt in collection.sort_options -%}
-              <option value="{{ opt.value }}" {% if opt.value == cur %}selected{% endif %}>{{ opt.name }}</option>
+      <div class="coll-sentinel" data-coll-sentinel aria-hidden="true"></div>
+
+      <div class="coll-bar" data-coll-bar>
+        <div class="coll-bar__inner">
+          <div class="coll-bar__left">
+            <span class="coll-bar__count">
+              <span class="coll-bar__n num">{{ count }}</span>
+              <span class="coll-bar__label">result{% if count != 1 %}s{% endif %}</span>
+            </span>
+            {%- if section.settings.show_filters and collection.filters.size > 0 -%}
+              <a class="coll-bar__jump" href="#coll-filters">
+                Filter{% if active_count > 0 %} <span class="coll-bar__jump-n num">{{ active_count }}</span>{% endif %}
+              </a>
+            {%- endif -%}
+          </div>
+
+          <form data-sort-form method="get">
+            {%- comment -%} keeps the active filters when sorting without JavaScript {%- endcomment -%}
+            {%- for f in collection.filters -%}
+              {%- for v in f.active_values -%}
+                <input type="hidden" name="{{ v.param_name }}" value="{{ v.value | escape }}">
+              {%- endfor -%}
+              {%- if f.type == 'price_range' -%}
+                {%- if f.min_value.value != blank -%}
+                  <input type="hidden" name="{{ f.min_value.param_name }}" value="{{ f.min_value.value }}">
+                {%- endif -%}
+                {%- if f.max_value.value != blank -%}
+                  <input type="hidden" name="{{ f.max_value.param_name }}" value="{{ f.max_value.value }}">
+                {%- endif -%}
+              {%- endif -%}
             {%- endfor -%}
-          </select>
-        </form>
+            <label class="visually-hidden" for="sort">Sort by</label>
+            <select class="select" id="sort" name="sort_by" data-sort>
+              {%- for opt in collection.sort_options -%}
+                <option value="{{ opt.value }}" {% if opt.value == cur_sort %}selected{% endif %}>{{ opt.name }}</option>
+              {%- endfor -%}
+            </select>
+            <noscript><button class="btn btn--sm" type="submit">Sort</button></noscript>
+          </form>
+        </div>
+
+        {%- if active_count > 0 -%}
+          <div class="coll-active">
+            {%- for f in collection.filters -%}
+              {%- for v in f.active_values -%}
+                <a class="coll-chip" href="{{ v.url_to_remove }}">
+                  {{ v.label }}
+                  {% render 'icon', name: 'close', size: 12 %}
+                  <span class="visually-hidden">Remove filter</span>
+                </a>
+              {%- endfor -%}
+              {%- if f.type == 'price_range' -%}
+                {%- if f.min_value.value != blank or f.max_value.value != blank -%}
+                  <a class="coll-chip" href="{{ f.url_to_remove }}">
+                    {{ f.min_value.value | default: 0 | money }}–{{ f.max_value.value | default: f.range_max | money }}
+                    {% render 'icon', name: 'close', size: 12 %}
+                    <span class="visually-hidden">Remove price filter</span>
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <a class="coll-clear" href="{{ collection.url }}?sort_by={{ cur_sort }}">Clear all</a>
+          </div>
+        {%- endif -%}
       </div>
 
       {%- paginate collection.products by section.settings.per_page -%}
         {%- if collection.products.size > 0 -%}
-          <div class="grid grid--products" style="padding-top:1.75rem">
+          <div class="grid grid--products coll-grid" data-reveal-stagger>
             {%- for product in collection.products -%}
-              {% render 'product-card', product: product, loading: forloop.index0 | at_most: 4 %}
+              {% render 'product-card', product: product, index: forloop.index0 %}
             {%- endfor -%}
           </div>
 
@@ -101,10 +372,28 @@
             </nav>
           {%- endif -%}
         {%- else -%}
-          <div class="empty">
-            <h2 class="h2">Nothing here yet</h2>
-            <p class="lede" style="margin-inline:auto">No products match those filters. Try clearing one, or browse the full catalogue.</p>
-            <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Shop everything</a>
+          <div class="empty coll-empty">
+            {% render 'ornament', name: 'khatam', tone: 'brass', size: 30 %}
+            {%- if active_count > 0 -%}
+              <h2 class="h2">Nothing matches that combination</h2>
+              <p class="lede">Try loosening one filter — or clear them all and browse the whole shelf.</p>
+              <div class="coll-empty__cta">
+                <a class="btn" href="{{ collection.url }}?sort_by={{ cur_sort }}">Clear all filters</a>
+                <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Shop everything</a>
+              </div>
+            {%- else -%}
+              <h2 class="h2">Nothing on this shelf yet</h2>
+              <p class="lede">This collection is still being filled. Tell us what you are after and we will look for it — we source instruments to order.</p>
+              <div class="coll-empty__cta">
+                {%- if settings.whatsapp_number != blank -%}
+                  {%- assign ask_msg = 'Hello Bob Music — I am looking for something from: ' | append: collection.title -%}
+                  <a class="btn"
+                     href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}?text={{ ask_msg | url_encode }}"
+                     target="_blank" rel="noopener">Ask the shop</a>
+                {%- endif -%}
+                <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Shop everything</a>
+              </div>
+            {%- endif -%}
           </div>
         {%- endif -%}
       {%- endpaginate -%}
@@ -113,10 +402,67 @@
   </div>
 </div>
 
+<script>
+  (function () {
+    'use strict';
+    var bar = document.querySelector('[data-coll-bar]');
+    var sentinel = document.querySelector('[data-coll-sentinel]');
+    if (!bar) return;
+
+    /* the header is sticky and taller than --header-h once the nav row shows,
+       so measure it rather than guess */
+    var header = document.querySelector('[data-header]');
+    var facets = document.getElementById('coll-filters');
+    function place() {
+      var h = header ? Math.round(header.getBoundingClientRect().height) : 0;
+      if (h > 0) {
+        bar.style.top = h + 'px';
+        if (facets) {
+          if (window.matchMedia('(min-width:1000px)').matches) {
+            facets.style.top = (h + 24) + 'px';
+            facets.style.maxHeight = 'calc(100vh - ' + (h + 48) + 'px)';
+          } else {
+            facets.style.top = '';
+            facets.style.maxHeight = '';
+          }
+        }
+      }
+    }
+    place();
+    window.addEventListener('resize', place, { passive: true });
+
+    /* condense once the bar has actually stuck */
+    if (sentinel && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        var e = entries[0];
+        if (e.isIntersecting) bar.classList.remove('is-stuck');
+        else if (e.boundingClientRect.top < 0) bar.classList.add('is-stuck');
+        else bar.classList.remove('is-stuck');
+      }, { threshold: 0, rootMargin: '-' + (parseInt(bar.style.top, 10) || 82) + 'px 0px 0px 0px' });
+      io.observe(sentinel);
+    }
+
+    /* on narrow screens the facet panel sits above the grid — start it folded
+       so the products are not pushed off the first screen. No-JS keeps it open. */
+    if (window.matchMedia('(max-width:999px)').matches) {
+      Array.prototype.forEach.call(
+        document.querySelectorAll('.coll-facets .facet[open]'),
+        function (d) { d.open = false; }
+      );
+    }
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Collection",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner",
+      "label": "Header banner image",
+      "info": "Optional. Sets the collection title over a photograph. Try banner-guitars, banner-accessories or banner-violins-wind."
+    },
     { "type": "checkbox", "id": "show_filters", "label": "Show filters", "default": true },
     { "type": "range", "id": "per_page", "label": "Products per page", "min": 12, "max": 48, "step": 4, "default": 24 }
   ]

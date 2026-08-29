@@ -1,0 +1,256 @@
+{%- comment -%}
+  Stat band — three or four figures on a dark panel, separated by the khatam
+  star, over an optional photograph with a heavy overlay.
+
+  The final figure is printed in the HTML, so the band is complete and correct
+  with JavaScript off. The count-up only ever overwrites a number that is
+  already there, and restores the exact printed string on the last frame.
+  Under prefers-reduced-motion the rAF loop never starts — the .01ms global
+  kill switch in base.css cannot stop requestAnimationFrame, so this is guarded
+  here, once at start and again on change.
+{%- endcomment -%}
+
+{%- liquid
+  assign bg = section.settings.bg
+  assign has_image = false
+  if section.settings.image != blank or section.settings.default_asset != blank
+    assign has_image = true
+  endif
+-%}
+
+<style>
+  .stat-band{position:relative;overflow:hidden}
+  .stat-band__media{position:absolute;inset:0;z-index:0}
+  .stat-band__media img{width:100%;height:100%;object-fit:cover}
+  .stat-band__media::after{
+    content:'';position:absolute;inset:0;
+    background:var(--ink);
+    opacity:var(--stat-overlay,.78);
+  }
+  .stat-band.section--espresso .stat-band__media::after{background:var(--espresso)}
+  .stat-band.section--shell .stat-band__media::after,
+  .stat-band:not(.section--ink):not(.section--espresso) .stat-band__media::after{background:var(--shell)}
+  .stat-band > .wrap{position:relative;z-index:1}
+
+  .stat-band__head{text-align:center;max-width:56ch;margin:0 auto clamp(2rem,5vw,3.25rem)}
+  .stat-band__head .orn-divider{margin-inline:auto;margin-top:1.1rem}
+
+  .stat-band__row{
+    display:flex;flex-wrap:wrap;align-items:stretch;justify-content:center;
+    gap:clamp(1.5rem,4vw,3rem);
+  }
+  .stat{flex:1 1 200px;max-width:320px;text-align:center}
+  .stat__value{
+    display:block;font-family:var(--f-mono);font-weight:700;line-height:1;
+    font-size:clamp(2.6rem,6vw,4.6rem);letter-spacing:-.02em;
+    color:var(--bone);font-variant-numeric:tabular-nums;
+  }
+  .stat__label{
+    display:block;margin-top:.9rem;font-family:var(--f-sans);font-size:.68rem;
+    font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--brass);
+  }
+  .stat__note{display:block;margin-top:.7rem;font-size:.9rem;color:#CFC3B0;max-width:28ch;margin-inline:auto}
+
+  .stat__sep{
+    flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+    opacity:.75;
+  }
+
+  /* Light panels — the band can also sit on shell or white. */
+  .stat-band--light .stat__value{color:var(--ink)}
+  .stat-band--light .stat__note{color:var(--ink-80)}
+
+  /* A short arrival, class-toggled so the base.css kill switch handles it. */
+  .stat{opacity:0;transform:translateY(24px);
+    transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+  .stat.is-in{opacity:1;transform:none}
+  .stat-band:not(.is-enhanced) .stat{opacity:1;transform:none}
+
+  @media (max-width:700px){
+    .stat{flex:1 1 100%;max-width:none}
+    .stat__sep{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .stat{opacity:1;transform:none;transition:none}
+  }
+</style>
+
+<section class="stat-band section {{ bg }}{% if bg == blank or bg == 'section--shell' %} stat-band--light{% endif %}"
+         id="StatBand-{{ section.id }}"
+         style="--stat-overlay:{{ section.settings.overlay | default: 80 | divided_by: 100.0 }}"
+         {{ section.shopify_attributes }}>
+
+  {%- if has_image -%}
+    <div class="stat-band__media" aria-hidden="true">
+      {%- if section.settings.image != blank -%}
+        <img src="{{ section.settings.image | image_url: width: 2600 }}"
+             srcset="{{ section.settings.image | image_url: width: 1000 }} 1000w,
+                     {{ section.settings.image | image_url: width: 1800 }} 1800w,
+                     {{ section.settings.image | image_url: width: 2600 }} 2600w"
+             sizes="100vw" alt="" loading="lazy"
+             width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}">
+      {%- else -%}
+        <img src="{{ section.settings.default_asset | asset_url }}" alt="" loading="lazy">
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="wrap">
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
+      <div class="stat-band__head">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="h2">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {% render 'ornament', name: 'divider', tone: 'brass' %}
+      </div>
+    {%- endif -%}
+
+    <div class="stat-band__row">
+      {%- for block in section.blocks -%}
+        {%- unless forloop.first -%}
+          <div class="stat__sep" role="presentation">
+            {% render 'ornament', name: 'khatam', tone: 'brass', size: 16 %}
+          </div>
+        {%- endunless -%}
+
+        {%- comment -%}
+          Value and label are both visible text in reading order, so a screen
+          reader announces "268, instruments in stock" without any aria wiring.
+        {%- endcomment -%}
+        <div class="stat" {{ block.shopify_attributes }}>
+          <span class="stat__value num"
+                {% if section.settings.count_up %}data-count-to="{{ block.settings.value | escape }}"{% endif %}>{{ block.settings.value }}</span>
+          {%- if block.settings.label != blank -%}
+            <span class="stat__label">{{ block.settings.label }}</span>
+          {%- endif -%}
+          {%- if block.settings.note != blank -%}
+            <span class="stat__note">{{ block.settings.note }}</span>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('StatBand-{{ section.id }}');
+    if (!root || !('IntersectionObserver' in window)) return;
+
+    var stats = root.querySelectorAll('.stat');
+    if (!stats.length) return;
+    root.classList.add('is-enhanced');
+
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var reduce = mq.matches;
+    if (mq.addEventListener) {
+      mq.addEventListener('change', function (e) { reduce = e.matches; });
+    } else if (mq.addListener) {
+      mq.addListener(function (e) { reduce = e.matches; });
+    }
+
+    // "1,200" / "43" / "12.5" / "40+" all survive: the numeric run is animated,
+    // everything around it is carried through untouched.
+    function countUp(el) {
+      var raw = el.getAttribute('data-count-to');
+      if (!raw) return;
+      var m = raw.match(/-?[\d.,]+/);
+      if (!m) return;
+      var clean = m[0].replace(/,/g, '');
+      var target = parseFloat(clean);
+      if (isNaN(target)) return;
+
+      var grouped = m[0].indexOf(',') > -1;
+      var dot = clean.indexOf('.');
+      var decimals = dot > -1 ? clean.length - dot - 1 : 0;
+      var pre = raw.slice(0, m.index);
+      var post = raw.slice(m.index + m[0].length);
+
+      function render(v) {
+        var s = grouped
+          ? v.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })
+          : v.toFixed(decimals);
+        el.textContent = pre + s + post;
+      }
+
+      var start = null, dur = 1400;
+      function frame(now) {
+        if (start === null) start = now;
+        var p = Math.min((now - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 4);
+        if (p < 1) { render(target * eased); requestAnimationFrame(frame); }
+        else { el.textContent = raw; }   // land on the exact authored string
+      }
+      render(0);
+      requestAnimationFrame(frame);
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (!entries[i].isIntersecting) continue;
+        var el = entries[i].target;
+        io.unobserve(el);
+        el.classList.add('is-in');
+        if (!reduce) {
+          var n = el.querySelector('[data-count-to]');
+          if (n) countUp(n);
+        }
+      }
+    }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
+
+    // Stagger by the figure's own position, capped at 4 so a fourth column
+    // never waits noticeably longer than the first.
+    for (var s = 0; s < stats.length; s++) {
+      stats[s].style.transitionDelay = (Math.min(s, 3) * 0.08) + 's';
+      io.observe(stats[s]);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Stat band",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "checkbox", "id": "count_up", "label": "Count the figures up on scroll", "default": true, "info": "Ignored when the visitor has asked for reduced motion." },
+    { "type": "header", "content": "Background" },
+    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Optional. Sits under a heavy overlay." },
+    { "type": "text", "id": "default_asset", "label": "Packaged image", "info": "A filename from the theme's assets folder, used when no image is chosen above." },
+    { "type": "range", "id": "overlay", "label": "Overlay strength", "min": 40, "max": 95, "step": 5, "unit": "%", "default": 80 },
+    { "type": "select", "id": "bg", "label": "Panel", "default": "section--ink",
+      "options": [
+        { "value": "section--ink", "label": "Ink" },
+        { "value": "section--espresso", "label": "Espresso" },
+        { "value": "section--shell", "label": "Shell" },
+        { "value": "", "label": "White" }
+      ] }
+  ],
+  "blocks": [
+    {
+      "type": "figure",
+      "name": "Figure",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Figure", "default": "268", "info": "Digits animate. Anything around them — +, %, a currency mark — is kept as written." },
+        { "type": "text", "id": "label", "label": "Label", "default": "Instruments in stock" },
+        { "type": "text", "id": "note", "label": "Note" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stat band",
+      "blocks": [
+        { "type": "figure", "settings": { "value": "268", "label": "Instruments in stock" } },
+        { "type": "figure", "settings": { "value": "43", "label": "Collections" } },
+        { "type": "figure", "settings": { "value": "40+", "label": "Years in Beirut" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

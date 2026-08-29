@@ -18,7 +18,7 @@
     <div class="lookbook">
       {%- for block in section.blocks -%}
         {%- liquid
-          assign col = collections[block.settings.collection]
+          assign col = block.settings.collection
           assign img = block.settings.image
           if img == blank and col.featured_image
             assign img = col.featured_image
@@ -32,9 +32,13 @@
                  sizes="(min-width:900px) 50vw, 100vw"
                  alt="{{ block.settings.title | escape }}"
                  width="1400" height="1000" loading="lazy">
+          {%- elsif block.settings.default_asset != blank -%}
+            <img src="{{ block.settings.default_asset | asset_url }}"
+                 alt="{{ block.settings.title | escape }}"
+                 width="1500" height="1100" loading="lazy">
           {%- else -%}
             {%- comment -%}
-              No cutout fallback here on purpose: a product shot on white inside a
+              No product-cutout fallback on purpose: a shot on white inside a
               cinematic panel reads as a mistake. See IMAGE-PROMPTS.md.
             {%- endcomment -%}
             <div class="look__placeholder tile-bg"></div>
@@ -70,6 +74,7 @@
   "blocks": [
     { "type": "look", "name": "Panel", "settings": [
       { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "default_asset", "label": "Packaged image", "info": "Filename from the theme's assets folder, used when no image is chosen." },
       { "type": "collection", "id": "collection", "label": "Collection" },
       { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
       { "type": "text", "id": "title", "label": "Title" },

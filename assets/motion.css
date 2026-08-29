@@ -1,0 +1,225 @@
+/* ==========================================================================
+   Bob Music — motion layer
+   Pairs with assets/motion.js. Nothing here is required for the page to be
+   readable: every effect starts from the *visible* state and is hidden only
+   once `html.js` is present, so a JS-disabled visitor sees a finished page.
+
+   base.css already ships a global reduced-motion kill switch (it zeroes
+   transition/animation DURATION). That is not enough on its own — a duration
+   of .01ms does not stop an animation-DELAY, a scroll-driven timeline or a
+   rAF loop — so every effect below also states its own reduced-motion reset.
+   ========================================================================== */
+
+:root{
+  /* base.css has --t-fast (.18s) and --t-med (.32s) for UI feedback. Editorial
+     motion needs a longer, decelerating curve; these are additive, not
+     redefinitions. */
+  --t-slow:.9s;
+  --e-out:cubic-bezier(.16,1,.3,1);
+
+  --reveal-rise:34px;      /* Godin's number — enough to read as arrival, not as a jump */
+  --reveal-dur:1s;
+  --reveal-step:.06s;      /* per-child stagger, capped at 4 steps in JS */
+}
+
+/* ==========================================================================
+   1. SCROLL REVEAL
+   Default = visible. `html.js` hides it, `.is-in` brings it back.
+   The failsafe animation un-hides anything the observer never reached
+   (motion.js failing to load, an element inside a hidden parent, an
+   observer that never fires) so content can never be permanently lost.
+   ========================================================================== */
+html.js [data-reveal]{
+  opacity:0;
+  transform:translate3d(0,var(--reveal-rise),0);
+  transition:opacity var(--reveal-dur) var(--e-out),
+             transform var(--reveal-dur) var(--e-out);
+  will-change:opacity,transform;
+  animation:bm-failsafe 1ms linear 4s forwards;
+}
+html.js [data-reveal="fade"]{transform:none}
+html.js [data-reveal="left"]{transform:translate3d(calc(var(--reveal-rise) * -1),0,0)}
+html.js [data-reveal="right"]{transform:translate3d(var(--reveal-rise),0,0)}
+html.js [data-reveal="scale"]{transform:scale(.965)}
+
+html.js [data-reveal].is-in{
+  opacity:1;
+  transform:none;
+  animation:none;
+  will-change:auto;        /* release the compositor layer once it has landed */
+}
+
+@keyframes bm-failsafe{to{opacity:1;transform:none}}
+
+/* ==========================================================================
+   2. SPLIT-TEXT HEADLINE
+   The spans are built by JS, so there is no no-JS case to protect. Words,
+   never characters: character splitting destroys Cormorant's kerning and
+   makes a screen reader spell the headline out.
+   ========================================================================== */
+.split-line{
+  display:inline-block;
+  overflow:hidden;           /* the mask the word rises out of */
+  vertical-align:bottom;
+  padding-bottom:.06em;      /* room for descenders inside the mask */
+}
+.split-word{
+  display:inline-block;
+  transform:translate3d(0,110%,0);
+  opacity:0;
+  transition:transform .95s var(--e-out),opacity .7s var(--e-out);
+  will-change:transform,opacity;
+}
+[data-split].is-in .split-word{transform:none;opacity:1;will-change:auto}
+
+/* ==========================================================================
+   3. PARALLAX
+   JS writes the transform. The wrapper only needs to not clip it.
+   ========================================================================== */
+[data-parallax]{will-change:transform}
+.parallax-frame{overflow:hidden}          /* optional wrapper for oversized media */
+.parallax-frame > [data-parallax]{display:block;width:100%}
+
+/* ==========================================================================
+   4. MAGNETIC BUTTONS
+   JS writes --mx/--my; the element reads them. Keeping the transform in CSS
+   means the reset is a plain transition and reduced motion can null it.
+   ========================================================================== */
+[data-magnetic]{
+  transform:translate3d(var(--mx,0px),var(--my,0px),0);
+  transition:transform .45s var(--e-out);
+}
+[data-magnetic].is-magnetised{transition:transform .12s linear} /* tracks the cursor while held */
+
+/* ==========================================================================
+   5. HOVER IMAGE FOLLOW
+   A single element is created once and reused for every link in the list.
+   ========================================================================== */
+.hover-follow{
+  position:fixed;
+  top:0;left:0;
+  width:clamp(160px,16vw,260px);
+  aspect-ratio:4/5;
+  z-index:60;
+  pointer-events:none;
+  opacity:0;
+  transform:translate3d(-50%,-50%,0) scale(.92);
+  transition:opacity .34s var(--e-out),transform .34s var(--e-out);
+  background:var(--bone);
+  overflow:hidden;
+  box-shadow:0 18px 44px rgba(20,16,12,.22);
+}
+.hover-follow img{width:100%;height:100%;object-fit:cover;display:block}
+.hover-follow.is-visible{opacity:1;transform:translate3d(-50%,-50%,0) scale(1)}
+
+/* the list itself: dim the siblings of whatever is hovered */
+@media(hover:hover) and (pointer:fine){
+  .hover-list:hover [data-hover-image]{opacity:.4;transition:opacity var(--t-med)}
+  .hover-list [data-hover-image]:hover{opacity:1}
+}
+
+/* ==========================================================================
+   6. COUNT-UP — no styling needed beyond stopping the width from jittering
+   as digits change. Space Mono is already tabular, this is belt and braces.
+   ========================================================================== */
+[data-count-to]{font-variant-numeric:tabular-nums}
+
+/* ==========================================================================
+   7. MARQUEE — JS takes the track over so speed can change without the jump
+   you get from rewriting animation-duration mid-flight. The keyframe in
+   base.css stays as the no-JS / reduced-motion behaviour.
+   ========================================================================== */
+.marquee__track.is-jsdriven{animation:none;will-change:transform}
+
+/* ==========================================================================
+   8. GRAIN + VIGNETTE
+   feTurbulence baked into a data-URI: no request, no binary, ~450 bytes.
+   Both layers are inert to the pointer and sit under the content.
+   ========================================================================== */
+/* isolation:isolate gives the section its own stacking context, so the blend
+   stays inside it and the two layers can sit ABOVE the content without the
+   children needing a z-index of their own — which would have meant forcing
+   position:relative onto every child and breaking absolutely-positioned ones. */
+.has-grain{position:relative;isolation:isolate}
+.has-grain::before,
+.has-grain::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+}
+.has-grain::before{
+  opacity:.045;
+  mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size:180px 180px;
+}
+.has-grain::after{
+  background:radial-gradient(120% 90% at 50% 42%,transparent 42%,rgba(20,16,12,.10) 78%,rgba(20,16,12,.20) 100%);
+}
+/* on the dark bands the grain must lighten, not darken, or it just goes muddy */
+.section--ink.has-grain::before,
+.section--espresso.has-grain::before{mix-blend-mode:screen;opacity:.05}
+.section--ink.has-grain::after,
+.section--espresso.has-grain::after{
+  background:radial-gradient(120% 90% at 50% 42%,transparent 40%,rgba(0,0,0,.22) 82%,rgba(0,0,0,.38) 100%);
+}
+
+/* ==========================================================================
+   9. PAGE-LOAD CURTAIN — first visit of the session only, built by JS.
+   Budget: 620ms on screen, inert to the pointer after 300ms.
+   ========================================================================== */
+.curtain{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:grid;
+  place-items:center;
+  background:var(--paper);
+  opacity:1;
+  transition:opacity .38s var(--e-out);
+}
+.curtain__mark{
+  width:clamp(74px,9vw,104px);
+  opacity:0;
+  transform:scale(.9);
+  animation:bm-curtain-mark .5s var(--e-out) forwards;
+}
+.curtain__mark circle,
+.curtain__mark path{transform-box:fill-box;transform-origin:center}
+.curtain.is-out{opacity:0}
+.curtain.is-inert{pointer-events:none}
+@keyframes bm-curtain-mark{to{opacity:1;transform:scale(1)}}
+
+/* ==========================================================================
+   REDUCED MOTION — every effect lands on its finished state, immediately.
+   Restated here rather than relying on base.css: a .01ms duration does not
+   cancel an animation-delay, and the failsafe above is delay-driven.
+   ========================================================================== */
+@media(prefers-reduced-motion:reduce){
+  html.js [data-reveal],
+  html.js [data-reveal].is-in{
+    opacity:1!important;
+    transform:none!important;
+    animation:none!important;
+    transition:none!important;
+    will-change:auto;
+  }
+  .split-word{
+    transform:none!important;
+    opacity:1!important;
+    transition:none!important;
+    will-change:auto;
+  }
+  .split-line{overflow:visible}
+  [data-parallax]{transform:none!important;will-change:auto}
+  [data-magnetic]{transform:none!important;transition:none!important}
+  .hover-follow{display:none!important}
+  .marquee__track.is-jsdriven{transform:none!important;animation:none!important}
+  .curtain{display:none!important}
+  .curtain__mark{animation:none!important;opacity:1;transform:none}
+  /* no scroll-driven timelines ship today; this is a guard for anything added
+     later, since a scroll timeline ignores animation-duration entirely */
+  *{animation-timeline:none!important}
+}

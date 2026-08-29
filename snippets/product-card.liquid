@@ -1,25 +1,97 @@
 {%- comment -%}
   Product card.
-    product        — required
-    show_vendor    — default true
-    loading        — 'lazy' (default) or 'eager'
+    product      — required
+    show_vendor  — default true
+    loading      — 'lazy' (default) or 'eager'
+    index        — 0-based position in a grid; the first four load eagerly
+
+  The whole card is one click target: base.css stretches .card__title a::after
+  over the card, so nothing else inside may be interactive. The hover "View"
+  chip is therefore a decorative span, not a link.
 {%- endcomment -%}
 
 {%- liquid
   assign show_vendor = show_vendor | default: true, allow_false: true
-  assign loading = loading | default: 'lazy'
   assign second = product.media[1]
+
   assign is_vintage = false
   if product.tags contains 'Vintage' or product.tags contains 'vintage'
     assign is_vintage = true
   endif
+
   assign ask = false
   if settings.enquiry_only or product.price == 0
     assign ask = true
   endif
+
+  assign img_loading = 'lazy'
+  if loading == 'eager'
+    assign img_loading = 'eager'
+  endif
+  if index != blank
+    if index < 4
+      assign img_loading = 'eager'
+    endif
+  endif
 -%}
 
-<article class="card">
+{%- comment -%}
+  increment is page-scoped and independent of assign/capture, so it survives the
+  isolated scope that {% render %} creates. The card's own styles are therefore
+  printed once per page, by the first card, wherever cards appear.
+{%- endcomment -%}
+{%- capture card_css_seq %}{% increment bms_card_css %}{% endcapture -%}
+{%- assign card_css_seq = card_css_seq | strip -%}
+{%- if card_css_seq == '0' -%}
+<style>
+  .card{--e:cubic-bezier(.16,1,.3,1)}
+
+  /* the second image is the reason to hover — hold it a beat longer */
+  .card__media--alt img + img{transition:opacity .5s var(--e)}
+  .card__media img{transition:transform .7s var(--e)}
+
+  /* quick-view affordance: decorative, pointer-transparent, pointer devices only */
+  .card__view{
+    position:absolute;left:50%;bottom:.9rem;z-index:3;
+    display:inline-flex;align-items:center;gap:.5rem;
+    padding:.58rem 1.05rem;
+    background:rgba(20,16,12,.9);color:var(--bone);
+    font-family:var(--f-sans);font-size:.6rem;font-weight:700;
+    letter-spacing:.22em;text-transform:uppercase;
+    opacity:0;pointer-events:none;
+    transform:translate(-50%,10px);
+    transition:opacity .32s var(--e),transform .32s var(--e);
+  }
+  .card__view svg{opacity:.85}
+  @media(hover:hover) and (pointer:fine){
+    .card:hover .card__view,
+    .card:focus-within .card__view{opacity:1;transform:translate(-50%,0)}
+  }
+
+  /* brass rule wipes in under the title — a background, so it follows wrapped
+     lines instead of underlining the whole block */
+  .card__t{
+    background-image:linear-gradient(var(--brass),var(--brass));
+    background-repeat:no-repeat;
+    background-position:0 100%;
+    background-size:0% 1px;
+    padding-bottom:.08em;
+    transition:background-size .42s var(--e);
+  }
+  .card:hover .card__t,
+  .card:focus-within .card__t{background-size:100% 1px}
+
+  .card__title a:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+  .card:has(a:focus-visible) .card__media{
+    box-shadow:inset 0 0 0 1px var(--rule-soft),0 0 0 2px var(--brass);
+  }
+
+  /* a sold instrument should read as gone without disappearing */
+  .card--sold .card__media img{opacity:.55}
+</style>
+{%- endif -%}
+
+<article class="card{% if product.available == false %} card--sold{% endif %}" data-reveal>
   <div class="card__media {% if second %}card__media--alt{% endif %}">
     {%- if product.featured_media -%}
       <img src="{{ product.featured_media | image_url: width: 700 }}"
@@ -28,7 +100,7 @@
                    {{ product.featured_media | image_url: width: 1000 }} 1000w"
            sizes="(min-width:1100px) 22vw, (min-width:700px) 30vw, 45vw"
            alt="{{ product.featured_media.alt | escape | default: product.title | escape }}"
-           width="700" height="700" loading="{{ loading }}">
+           width="700" height="700" loading="{{ img_loading }}">
       {%- if second -%}
         <img src="{{ second | image_url: width: 700 }}" alt="" width="700" height="700" loading="lazy" aria-hidden="true">
       {%- endif -%}
@@ -43,6 +115,11 @@
     {%- elsif is_vintage -%}
       <span class="badge badge--vintage">Vintage</span>
     {%- endif -%}
+
+    <span class="card__view" aria-hidden="true">
+      {% if ask %}Enquire{% else %}View{% endif %}
+      {% render 'icon', name: 'arrow' %}
+    </span>
   </div>
 
   <div class="card__body">
@@ -51,7 +128,7 @@
     {%- endif -%}
 
     <h3 class="card__title">
-      <a href="{{ product.url }}">{{ product.title }}</a>
+      <a href="{{ product.url }}"><span class="card__t">{{ product.title }}</span></a>
     </h3>
 
     <p class="card__price">

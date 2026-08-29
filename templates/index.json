@@ -12,7 +12,6 @@
         "cta2_url": "/collections/arabic-instruments"
       }
     },
-
     "brands": {
       "type": "brand-marquee",
       "settings": {
@@ -21,27 +20,60 @@
         "bg": "section--shell"
       }
     },
-
     "lookbook": {
       "type": "lookbook",
       "blocks": {
-        "l1": { "type": "look", "settings": {
-          "collection": "oud", "eyebrow": "Made by hand",
-          "title": "The oud", "text": "Eleven instruments from workshops in Egypt, Syria and Lebanon.",
-          "span": "wide" } },
-        "l2": { "type": "look", "settings": {
-          "collection": "darbuka", "eyebrow": "45 in stock",
-          "title": "Darbuka", "text": "No two shells alike.", "span": "narrow" } },
-        "l3": { "type": "look", "settings": {
-          "collection": "accordions", "eyebrow": "Vintage",
-          "title": "Italian & German accordions", "text": "Castelfidardo, Klingenthal, and a Soviet bayan.",
-          "span": "narrow" } },
-        "l4": { "type": "look", "settings": {
-          "collection": "audio-studio", "eyebrow": "For the stage",
-          "title": "Audio & studio", "text": "Microphones, amplifiers, pedals and PA.",
-          "span": "wide" } }
+        "l1": {
+          "type": "look",
+          "settings": {
+            "collection": "oud",
+            "eyebrow": "Made by hand",
+            "title": "The oud",
+            "text": "Eleven instruments from workshops in Egypt, Syria and Lebanon.",
+            "span": "wide",
+            "default_asset": "look-oud.jpg"
+          }
+        },
+        "l2": {
+          "type": "look",
+          "settings": {
+            "collection": "darbuka",
+            "eyebrow": "45 in stock",
+            "title": "Darbuka",
+            "text": "No two shells alike.",
+            "span": "narrow",
+            "default_asset": "look-darbuka.jpg"
+          }
+        },
+        "l3": {
+          "type": "look",
+          "settings": {
+            "collection": "accordions",
+            "eyebrow": "Vintage",
+            "title": "Italian & German accordions",
+            "text": "Castelfidardo, Klingenthal, and a Soviet bayan.",
+            "span": "narrow",
+            "default_asset": "look-accordion.jpg"
+          }
+        },
+        "l4": {
+          "type": "look",
+          "settings": {
+            "collection": "audio-studio",
+            "eyebrow": "For the stage",
+            "title": "Audio & studio",
+            "text": "Microphones, amplifiers, pedals and PA.",
+            "span": "wide",
+            "default_asset": "look-audio.jpg"
+          }
+        }
       },
-      "block_order": ["l1", "l2", "l3", "l4"],
+      "block_order": [
+        "l1",
+        "l2",
+        "l3",
+        "l4"
+      ],
       "settings": {
         "eyebrow": "The catalogue",
         "heading": "Two musical worlds, one shop",
@@ -51,7 +83,6 @@
         "bg": ""
       }
     },
-
     "oud_room": {
       "type": "split-feature",
       "settings": {
@@ -61,25 +92,64 @@
         "heading": "An instrument you choose by ear",
         "text": "<p>Every oud we stock is built by hand, so no two sound the same. A blonde spruce top speaks quickly and cuts through a room. A darker cedar top gives you warmth and a longer decay. The bowl — walnut, mahogany, or ribbed maple — decides how much of that sound comes back at you.</p><p>Come and play them. We will string it to your preference and set the action before it leaves.</p>",
         "image_alt": "A handmade oud on the workbench",
-        "stat_1": "11", "stat_1_label": "Ouds in stock",
-        "stat_2": "3", "stat_2_label": "Countries of origin",
-        "stat_3": "1", "stat_3_label": "Of each, exactly",
+        "stat_1": "11",
+        "stat_1_label": "Ouds in stock",
+        "stat_2": "3",
+        "stat_2_label": "Countries of origin",
+        "stat_3": "1",
+        "stat_3_label": "Of each, exactly",
         "cta_label": "See the ouds",
         "cta_url": "/collections/oud",
-        "bg": "section--shell"
+        "bg": "section--shell",
+        "default_asset": "feature-oud.jpg"
       }
     },
-
     "featured": {
       "type": "featured-products",
       "blocks": {
-        "t1": { "type": "tab", "settings": { "collection": "darbuka", "label": "Darbuka" } },
-        "t2": { "type": "tab", "settings": { "collection": "oud", "label": "Oud" } },
-        "t3": { "type": "tab", "settings": { "collection": "guitars", "label": "Guitars" } },
-        "t4": { "type": "tab", "settings": { "collection": "accordions", "label": "Accordions" } },
-        "t5": { "type": "tab", "settings": { "collection": "microphones", "label": "Microphones" } }
+        "t1": {
+          "type": "tab",
+          "settings": {
+            "collection": "darbuka",
+            "label": "Darbuka"
+          }
+        },
+        "t2": {
+          "type": "tab",
+          "settings": {
+            "collection": "oud",
+            "label": "Oud"
+          }
+        },
+        "t3": {
+          "type": "tab",
+          "settings": {
+            "collection": "guitars-bass",
+            "label": "Guitars"
+          }
+        },
+        "t4": {
+          "type": "tab",
+          "settings": {
+            "collection": "accordions",
+            "label": "Accordions"
+          }
+        },
+        "t5": {
+          "type": "tab",
+          "settings": {
+            "collection": "microphones",
+            "label": "Microphones"
+          }
+        }
       },
-      "block_order": ["t1", "t2", "t3", "t4", "t5"],
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5"
+      ],
       "settings": {
         "eyebrow": "In the shop now",
         "heading": "Featured products",
@@ -89,7 +159,6 @@
         "bg": ""
       }
     },
-
     "bench": {
       "type": "editorial-band",
       "settings": {
@@ -101,10 +170,10 @@
         "cta_url": "/pages/about",
         "align": "left",
         "size": "h-display",
-        "height": "band--tall"
+        "height": "band--tall",
+        "default_asset": "band-bench.jpg"
       }
     },
-
     "percussion": {
       "type": "split-feature",
       "settings": {
@@ -116,18 +185,40 @@
         "image_alt": "Mother-of-pearl inlay on a darbuka shell",
         "cta_label": "Shop percussion",
         "cta_url": "/collections/percussion",
-        "bg": "section--ink"
+        "bg": "section--ink",
+        "default_asset": "feature-percussion.jpg"
       }
     },
-
     "categories": {
       "type": "category-grid",
       "blocks": {
-        "c1": { "type": "category", "settings": { "collection": "guitars", "title": "Guitars & Bass" } },
-        "c2": { "type": "category", "settings": { "collection": "violins-wind", "title": "Violins & Wind" } },
-        "c3": { "type": "category", "settings": { "collection": "accessories", "title": "Strings & Accessories" } }
+        "c1": {
+          "type": "category",
+          "settings": {
+            "collection": "guitars-bass",
+            "title": "Guitars & Bass"
+          }
+        },
+        "c2": {
+          "type": "category",
+          "settings": {
+            "collection": "violins-wind",
+            "title": "Violins & Wind"
+          }
+        },
+        "c3": {
+          "type": "category",
+          "settings": {
+            "collection": "strings-accessories",
+            "title": "Strings & Accessories"
+          }
+        }
       },
-      "block_order": ["c1", "c2", "c3"],
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
       "settings": {
         "eyebrow": "Everything else",
         "heading": "The rest of the shop",
@@ -136,17 +227,52 @@
         "bg": ""
       }
     },
-
     "props": {
       "type": "value-props",
       "blocks": {
-        "p1": { "type": "prop", "settings": { "icon": "tune", "title": "Set up on the bench", "text": "Checked, tuned and adjusted by hand before it leaves the shop." } },
-        "p2": { "type": "prop", "settings": { "icon": "truck", "title": "Delivered in Lebanon", "text": "Packed properly, with a hard case where the instrument needs one." } },
-        "p3": { "type": "prop", "settings": { "icon": "note", "title": "Makers we know", "text": "Ouds and darbukas from workshops in Egypt, Syria and Lebanon." } },
-        "p4": { "type": "prop", "settings": { "icon": "whatsapp", "title": "Ask us anything", "text": "Message the shop on WhatsApp — a player will answer, not a bot." } }
+        "p1": {
+          "type": "prop",
+          "settings": {
+            "icon": "tune",
+            "title": "Set up on the bench",
+            "text": "Checked, tuned and adjusted by hand before it leaves the shop."
+          }
+        },
+        "p2": {
+          "type": "prop",
+          "settings": {
+            "icon": "truck",
+            "title": "Delivered in Lebanon",
+            "text": "Packed properly, with a hard case where the instrument needs one."
+          }
+        },
+        "p3": {
+          "type": "prop",
+          "settings": {
+            "icon": "note",
+            "title": "Makers we know",
+            "text": "Ouds and darbukas from workshops in Egypt, Syria and Lebanon."
+          }
+        },
+        "p4": {
+          "type": "prop",
+          "settings": {
+            "icon": "whatsapp",
+            "title": "Ask us anything",
+            "text": "Message the shop on WhatsApp — a player will answer, not a bot."
+          }
+        }
       },
-      "block_order": ["p1", "p2", "p3", "p4"],
-      "settings": { "heading": "Why buy here", "bg": "section--shell" }
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "heading": "Why buy here",
+        "bg": "section--shell"
+      }
     }
   },
   "order": [
