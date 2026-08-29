@@ -301,6 +301,22 @@
         "bg": "section--ink"
       }
     },
+    "reviews": {
+      "type": "google-reviews",
+      "settings": {
+        "eyebrow": "Old Saida Road, Beirut",
+        "heading": "Come and see us",
+        "link_label": "Read the reviews on Google",
+        "min_rating": 3,
+        "show_map": true,
+        "map_height": 340,
+        "show_photos": false,
+        "photos_label": "Photographed in the shop by customers and by us",
+        "photos_count": 8,
+        "photos_skip": 0,
+        "bg": "section--shell"
+      }
+    },
     "props": {
       "type": "value-props",
       "blocks": {
@@ -347,22 +363,6 @@
         "heading": "Why buy here",
         "bg": "section--shell"
       }
-    },
-    "reviews": {
-      "type": "google-reviews",
-      "settings": {
-        "eyebrow": "Old Saida Road, Beirut",
-        "heading": "Come and see us",
-        "link_label": "Read the reviews on Google",
-        "min_rating": 0,
-        "show_map": true,
-        "map_height": 340,
-        "show_photos": false,
-        "photos_label": "Photographed in the shop by customers and by us",
-        "photos_count": 8,
-        "photos_skip": 0,
-        "bg": ""
-      }
     }
   },
   "order": [
@@ -372,9 +372,9 @@
     "oud_room",
     "featured",
     "bench",
-    "reviews",
     "categories",
     "percussion",
+    "reviews",
     "props"
   ]
 }
