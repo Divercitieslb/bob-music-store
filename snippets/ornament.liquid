@@ -1,4 +1,3 @@
-{%- comment -%} sync-check 2 {%- endcomment -%}
 {%- comment -%}
   Levantine ornament set, lifted from the logo.
     name: 'khatam'   — the eight-point star (rub el hizb) used as a full stop
@@ -11,11 +10,16 @@
 {%- liquid
   assign t = tone | default: 'brass'
   case t
-    when 'brass'   then assign c = '#B0854A'
-    when 'oud'     then assign c = '#6C4824'
-    when 'ink'     then assign c = '#14100C'
-    when 'bone'    then assign c = '#EAD8C6'
-    else                assign c = 'currentColor'
+    when 'brass'
+      assign c = '#B0854A'
+    when 'oud'
+      assign c = '#6C4824'
+    when 'ink'
+      assign c = '#14100C'
+    when 'bone'
+      assign c = '#EAD8C6'
+    else
+      assign c = 'currentColor'
   endcase
 -%}
 

@@ -1,4 +1,3 @@
-{%- comment -%} sync-check 2 {%- endcomment -%}
 {%- comment -%}
   Bob Music Store — inline SVG illustration set.
   Same contract as snippets/ornament.liquid: a case on `name`, a `tone` that maps to a
@@ -41,11 +40,16 @@
 {%- liquid
   assign t = tone | default: 'brass'
   case t
-    when 'brass'   then assign c = '#B0854A'
-    when 'oud'     then assign c = '#6C4824'
-    when 'ink'     then assign c = '#14100C'
-    when 'bone'    then assign c = '#EFE6D6'
-    else                assign c = 'currentColor'
+    when 'brass'
+      assign c = '#B0854A'
+    when 'oud'
+      assign c = '#6C4824'
+    when 'ink'
+      assign c = '#14100C'
+    when 'bone'
+      assign c = '#EFE6D6'
+    else
+      assign c = 'currentColor'
   endcase
   assign u = uid | default: t
 -%}
