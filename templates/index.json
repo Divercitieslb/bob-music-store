@@ -44,7 +44,7 @@
           "type": "look",
           "settings": {
             "default_asset": "look-oud.jpg",
-            "collection": "oud",
+            "collection": "guitars-bass-copy",
             "eyebrow": "Made by hand",
             "title": "The oud",
             "text": "Eleven instruments from workshops in Egypt, Syria and Lebanon.",
@@ -56,7 +56,7 @@
           "type": "look",
           "settings": {
             "default_asset": "look-darbuka.jpg",
-            "collection": "darbuka",
+            "collection": "kids-guitars-copy",
             "eyebrow": "45 in stock",
             "title": "Darbuka",
             "text": "No two shells alike.",
@@ -68,7 +68,7 @@
           "type": "look",
           "settings": {
             "default_asset": "look-accordion.jpg",
-            "collection": "accordions",
+            "collection": "percussion-copy",
             "eyebrow": "Vintage",
             "title": "Italian & German accordions",
             "text": "Castelfidardo, Klingenthal, and a Soviet bayan.",
@@ -80,7 +80,7 @@
           "type": "look",
           "settings": {
             "default_asset": "look-audio.jpg",
-            "collection": "audio-studio",
+            "collection": "violins-wind-copy",
             "eyebrow": "For the stage",
             "title": "Audio & studio",
             "text": "Microphones, amplifiers, pedals and PA.",
