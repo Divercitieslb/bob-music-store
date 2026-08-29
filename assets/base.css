@@ -1447,9 +1447,13 @@ html:not(.js) .nav__item:hover>.mega,
 @media(max-width:759px){
   /* .look was a 240px panel carrying a caption whose scrim inset is a fixed
      4.5rem — 72px of the 240 was padding, so the photograph read as a strip.
-     Give it a real height and pull the inset back on the small end. */
-  .look{min-height:clamp(300px,72vw,420px)}
-  .look__label{padding:3rem 1.15rem 1.15rem}
+     Raising min-height fixed the proportion and made the section the tallest
+     on the page (1,623px for four panels). An aspect ratio fixes both: 16:10
+     is 214px at a 343px content box, a landscape crop reads better on a phone
+     than a near-square one, and the four doors all stay visible — which is why
+     this is not a rail. min-height must be zeroed or it wins over the ratio. */
+  .look{min-height:0;aspect-ratio:16/10}
+  .look__label{padding:2.6rem 1.15rem 1.05rem}
 }
 
 @media(max-width:899px){
