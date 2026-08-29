@@ -6,6 +6,7 @@ import/
 _work/
 scripts/
 preview-*.html
+page-*.html
 
 # local preview server config
 .claude/
