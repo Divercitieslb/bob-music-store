@@ -237,8 +237,8 @@
         "c2": {
           "type": "category",
           "settings": {
-            "collection": "violins-wind",
-            "title": "Violins & Wind",
+            "collection": "strings-accessories-copy",
+            "title": "Acoustic Guitars",
             "subtitle": "",
             "url": ""
           }
@@ -246,8 +246,17 @@
         "c3": {
           "type": "category",
           "settings": {
-            "collection": "strings-accessories",
-            "title": "Strings & Accessories",
+            "collection": "flutes-ney-copy",
+            "title": "Recorders",
+            "subtitle": "",
+            "url": ""
+          }
+        },
+        "category_fp7hEW": {
+          "type": "category",
+          "settings": {
+            "collection": "riq-frame-drums-copy",
+            "title": "Recorders",
             "subtitle": "",
             "url": ""
           }
@@ -256,7 +265,8 @@
       "block_order": [
         "c1",
         "c2",
-        "c3"
+        "c3",
+        "category_fp7hEW"
       ],
       "settings": {
         "eyebrow": "Everything else",
