@@ -717,3 +717,183 @@ p{margin:0 0 1em}
 }
 /* the caption must sit above the pattern */
 .look__label{z-index:3}
+
+/* ==================================================== illustration layer ===
+   snippets/illustration.liquid supplies the artwork; these are the placements.
+   Every one is decorative: aria-hidden in the markup, pointer-events:none here,
+   and none of them may ever sit above content.
+   ========================================================================== */
+
+/* a sound wave under a section heading — the shop sells sound, so the rule
+   under a title is a waveform rather than a plain line */
+.sec-wave{
+  max-width:340px;margin-top:1rem;opacity:.55;pointer-events:none;line-height:0;
+}
+.section-head .sec-wave{margin-top:.9rem}
+.section--ink .sec-wave,.section--espresso .sec-wave{opacity:.7}
+
+/* Levantine tessellation as the ground of an ink panel */
+.has-tessellation{position:relative;isolation:isolate}
+.sec-tess{
+  position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  -webkit-mask-image:radial-gradient(120% 100% at 50% 0%,#000 20%,transparent 78%);
+          mask-image:radial-gradient(120% 100% at 50% 0%,#000 20%,transparent 78%);
+}
+.sec-tess svg{width:100%;height:100%}
+.has-tessellation > .wrap{position:relative;z-index:1}
+
+/* corner flourish framing the copy column of a split feature */
+.split__body{position:relative}
+.split__corner{
+  position:absolute;top:clamp(1rem,3vw,2.2rem);left:clamp(1rem,3vw,2.2rem);
+  opacity:.4;pointer-events:none;line-height:0;
+}
+.split--flip .split__corner{left:auto;right:clamp(1rem,3vw,2.2rem);transform:scaleX(-1)}
+.split__inner{position:relative;z-index:1}
+@media(max-width:899px){.split__corner{display:none}}
+
+/* a large, faint line drawing behind a family section */
+.split--wm{position:relative;isolation:isolate}
+.split__wm{
+  position:absolute;right:-4%;bottom:-8%;z-index:0;opacity:.07;
+  pointer-events:none;line-height:0;
+}
+.split--flip .split__wm{right:auto;left:-4%;transform:scaleX(-1)}
+.section--ink .split__wm,.section--espresso .split__wm{opacity:.12}
+@media(max-width:899px){.split__wm{display:none}}
+
+/* plectrum as the marker on a lookbook eyebrow */
+.look__eyebrow{display:flex;align-items:center;gap:.45rem}
+.look__eyebrow svg{flex:0 0 auto;opacity:.9}
+
+/* a waveform closing the brand marquee */
+.marquee__wave{
+  max-width:min(560px,70vw);margin:.85rem auto 0;opacity:.4;
+  pointer-events:none;line-height:0;
+}
+
+/* --------------------------------------------------------------------------
+   Split-text fallback. motion.js replaces a [data-split] heading's text with
+   .split-word spans and flips .is-in. Until that happens — and forever, if JS
+   never runs — the heading must simply be visible. */
+[data-split]{opacity:1}
+.split-word{display:inline-block}
+
+/* ------------------------------------------------ stat band / scroll story
+   / quote band shared layout. The sections carry their own detail styling in
+   their own <style> blocks; these are the pieces the static preview and the
+   sections both rely on. */
+.statb{position:relative;overflow:hidden;padding-block:clamp(3rem,7vw,5.5rem);color:var(--bone)}
+.statb__media{position:absolute;inset:0;z-index:0}
+.statb__media img{width:100%;height:100%;object-fit:cover;opacity:.16}
+.statb__inner{position:relative;z-index:2}
+.statb__grid{
+  display:flex;align-items:flex-start;justify-content:center;gap:clamp(1rem,3vw,2.5rem);
+  flex-wrap:wrap;margin:0;
+}
+.statb__item{text-align:center;min-width:150px}
+.statb__value{
+  font-family:var(--f-display);font-size:clamp(2.6rem,6vw,4.4rem);font-weight:600;
+  line-height:1;color:var(--brass);
+}
+.statb__label{
+  margin:.6rem 0 0;font-family:var(--f-sans);font-size:.66rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--bone);
+}
+.statb__note{display:block;margin-top:.35rem;letter-spacing:.06em;text-transform:none;
+  font-weight:400;font-size:.78rem;color:#A99C8B}
+.statb__grid > .orn--khatam{margin-top:1.6rem;opacity:.5}
+
+.ss__grid{display:grid;gap:clamp(1.5rem,4vw,3.5rem)}
+@media(min-width:900px){.ss__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.ss__media{position:sticky;top:calc(var(--header-h) + 2rem);display:none}
+@media(min-width:900px){.ss__media{display:block}}
+.ss__media img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.ss__col{display:grid;gap:clamp(2rem,5vw,4rem)}
+.ss__chapter .eyebrow{margin-bottom:.5rem}
+.ss__inline{margin-bottom:1.1rem}
+.ss__inline img{width:100%;aspect-ratio:3/2;object-fit:cover}
+@media(min-width:900px){.ss__inline{display:none}}
+
+.qb__inner{display:grid;gap:clamp(1.5rem,4vw,3rem);align-items:center}
+@media(min-width:900px){.qb__inner{grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr)}}
+.qb__body{text-align:center;max-width:34ch;margin-inline:auto}
+.qb__mark{display:flex;justify-content:center;margin-bottom:1.25rem;opacity:.8}
+.qb__quote{
+  margin:0;font-family:var(--f-display);font-size:clamp(1.6rem,3.2vw,2.5rem);
+  font-weight:500;line-height:1.24;letter-spacing:-.005em;
+}
+.qb__attr{
+  margin:1.35rem 0 0;font-family:var(--f-sans);font-size:.68rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--brass-text);
+}
+.qb__attr span{display:block;margin-top:.4rem;letter-spacing:.06em;text-transform:none;
+  font-weight:400;font-size:.85rem;color:var(--ink-60)}
+.qb__media img{width:100%;aspect-ratio:3/4;object-fit:cover}
+@media(max-width:899px){.qb__media{display:none}}
+
+/* ------------------------------------------------------------ hero, layered
+   Structure lives here, not in the section's scoped <style>. The section
+   still owns the per-instance values (--ov-*, the height case), but if the
+   layout rules only exist scoped to one #shopify-section id then the hero
+   collapses anywhere that id is absent — the stage falls back to
+   position:static and pushes the copy below the fold. Fallbacks are supplied
+   for every custom property so the section is not load-bearing. */
+.hero--cinema{position:relative;isolation:isolate;background:var(--ink);color:var(--bone);overflow:hidden}
+.hero--cinema::after{content:none}
+
+.hero__stage{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero__layer{position:absolute;inset:-20% 0;will-change:transform}
+.hero__layer img{width:100%;height:100%;object-fit:cover;display:block}
+.hero__layer--back img{opacity:.66}
+.hero__layer--fore{inset:auto;bottom:-14%;right:-2%;width:min(46%,620px);opacity:.9}
+.hero__layer--fore img{height:auto;width:100%}
+
+.hero__veil{
+  position:absolute;inset:0;
+  background:linear-gradient(100deg,
+    rgba(20,16,12,var(--ov-near,.94)) 0%,
+    rgba(20,16,12,var(--ov-mid,.68)) 46%,
+    rgba(20,16,12,var(--ov-far,.2)) 100%);
+}
+.hero__vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(120% 90% at 50% 45%,transparent 42%,rgba(20,16,12,.55) 100%);
+}
+.hero__glow{
+  position:absolute;inset:0;mix-blend-mode:screen;
+  background:radial-gradient(46% 52% at 76% 30%,rgba(176,133,74,.24) 0%,transparent 68%);
+}
+
+.hero__orn{position:absolute;pointer-events:none;line-height:0}
+.hero__orn--corner{top:clamp(1rem,3vw,2.4rem);right:clamp(1rem,3vw,2.4rem);transform:scaleX(-1);opacity:.45}
+
+.hero__eyebrow{display:flex;align-items:center;gap:.6rem;color:var(--brass)}
+.hero__title{margin:0}
+
+.hero__cue-wrap{
+  position:absolute;z-index:3;left:0;right:0;bottom:clamp(1.1rem,3vw,2rem);
+  display:flex;padding-inline:var(--pad);pointer-events:none;
+}
+.hero__cue{
+  pointer-events:auto;display:inline-flex;align-items:center;gap:.75rem;
+  font-family:var(--f-sans);font-size:.62rem;font-weight:600;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--sand);
+}
+.hero__cue-rail{
+  position:relative;display:block;width:1px;height:48px;
+  background:linear-gradient(180deg,rgba(198,180,144,.5),rgba(198,180,144,0));
+}
+.hero__cue-dot{
+  position:absolute;left:50%;top:0;width:5px;height:5px;margin-left:-2px;
+  border-radius:50%;background:var(--brass);
+  animation:heroCue 2.6s cubic-bezier(.16,1,.3,1) infinite;
+}
+@keyframes heroCue{
+  0%{transform:translateY(0);opacity:0}
+  18%{opacity:1}
+  72%,100%{transform:translateY(42px);opacity:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero__cue-dot{animation:none;opacity:.8}
+}

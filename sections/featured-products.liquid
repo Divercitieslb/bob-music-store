@@ -7,7 +7,8 @@
     <div class="section-head">
       <div>
         {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
-        <h2 class="h1">{{ section.settings.heading }}</h2>
+        <h2 class="h1" data-split>{{ section.settings.heading }}</h2>
+          <div class="sec-wave">{% render 'illustration', name: 'soundwave-line', tone: 'brass', size: 18 %}</div>
       </div>
       {%- if section.settings.link_url != blank -%}
         <a class="link-arrow" href="{{ section.settings.link_url }}">{{ section.settings.link_label }} {% render 'icon', name: 'arrow' %}</a>
@@ -35,7 +36,7 @@
         JavaScript off sees every tab's products stacked; theme.js hides the
         non-first panels once it has taken over the tab behaviour.
       {%- endcomment -%}
-      <div class="grid grid--products" role="tabpanel" id="panel-{{ block.id }}"
+      <div class="grid grid--products" data-reveal-stagger role="tabpanel" id="panel-{{ block.id }}"
            aria-labelledby="tab-{{ block.id }}" data-panel tabindex="0">
         {%- for product in col.products limit: section.settings.count -%}
           {% render 'product-card', product: product %}

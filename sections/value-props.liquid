@@ -1,4 +1,9 @@
-<section class="section section--tight {{ section.settings.bg }} {% if section.settings.bg contains 'ink' %}tile-bg{% endif %}">
+<section class="section section--tight {{ section.settings.bg }}{% if section.settings.bg contains 'ink' or section.settings.bg contains 'espresso' %} has-tessellation{% endif %}">
+  {%- if section.settings.bg contains 'ink' or section.settings.bg contains 'espresso' -%}
+    <span class="sec-tess" aria-hidden="true">
+      {% render 'illustration', name: 'tile-pattern', tone: 'brass', size: 520, opacity: 0.16 %}
+    </span>
+  {%- endif -%}
   <div class="wrap">
     {%- if section.settings.heading != blank -%}
       <div style="text-align:center;margin-bottom:2.5rem">
@@ -7,9 +12,9 @@
       </div>
     {%- endif -%}
 
-    <div class="grid grid--4">
+    <div class="grid grid--4" data-reveal-stagger>
       {%- for block in section.blocks -%}
-        <div style="text-align:center;padding:1rem .5rem" {{ block.shopify_attributes }}>
+        <div style="text-align:center;padding:1rem .5rem" data-reveal {{ block.shopify_attributes }}>
           <div style="color:var(--brass);display:flex;justify-content:center;margin-bottom:.9rem">
             {% render 'icon', name: block.settings.icon, size: 30 %}
           </div>

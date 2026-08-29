@@ -3,7 +3,7 @@
     <div class="section-head">
       <div>
         {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
-        <h2 class="h1">{{ section.settings.heading }}</h2>
+        <h2 class="h1" data-split>{{ section.settings.heading }}</h2>
         {%- if section.settings.text != blank -%}<p class="lede">{{ section.settings.text }}</p>{%- endif -%}
       </div>
       {%- if section.settings.link_url != blank -%}
@@ -11,7 +11,7 @@
       {%- endif -%}
     </div>
 
-    <div class="grid grid--3">
+    <div class="grid grid--3" data-reveal-stagger>
       {%- for block in section.blocks -%}
         {%- liquid
           assign col = block.settings.collection
@@ -20,7 +20,9 @@
             assign img = col.featured_image
           endif
         -%}
-        <a class="tile" href="{{ col.url | default: block.settings.url | default: '#' }}" {{ block.shopify_attributes }}>
+        {%- comment -%} the block's own url is the override, so it must win {%- endcomment -%}
+        <a class="tile" href="{{ block.settings.url | default: col.url | default: '#' }}"
+           data-reveal {{ block.shopify_attributes }}>
           {%- if img != blank -%}
             <img src="{{ img | image_url: width: 700 }}"
                  srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 700 }} 700w"

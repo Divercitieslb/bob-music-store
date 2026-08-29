@@ -3,7 +3,12 @@
   assign col = section.settings.collection
 -%}
 
-<section class="split {{ section.settings.bg }} {% if flip %}split--flip{% endif %}">
+<section class="split {{ section.settings.bg }} {% if flip %}split--flip{% endif %}{% if section.settings.watermark != blank %} split--wm{% endif %}">
+  {%- if section.settings.watermark != blank -%}
+    <span class="split__wm" aria-hidden="true">
+      {% render 'illustration', name: section.settings.watermark, tone: 'brass', size: 460 %}
+    </span>
+  {%- endif -%}
   <div class="split__media">
     {%- if section.settings.image != blank -%}
       <img src="{{ section.settings.image | image_url: width: 1800 }}"
@@ -23,11 +28,14 @@
   </div>
 
   <div class="split__body">
-    <div class="split__inner">
+    <span class="split__corner" aria-hidden="true">
+      {% render 'illustration', name: 'arabesque-corner', tone: 'brass', size: 92 %}
+    </span>
+    <div class="split__inner" data-reveal-stagger>
       {%- if section.settings.eyebrow != blank -%}
         <p class="eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
-      <h2 class="h1">{{ section.settings.heading }}</h2>
+      <h2 class="h1" data-split>{{ section.settings.heading }}</h2>
       <div style="margin:1.35rem 0 1.5rem">
         {% render 'ornament', name: 'divider', tone: 'brass' %}
       </div>
@@ -75,6 +83,13 @@
     { "type": "text", "id": "image_alt", "label": "Image alt text" },
     { "type": "collection", "id": "collection", "label": "Collection", "info": "Sets the button link." },
     { "type": "checkbox", "id": "flip", "label": "Image on the right", "default": false },
+    { "type": "select", "id": "watermark", "label": "Background line drawing", "default": "",
+      "options": [
+        { "value": "", "label": "None" },
+        { "value": "oud-outline", "label": "Oud" },
+        { "value": "darbuka-outline", "label": "Darbuka" },
+        { "value": "rosette-draw", "label": "Oud rosette" }
+      ] },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "The Oud Room" },
     { "type": "richtext", "id": "text", "label": "Text" },
