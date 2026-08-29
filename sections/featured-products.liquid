@@ -40,7 +40,7 @@
         author-origin [hidden] rule, and restores every panel when .js is absent
         from <html> — so a visitor without JavaScript still reaches every tab.
       {%- endcomment -%}
-      <div class="grid grid--products" data-reveal-stagger role="tabpanel" id="panel-{{ block.id }}"
+      <div class="grid grid--products rail" data-reveal-stagger role="tabpanel" id="panel-{{ block.id }}"
            aria-labelledby="tab-{{ block.id }}" data-panel tabindex="0"
            {% unless forloop.first %}hidden{% endunless %}>
         {%- for product in col.products limit: section.settings.count -%}

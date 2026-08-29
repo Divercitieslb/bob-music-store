@@ -237,11 +237,17 @@ p{margin:0 0 1em}
   background:var(--ink);transform:scaleX(0);transform-origin:left;
   transition:transform var(--t-fast);
 }
-.nav__item:hover>.nav__link::after,
+/* .is-open is written by theme.js initMega(), which owns the open/close timing
+   so that crossing the second nav row on the way to a first-row panel does not
+   steal it. Plain :hover stays as the no-JS path — hence html:not(.js). */
+html:not(.js) .nav__item:hover>.nav__link::after,
+.nav__item.is-open>.nav__link::after,
 .nav__item:focus-within>.nav__link::after,
 .nav__link[aria-current=page]::after{transform:scaleX(1)}
 .nav__chev{transition:transform var(--t-fast)}
-.nav__item:hover .nav__chev{transform:rotate(180deg)}
+html:not(.js) .nav__item:hover .nav__chev,
+.nav__item.is-open .nav__chev,
+.nav__item:focus-within .nav__chev{transform:rotate(180deg)}
 
 .mega{
   position:absolute;left:0;right:0;top:100%;background:var(--paper);
@@ -251,7 +257,9 @@ p{margin:0 0 1em}
   transition:opacity var(--t-fast),transform var(--t-fast),visibility var(--t-fast);
   z-index:70;
 }
-.nav__item:hover>.mega,.nav__item:focus-within>.mega{opacity:1;visibility:visible;transform:none}
+html:not(.js) .nav__item:hover>.mega,
+.nav__item.is-open>.mega,
+.nav__item:focus-within>.mega{opacity:1;visibility:visible;transform:none}
 .mega__inner{
   max-width:var(--w-max);margin-inline:auto;padding:2.5rem var(--pad) 3rem;
   display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:2rem 2.5rem;
@@ -1178,3 +1186,327 @@ p{margin:0 0 1em}
   font-size:.85rem;line-height:1.6;color:var(--ink-80);
 }
 .contact__hiw{margin-top:1.5rem}
+
+/* ==========================================================================
+   RAIL — the mobile carousel primitive
+   ==========================================================================
+   Add `rail` alongside `grid` on an existing grid. Below 700px that grid
+   re-flows into one scroll-snapped row bled to the screen edges; at 700px and
+   above every rule here switches off and the grid is byte-for-byte what it is
+   today. 700px is not a new breakpoint — it is the handoff .grid--products
+   already uses above.
+
+   THE RAIL STAYS A GRID. That is load-bearing, not a style preference. Line 68
+   restores no-JS tab panels with `display:grid !important`, and
+   featured-products — the only host of this primitive — is the only section
+   carrying data-panel. A rail that declared display:flex would silently stop
+   being a rail for every visitor with JavaScript off, on that one section, with
+   no error. Keeping display:grid means that rule and this one want the same
+   thing, and grid-auto-flow/grid-auto-columns apply underneath it. Grid also
+   keeps align-items:stretch (which .card{height:100%} relies on), needs no
+   child width selector because .grid already supplies the gap, and — unlike a
+   flex scroll container in older WebKit/Blink — counts its inline-end padding
+   in the scrollable overflow region, so the last card is never flush.
+
+   Selectors are .grid.rail (0,2,0) rather than a bare .rail (0,1,0) on purpose:
+   .grid--products / --3 / --4 are all (0,1,0), so a bare .rail would win or
+   lose on source order alone. This block is therefore safe anywhere in the
+   file. Do not simplify the selectors.
+
+   NO JAVASCRIPT. Nothing is measured, so there is nothing to re-initialise
+   after shopify:section:load and nothing to break when theme.js sets `hidden`
+   on a panel whose clientWidth is consequently 0. shopify:block:select needs no
+   handler here because featured-products' blocks are the TABS — a selected
+   block is a .chip in the .chiprow, never a child of the rail.
+   ========================================================================== */
+
+@media(max-width:699px){
+
+  .grid.rail{
+    /* The one knob. 68vw holds roughly a third of the next card on screen at
+       every phone width from 320 to 559 (peek stays between 0.32 and 0.37 of a
+       card) because both the card and the peek scale with vw, and the only
+       fixed terms — --pad and --gap — are small. The affordance is the
+       FRACTION of the next card, which is why this is vw and not px. Override
+       per section by redeclaring --rail-card at (0,3,0) or higher. */
+    --rail-card:68vw;
+
+    /* grid-template-columns MUST be cleared, not merely overridden:
+       .grid--products / --3 / --4 each set an explicit template, and explicit
+       tracks are filled before grid-auto-flow:column is ever consulted. */
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:var(--rail-card);
+
+    /* Edge-to-edge bleed. The rail is a direct child of .wrap, which is padded
+       by --pad; pulling that back out as negative margin puts the rail's border
+       box on the screen edges, and re-adding it as padding puts the first card
+       back on the same vertical as the <h2> above it. The trailing side gets
+       the same, so the last card never butts the glass. The rail's border box
+       is never wider than .wrap's, so this cannot create page-level horizontal
+       scroll — which matters, because line 53 records why body must not be
+       given overflow-x:hidden to mop one up. */
+    margin-inline:calc(var(--pad) * -1);
+    padding-inline:var(--pad);
+
+    /* The focus guarantee. When Tab reaches a card that is off-rail, the
+       browser scrolls this container to bring it in; scroll-padding lands it
+       --pad inside the scrollport rather than flush, so its brass ring is never
+       under the clip edge. Same value as the padding, so focus-scroll and
+       scroll-snap-align:start rest on the same line and never fight. */
+    scroll-padding-inline:var(--pad);
+
+    /* Ink clearance on the block axis. overflow-x:auto computes overflow-y to
+       auto, and a scroll container clips ink at its padding box. Two things
+       paint outside a card: the 2px OUTER box-shadow on
+       .card:has(a:focus-visible) .card__media, and :focus-visible's 2px outline
+       at 3px offset on the title, which clears .card__body's .2rem inline
+       padding by ~1.8px. 5px is the requirement; 8px is the round number above
+       it. No negative block margin: it would have to collapse against
+       .section-head's bottom margin to come out even, and that is arithmetic
+       the next editor should not have to re-derive. Costs 16px, against ~1,100
+       saved. */
+    padding-block:.5rem;
+
+    overflow-x:auto;
+    /* Stated, not left to compute, so a future transform on a child can never
+       turn this into a nested vertical scroller inside the page scroll. */
+    overflow-y:hidden;
+
+    scroll-snap-type:x mandatory;
+    /* Inline axis only. Stops a right-swipe at the start of the rail from
+       firing the browser's back gesture; vertical scroll still chains to the
+       page, so the rail never traps it. Never the shorthand. */
+    overscroll-behavior-x:contain;
+
+    /* A persistent scroll indicator, because on touch the default overlay bar
+       is invisible at rest — the case .pdp__thumbs's lone scrollbar-width:thin
+       does not cover. Firefox and Chromium 121+ take the standard properties;
+       iOS and macOS Safari ignore those and take the -webkit- pseudos below,
+       where -webkit-appearance:none is what makes the bar permanent. The two
+       are not redundant backups for each other, which is why the peek — not
+       the bar — is the primary affordance. --oud on --rule is 5.8:1, well past
+       the 3:1 non-text minimum (--rule-strong would have been 1.6:1). */
+    scrollbar-width:thin;
+    scrollbar-color:var(--oud) var(--rule);
+  }
+
+  .grid.rail::-webkit-scrollbar{height:4px;-webkit-appearance:none}
+  .grid.rail::-webkit-scrollbar-track{background:var(--rule)}
+  .grid.rail::-webkit-scrollbar-thumb{background:var(--oud)}
+
+  /* the hairline palette inverts on dark grounds */
+  .section--ink .grid.rail,
+  .section--espresso .grid.rail{scrollbar-color:var(--sand) rgba(239,230,214,.18)}
+  .section--ink .grid.rail::-webkit-scrollbar-track,
+  .section--espresso .grid.rail::-webkit-scrollbar-track{background:rgba(239,230,214,.18)}
+  .section--ink .grid.rail::-webkit-scrollbar-thumb,
+  .section--espresso .grid.rail::-webkit-scrollbar-thumb{background:var(--sand)}
+
+  .grid.rail > *{scroll-snap-align:start}
+
+  /* THE REVEAL, and why this one rule is the whole answer to it.
+
+     motion.js's observer is created with root:null, and per spec the
+     intersection rect is clipped by EVERY intervening ancestor — including this
+     scroll container. A card sitting off-axis therefore never intersects: it
+     would hold at opacity:0 until the visitor swiped it in or the 4s failsafe
+     fired. That is a rail which looks empty past card two above the fold, and
+     one that has already failsafed to visible below it — two behaviours for one
+     component, neither chosen.
+
+     The transform is worse than cosmetic. Scrollable overflow and the
+     scroll-snap area are both measured from descendants' TRANSFORMED border
+     boxes, so translate3d(0,34px,0) on unrevealed cards adds phantom vertical
+     scroll inside the rail, and the "right"/"scale" variants would shift the
+     horizontal snap positions so the first snap after load lands wrong and then
+     self-corrects.
+
+     `animation:none` is the load-bearing line in this rule, and the failsafe it
+     cancels is CSS, not JS: motion.css:38 ships
+     `animation:bm-failsafe 1ms linear 4s forwards` with the keyframe at
+     motion.css:52. Grepping motion.js for it finds nothing, so it is easy to
+     conclude the hazard is "opacity 0 forever" and that this line is defensive
+     padding. It is neither — without it the rail pops four seconds after load,
+     with no transition, every time.
+
+     Both vanish by landing the cards immediately, inside the rail only.
+     transition:none is what neutralises the inline transition-delay that
+     data-reveal-stagger writes onto every child: the inline declaration still
+     wins the delay longhand, but with transition-property:none there is nothing
+     left to delay. So the attribute stays on the container, untouched.
+
+     (0,4,1) outranks html.js [data-reveal] (0,2,1) and html.js
+     [data-reveal].is-in (0,3,1) outright — no !important, and no dependence on
+     which stylesheet loads last. Scoped to this media query on purpose: above
+     700px the desktop stagger is exactly what ships today. Rotating a phone to
+     landscape crosses back above 700px safely — cards that fired keep .is-in,
+     cards still under observation are now in a grid and reveal normally, and
+     the failsafe covers the rest. Nothing can end up permanently invisible. */
+  html.js .grid.rail [data-reveal]{
+    opacity:1;
+    transform:none;
+    animation:none;
+    transition:none;
+    will-change:auto;
+  }
+
+  /* An empty tab is a single child; let it fill the row rather than become a
+     68vw column with the message wrapped four lines deep. Live, not
+     theoretical: the catalogue is mid-import and tabs point at collections that
+     are still empty. */
+  .grid.rail > .tab-empty{grid-column:auto}
+  .grid.rail:has(> .tab-empty){
+    grid-auto-flow:row;
+    grid-auto-columns:auto;
+    /* clip, not visible: this branch keeps the negative margin, so containment
+       must not depend on what the branch happens to hold. clip is the only
+       overflow value that lets the other axis stay visible, so a long message
+       is still never cut off. */
+    overflow-x:clip;
+    overflow-y:visible;
+  }
+}
+
+/* 560–699px: two cards fit comfortably, and holding 68vw would draw a 475px
+   card at the top of the range. Equal specificity to the block above, so source
+   order decides — this must stay after it. */
+@media(min-width:560px) and (max-width:699px){
+  .grid.rail{--rail-card:40vw}
+}
+
+/* Mandatory snap parks the row somewhere the visitor did not choose, which is a
+   motion complaint even though no author animation is involved. Proximity still
+   holds the marks but lets a deliberate half-scroll stay put. Nothing here ever
+   sets scroll-behavior:smooth, so there is nothing else to undo, and motion.css
+   already forces [data-reveal] to its finished state. Restated in this block
+   rather than trusted to the global duration kill, per motion.css's house
+   rule — a .01ms duration cancels neither a snap nor a scroll behaviour. */
+@media(max-width:699px) and (prefers-reduced-motion:reduce){
+  .grid.rail{scroll-snap-type:x proximity}
+}
+
+/* --------------------------------------------------------------------------
+   .tab-empty had no rule anywhere in the theme — not base.css, not motion.css,
+   not any section's inline <style>. It needs one for the desktop grid whether
+   or not a rail is involved; the :has() reset above is what keeps it honest
+   inside one, where grid-column:1/-1 would mean something else entirely.
+   -------------------------------------------------------------------------- */
+.tab-empty{
+  grid-column:1/-1;
+  padding-block:clamp(2rem,6vw,3.5rem);
+  text-align:center;
+  color:var(--ink-60);
+}
+
+/* --------------------------------------------------------------------------
+   THE SECTIONS THAT GET A DENSER GRID INSTEAD OF A RAIL
+
+   Four departments (category-grid, 4 blocks live) and 24 collections (the
+   collections index) are navigation, not a taster. A rail there would put half
+   the store's top-level doors behind a swipe to save less height than a free
+   second column costs nothing to add. .grid--3 is minmax(260px,1fr), so at a
+   343px content box it is ONE column on every phone that exists — 1,998px for
+   four links, and ~10,700px for the index.
+
+   Both are made of .tile, so one rule serves both; :has() keeps main-blog's
+   article cards — the third .grid--3 consumer — out of it. :has() is already a
+   shipped dependency of this theme (snippets/product-card.liquid uses
+   .card:has(a:focus-visible)), and where it is unsupported this simply does not
+   apply and today's single column is what renders.
+
+   .tile__label was sized for a 260px desktop tile; at 163.5px "Guitars & Bass"
+   wraps to three 26px lines and the scrim swallows the tile, so the type steps
+   down in the same block or the fix looks like a break.
+   -------------------------------------------------------------------------- */
+@media(max-width:699px){
+  .grid--3:has(> .tile){grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid--3:has(> .tile) .tile{aspect-ratio:1}
+  .grid--3:has(> .tile) .tile img{padding:8% 8% 18%}
+  .grid--3:has(> .tile) .tile__label{padding:.9rem .8rem .75rem}
+  .grid--3:has(> .tile) .tile__label h3{font-size:1.05rem}
+  .grid--3:has(> .tile) .tile__label span{font-size:.58rem}
+}
+
+/* --------------------------------------------------------------------------
+   .link-arrow is the rail's escape hatch, so it has to be a real target.
+   It computes to 22.4px today (.72rem in a 1.6 line box = 18.4px, plus
+   .25rem padding-bottom), under WCAG 2.5.8 AA's 24px minimum. This is the
+   "View all" that answers the eight products the rail keeps behind a swipe, so
+   it matters more here than it did before. Equal specificity to the rule above,
+   appended later, so it wins on order; .section-head{align-items:flex-end}
+   keeps the baseline alignment unchanged. New height: 31.2px.
+   -------------------------------------------------------------------------- */
+.link-arrow{padding-block:.5rem .3rem}
+/* ===========================================================================
+   MOBILE DENSITY — the sections that get tighter rather than a rail
+   Rails are for browsable peer items. These are trust copy, read-through prose
+   and top-level doors: putting them behind a swipe costs more than the height
+   it saves. They get their proportions fixed instead. Measured at 375px.
+   =========================================================================== */
+@media(max-width:759px){
+  /* .look was a 240px panel carrying a caption whose scrim inset is a fixed
+     4.5rem — 72px of the 240 was padding, so the photograph read as a strip.
+     Give it a real height and pull the inset back on the small end. */
+  .look{min-height:clamp(300px,72vw,420px)}
+  .look__label{padding:3rem 1.15rem 1.15rem}
+}
+
+@media(max-width:899px){
+  /* The 52vw term is dead below 577px, so both split features drew their
+     photograph at a flat 300px while the type beside them ran to 700. */
+  .split__media{min-height:clamp(300px,62vw,520px)}
+
+  /* The band's scrim is a 100deg sweep, which is right when the type sits in a
+     left-hand column and wrong when it runs full width — it cleared to 20%
+     black under the last line. Vertical below 900px, where it always does. */
+  .band::after,
+  .band:has(.band__inner--right)::after{
+    background:linear-gradient(180deg,
+      rgba(20,16,12,.35) 0%,
+      rgba(20,16,12,.75) 55%,
+      rgba(20,16,12,.92) 100%);
+  }
+}
+
+/* motion.js parallaxes .band__media, which is inset:0 — it has no headroom, so
+   the translate exposed the band's own background at one edge. The hero solves
+   it the same way. ~84px of slack each way on a 420px band against ~73px of
+   travel. */
+.band__media{inset:-20% 0}
+
+/* Two columns of product card down to 300px. auto-fill with a flat 155px floor
+   dropped to a single column at 320px, which is the narrowest phone still in
+   use and the widest card anyone wants. The rail overrides the template
+   entirely below 700px, so this governs the collection and search grids. */
+.grid--products{grid-template-columns:repeat(auto-fill,minmax(clamp(130px,44vw,240px),1fr))}
+
+/* Two full-bleed image blocks landing back to back read as one long smear.
+   The homepage order separates them, but a merchant reordering sections in the
+   editor can put them together again — a brass hairline makes the join
+   deliberate rather than accidental. */
+.shopify-section:has(> .band) + .shopify-section:has(> .split) > .split,
+.shopify-section:has(> .split) + .shopify-section:has(> .band) > .band,
+.shopify-section:has(> .band) + .shopify-section:has(> .band) > .band{
+  border-top:1px solid rgba(198,180,144,.34);
+}
+
+/* --- value props ----------------------------------------------------------
+   Four trust signals. Two columns on a phone rather than four stacked cards —
+   never a rail: their whole job is to be read without being asked for.
+   -------------------------------------------------------------------------- */
+.props__head{text-align:center;margin-bottom:clamp(1.75rem,4vw,2.5rem)}
+.props__rule{margin-top:1rem}
+.prop{text-align:center;padding:1rem .5rem}
+.prop__icon{color:var(--brass);display:flex;justify-content:center;margin-bottom:.9rem}
+.prop__title{font-size:1.25rem;margin-bottom:.45rem}
+.prop__text{font-size:.92rem;color:var(--ink-60);margin:0}
+.section--ink .prop__text,.section--espresso .prop__text{color:#CFC3B0}
+
+@media(max-width:699px){
+  .grid--4:has(> .prop){grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem .75rem}
+  .prop{padding:.35rem .25rem}
+  .prop__icon{margin-bottom:.55rem}
+  .prop__title{font-size:1.02rem;line-height:1.25}
+  .prop__text{font-size:.85rem;line-height:1.55}
+}

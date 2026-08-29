@@ -232,6 +232,98 @@
     });
   }
 
+  /* ------------------------------------------------------------ mega menu --
+     The nav wraps onto two rows, and the panel opens below BOTH of them. So
+     travelling from a first-row trigger down to its own panel drags the pointer
+     straight across the second row — every item it brushes past used to steal
+     the panel on the way, and the swap between them is the flinch.
+
+     Hover alone cannot express "I am on my way to the panel". This can: opening
+     is delayed, and the delay is much longer when a panel is already open than
+     when none is, so a pass-through never wins but resting on an item still
+     does. Reaching the open panel cancels the pending switch outright.
+
+     Closing is on a grace timer and only when the pointer leaves the whole nav.
+     The panel is a DOM descendant of .nav, so moving into it never fires the
+     leave at all — which is what removes the flinch.
+
+     CSS keeps :focus-within untouched for keyboard use, and keeps the plain
+     :hover rules alive under html:not(.js), so with JS off the menu behaves
+     exactly as it did.
+     ---------------------------------------------------------------------- */
+  var megaWired = false;
+
+  function initMega() {
+    if (megaWired) return;
+    var nav = $('.header__nav .nav');
+    if (!nav) return;
+
+    var items = $$('.nav__item', nav).filter(function (li) {
+      return li.querySelector('.mega');
+    });
+    if (!items.length) return;
+    megaWired = true;
+
+    // Resting on an item opens it. Brushing past one on the way to an open
+    // panel does not: 260ms is longer than a deliberate downward sweep spends
+    // over any single row-two item, and shorter than an intent to stop.
+    var OPEN = 90, SWITCH = 260, CLOSE = 200;
+    var fine = window.matchMedia('(hover:hover) and (pointer:fine)');
+    var open = null, timer = null;
+
+    function clear() { if (timer) { clearTimeout(timer); timer = null; } }
+
+    function show(li) {
+      clear();
+      if (open === li) return;
+      if (open) open.classList.remove('is-open');
+      open = li;
+      if (li) li.classList.add('is-open');
+    }
+
+    function hide() {
+      clear();
+      if (open) { open.classList.remove('is-open'); open = null; }
+    }
+
+    function mouse(e) {
+      // pointerenter also fires for touch, where a tap is a navigation and an
+      // opened panel would sit under the finger.
+      return fine.matches && (!e.pointerType || e.pointerType === 'mouse');
+    }
+
+    items.forEach(function (li) {
+      li.addEventListener('pointerenter', function (e) {
+        if (!mouse(e)) return;
+        clear();
+        if (open === li) return;
+        timer = setTimeout(function () { show(li); }, open ? SWITCH : OPEN);
+      });
+
+      li.querySelector('.mega').addEventListener('pointerenter', function (e) {
+        // Arrived at the panel — whatever the pointer crossed to get here does
+        // not get to take it.
+        if (mouse(e) && open === li) clear();
+      });
+    });
+
+    nav.addEventListener('pointerenter', clear);
+    nav.addEventListener('pointerleave', function (e) {
+      if (!mouse(e)) return;
+      clear();
+      timer = setTimeout(hide, CLOSE);
+    });
+
+    // A click is a navigation; leave nothing hanging over the new page during
+    // the request, and give Escape the usual way out.
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a')) hide();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' || e.key === 'Esc') hide();
+    });
+  }
+
   function initSection(root) {
     initTabs(root);
     initGallery(root);
@@ -258,6 +350,7 @@
   /* ---------------------------------------------------------------- boot -- */
   function boot() {
     initSection(document);
+    initMega();
     publishHeaderHeight();
   }
 
@@ -272,6 +365,9 @@
   // the theme editor replaces a section's DOM wholesale on every edit
   document.addEventListener('shopify:section:load', function (e) {
     initSection(e.target);
+    // the header is a section too, and the editor replaces its DOM wholesale
+    megaWired = false;
+    initMega();
     publishHeaderHeight();
   });
   document.addEventListener('shopify:section:unload', function () {

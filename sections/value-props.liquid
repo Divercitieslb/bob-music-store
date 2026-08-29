@@ -6,22 +6,25 @@
   {%- endif -%}
   <div class="wrap">
     {%- if section.settings.heading != blank -%}
-      <div style="text-align:center;margin-bottom:2.5rem">
+      <div class="props__head">
         <h2 class="h2">{{ section.settings.heading }}</h2>
-        <div style="margin-top:1rem">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
+        <div class="props__rule">{% render 'ornament', name: 'divider', tone: 'brass' %}</div>
       </div>
     {%- endif -%}
 
     <div class="grid grid--4" data-reveal-stagger>
+      {%- comment -%}
+        Real classes, not inline styles. An inline declaration cannot be
+        overridden from a stylesheet without !important, so while these lived in
+        the style attribute the section could not be made denser on a phone at
+        all — it stacked into 824px of one-column trust copy and there was no
+        selector that could reach it.
+      {%- endcomment -%}
       {%- for block in section.blocks -%}
-        <div style="text-align:center;padding:1rem .5rem" data-reveal {{ block.shopify_attributes }}>
-          <div style="color:var(--brass);display:flex;justify-content:center;margin-bottom:.9rem">
-            {% render 'icon', name: block.settings.icon, size: 30 %}
-          </div>
-          <h3 class="h3" style="font-size:1.25rem;margin-bottom:.45rem">{{ block.settings.title }}</h3>
-          <p style="font-size:.92rem;color:{% if section.settings.bg contains 'ink' %}#CFC3B0{% else %}var(--ink-60){% endif %};margin:0">
-            {{ block.settings.text }}
-          </p>
+        <div class="prop" data-reveal {{ block.shopify_attributes }}>
+          <div class="prop__icon">{% render 'icon', name: block.settings.icon, size: 30 %}</div>
+          <h3 class="h3 prop__title">{{ block.settings.title }}</h3>
+          <p class="prop__text">{{ block.settings.text }}</p>
         </div>
       {%- endfor -%}
     </div>

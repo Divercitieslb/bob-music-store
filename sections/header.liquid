@@ -108,7 +108,8 @@
     transform:translateY(-14px);
     transition:opacity .34s var(--e-out),transform .44s var(--e-out),visibility .44s var(--e-out);
   }
-  .nav__item:hover>.mega,
+  html:not(.js) .nav__item:hover>.mega,
+  .nav__item.is-open>.mega,
   .nav__item:focus-within>.mega{transform:none}
 
   /* brass rule that wipes across the top edge of the open panel */
@@ -118,7 +119,8 @@
     transform:scaleX(0);transform-origin:center;
     transition:transform .6s var(--e-out);
   }
-  .nav__item:hover>.mega::before,
+  html:not(.js) .nav__item:hover>.mega::before,
+  .nav__item.is-open>.mega::before,
   .nav__item:focus-within>.mega::before{transform:scaleX(1)}
 
   /* columns stagger in; they close together (delay lives only in the open rule) */
@@ -126,8 +128,10 @@
     opacity:0;transform:translateY(15px);
     transition:opacity .5s var(--e-out),transform .5s var(--e-out);
   }
-  .nav__item:hover>.mega .mega__col,
-  .nav__item:hover>.mega .mega__feature,
+  html:not(.js) .nav__item:hover>.mega .mega__col,
+  html:not(.js) .nav__item:hover>.mega .mega__feature,
+  .nav__item.is-open>.mega .mega__col,
+  .nav__item.is-open>.mega .mega__feature,
   .nav__item:focus-within>.mega .mega__col,
   .nav__item:focus-within>.mega .mega__feature{
     opacity:1;transform:none;
