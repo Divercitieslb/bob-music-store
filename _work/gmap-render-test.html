@@ -1,6 +1,26 @@
 <!doctype html><html lang="en" class="js"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Map card — render test</title>
+<!--
+  Proves snippets/google-map.liquid renders without any API key.
+
+  WHAT WAS TESTED AND WHAT IT SHOWED
+    q=place_id:ChIJ…&output=embed  -> a WORLD MAP. The legacy embed route does
+                                      not resolve place_id. Do not "improve" the
+                                      snippet by switching the query to it.
+    q=<name and address>           -> resolves. Google draws the card itself:
+                                      "Bob music · Old Saida Rd, Lebanon ·
+                                      5.0 ★ (18)", Directions, Open in Maps.
+    plus- vs percent-encoded spaces -> both resolve; Liquid's url_encode emits
+                                      plus, which is fine.
+
+  Confirmed independently with curl: the embed HTML contains "Bob music",
+  "Old Saida Rd", the Knowledge Graph id /g/11hdpyb6r3 and the coordinates
+  33.8053851, 35.4985436.
+
+  If the tiles come back grey here, check the IP before the code — Google
+  throttles repeated automated loads and serves the chrome without the tiles.
+-->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Karla:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/base.css">
 </head><body>
