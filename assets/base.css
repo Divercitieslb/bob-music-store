@@ -64,8 +64,10 @@ body{
 
 /* Except with JavaScript off, where the panels are the only way to reach the
    other tabs' products. layout/theme.liquid adds .js to <html> from the head,
-   before first paint, so the JS-on path never flashes all five. */
-html:not(.js) [data-panel][hidden]{display:grid !important}
+   before first paint, so the JS-on path never flashes all of them.
+   block, not grid: the panel is a wrapper around the grid and its "view all"
+   line, not the grid itself. */
+html:not(.js) [data-panel][hidden]{display:block !important}
 
 img,svg,video{max-width:100%;height:auto;display:block}
 a{color:inherit;text-decoration:none}
@@ -1539,3 +1541,23 @@ html:not(.js) .nav__item:hover>.mega,
   [role=tablist].chiprow::-webkit-scrollbar{display:none}
   [role=tablist].chiprow > .chip{flex:0 0 auto;scroll-snap-align:start}
 }
+
+/* --- "view all in <collection>" under each tab ----------------------------
+   Ten products out of forty-five reads as the whole category unless the page
+   says otherwise, and the mobile rail makes that worse — what you can see at
+   rest is two. Sits outside the grid so it is never dealt a column of its own.
+   The panel wrapper carries no padding, so the rail inside it still measures
+   against .wrap's content box and the edge-to-edge bleed is unchanged.
+   -------------------------------------------------------------------------- */
+.tabmore{
+  display:flex;flex-direction:column;align-items:center;gap:.8rem;
+  margin-top:clamp(1.5rem,3.2vw,2.4rem);
+}
+.tabmore__count{
+  margin:0;font-family:var(--f-sans);font-size:.64rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ink-60);
+}
+.tabmore__count .num{font-family:var(--f-mono);letter-spacing:.02em;color:var(--ink)}
+.tabmore__btn{display:inline-flex;align-items:center;gap:.6rem}
+.tabmore__btn svg{transition:transform var(--t-fast)}
+.tabmore__btn:hover svg{transform:translateX(3px)}

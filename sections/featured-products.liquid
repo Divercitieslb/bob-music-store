@@ -30,8 +30,16 @@
     {%- endif -%}
 
     {%- for block in tabs -%}
-      {%- assign col = block.settings.collection -%}
+      {%- liquid
+        assign col = block.settings.collection
+        assign tab_label = block.settings.label | default: col.title
+        assign shown = section.settings.count | at_most: col.products_count
+      -%}
       {%- comment -%}
+        The panel is a wrapper, not the grid itself, so the "view all" line can
+        sit BELOW the products without becoming a grid item — inside the rail it
+        would have been dealt a 68vw column of its own between two cards.
+
         Non-first panels ship hidden so the correct one is on screen at first
         paint. Waiting for theme.js to collapse them meant every tab's products
         rendered first and the page jumped; and while `p.hidden = true` was
@@ -40,27 +48,52 @@
         author-origin [hidden] rule, and restores every panel when .js is absent
         from <html> — so a visitor without JavaScript still reaches every tab.
       {%- endcomment -%}
-      <div class="grid grid--products rail" data-reveal-stagger role="tabpanel" id="panel-{{ block.id }}"
+      <div class="tabpanel" role="tabpanel" id="panel-{{ block.id }}"
            aria-labelledby="tab-{{ block.id }}" data-panel tabindex="0"
            {% unless forloop.first %}hidden{% endunless %}>
-        {%- for product in col.products limit: section.settings.count -%}
-          {% render 'product-card', product: product %}
-        {%- else -%}
-          {%- comment -%}
-            No placeholder cards here. Rendering fake "Example product" tiles put
-            invented products on a live storefront whenever a collection setting
-            did not resolve — which is exactly when the merchant most needs to
-            see that something is wrong.
-          {%- endcomment -%}
-          <div class="tab-empty">
-            <p class="mono">Nothing in this collection yet</p>
-            {%- if request.design_mode -%}
-              <p>Pick a collection for this tab in the sidebar. If you have chosen
-                one and it is still empty, its handle may have changed — check
-                Products &rarr; Collections.</p>
+
+        <div class="grid grid--products rail" data-reveal-stagger>
+          {%- for product in col.products limit: section.settings.count -%}
+            {% render 'product-card', product: product %}
+          {%- else -%}
+            {%- comment -%}
+              No placeholder cards here. Rendering fake "Example product" tiles put
+              invented products on a live storefront whenever a collection setting
+              did not resolve — which is exactly when the merchant most needs to
+              see that something is wrong.
+            {%- endcomment -%}
+            <div class="tab-empty">
+              <p class="mono">Nothing in this collection yet</p>
+              {%- if request.design_mode -%}
+                <p>Pick a collection for this tab in the sidebar. If you have chosen
+                  one and it is still empty, its handle may have changed — check
+                  Products &rarr; Collections.</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- comment -%}
+          Ten products out of forty-five reads as the whole category unless the
+          page says otherwise, and on a phone the rail makes that worse — what
+          you can see is two. The count is stated plainly and the way out goes
+          to THIS collection, not to /collections/all like the link in the
+          section head.
+        {%- endcomment -%}
+        {%- if col != blank and col.products_count > 0 -%}
+          <div class="tabmore">
+            {%- if col.products_count > shown -%}
+              <p class="tabmore__count">
+                Showing <span class="num">{{ shown }}</span> of
+                <span class="num">{{ col.products_count }}</span>
+              </p>
             {%- endif -%}
+            <a class="btn btn--ghost tabmore__btn" href="{{ col.url }}">
+              View all in {{ tab_label }} {% render 'icon', name: 'arrow' %}
+            </a>
           </div>
-        {%- endfor -%}
+        {%- endif -%}
+
       </div>
     {%- endfor -%}
   </div>
