@@ -7,6 +7,17 @@
 {%- endcomment -%}
 <style>
   .marquee{position:relative}
+  /* The track scrolls underneath the control, so brand names ran into the
+     label. A short fade of the section's own background clears a lane for it. */
+  .marquee::after{
+    content:'';position:absolute;top:0;right:0;bottom:0;width:clamp(96px,12vw,168px);
+    background:linear-gradient(90deg,rgba(251,248,242,0),var(--paper) 62%);
+    pointer-events:none;z-index:2;
+  }
+  .marquee.section--shell::after{background:linear-gradient(90deg,rgba(245,239,228,0),var(--shell) 62%)}
+  .marquee.section--bone::after{background:linear-gradient(90deg,rgba(239,230,214,0),var(--bone) 62%)}
+  .marquee.section--ink::after{background:linear-gradient(90deg,rgba(20,16,12,0),var(--ink) 62%)}
+
   .marquee__pause{
     position:absolute;top:50%;right:.75rem;transform:translateY(-50%);z-index:3;
     display:inline-flex;align-items:center;gap:.45rem;
