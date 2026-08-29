@@ -1,0 +1,82 @@
+<!doctype html><html lang="en" class="js"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Google block — render test</title>
+<!-- Served from the repo root by _work/../ — open http://localhost:4321/_work/gp-render-test.html
+     with `python -m http.server 4321` running in the repo root.
+     The Places API is stubbed below, so this exercises the RENDERING without a
+     key, without billing, and without a network call. -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Karla:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/base.css">
+</head><body>
+<section class="section grevs section--shell" data-gp-section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">From the shop floor</p>
+        <h2 class="h1">What people say</h2>
+        <div class="grevs__score">
+          <span data-gp="stars"></span>
+          <span class="grevs__num"><strong data-gp="rating">—</strong><span class="grevs__of">/ 5</span></span>
+          <span class="grevs__count"><span data-gp="count">—</span> Google reviews</span>
+        </div>
+      </div>
+      <a class="link-arrow" data-gp="maps" href="#">All reviews on Google →</a>
+    </div>
+    <div class="grid grid--reviews rail" data-gp-reviews data-min-rating="0" hidden></div>
+    <div class="gshots" data-gp-needs-data hidden>
+      <p class="gshots__label">Photographed in the shop by customers and by us</p>
+      <div class="gshots__strip grid rail" data-gp-photos data-max="8" data-skip="0" hidden></div>
+    </div>
+    <p class="grevs__source">Ratings and reviews come straight from our Google Business Profile.</p>
+    <hr style="margin:2rem 0;border:0;border-top:1px solid var(--rule)">
+    <p><strong>Address:</strong> <span data-gp="address">fallback</span></p>
+    <p><strong>Phone:</strong> <a data-gp="phone" href="#">fallback</a></p>
+    <p><strong>Open:</strong> <span class="gopen" data-gp="open-now" hidden></span></p>
+    <div class="ghours" data-gp="hours"></div>
+    <p><a class="gbadge" data-gp="maps" href="#">
+      <span data-gp="stars"></span><strong data-gp="rating">—</strong><span>on Google</span>
+      <span class="gbadge__n">(<span data-gp="count">—</span>)</span></a></p>
+  </div>
+</section>
+
+<script>
+  window.BOB_GOOGLE_PLACE = { placeId: 'TEST_PLACE', key: 'TEST_KEY' };
+  try { localStorage.removeItem('bm-gp:TEST_PLACE'); } catch (e) {}
+  // Stub the network so the renderer can be exercised without a real key.
+  window.fetch = function () {
+    return Promise.resolve({ ok: true, json: function () { return Promise.resolve({
+      displayName: { text: 'Bob Music Store' },
+      formattedAddress: 'Rue Abdel Wahab El Inglizi, Beirut, Lebanon',
+      nationalPhoneNumber: '01 123 456',
+      rating: 4.6,
+      userRatingCount: 187,
+      googleMapsUri: 'https://maps.google.com/?cid=1234',
+      regularOpeningHours: { openNow: true, weekdayDescriptions: [
+        'Monday: 9:00 AM – 7:00 PM','Tuesday: 9:00 AM – 7:00 PM','Wednesday: 9:00 AM – 7:00 PM',
+        'Thursday: 9:00 AM – 7:00 PM','Friday: 9:00 AM – 7:00 PM','Saturday: 9:00 AM – 7:00 PM',
+        'Sunday: Closed' ] },
+      reviews: [
+        { rating:5, relativePublishTimeDescription:'2 weeks ago',
+          authorAttribution:{displayName:'Rami K.',uri:'https://maps.google.com/r1'},
+          text:{text:'Bought an oud here after trying four of them across two visits. Nobody rushed me once. It arrived set up, and the neck is still exactly where it was in February.'} },
+        { rating:5, relativePublishTimeDescription:'a month ago',
+          authorAttribution:{displayName:'Leila'},
+          text:{text:'They fixed a darbuka head while I waited and refused to charge for it. That is why I keep going back.'} },
+        { rating:4, relativePublishTimeDescription:'3 months ago',
+          authorAttribution:{displayName:'Georges Abou Hanna'},
+          text:{text:'Good range of accordions, honest advice, a bit tight on parking. Prices are fair for what you get and they will tell you when the cheaper one is the right one — which I did not expect.'} },
+        { rating:5, relativePublishTimeDescription:'5 months ago',
+          authorAttribution:{displayName:'M. Saad'},
+          text:{text:'The only place in Beirut I have found that carries proper riqs and knows what to do with them. Long review to check the seven-line clamp behaves: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure.'} },
+        { rating:3, relativePublishTimeDescription:'a year ago',
+          authorAttribution:{displayName:'A Google user'},
+          text:{text:'Decent shop, took a while to get a reply on WhatsApp.'} }
+      ],
+      photos: Array.from({length:9}, function (_, i) {
+        return { name: 'places/TEST/photos/p' + i, authorAttributions: [{ displayName: 'Photographer ' + (i+1) }] };
+      })
+    }); } });
+  };
+</script>
+<script src="../assets/google-place.js"></script>
+</body></html>
