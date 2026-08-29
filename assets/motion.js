@@ -388,6 +388,42 @@
     marquees.length = 0;
   }
 
+  /* ------------------------------------------- 8. illustration animation ---
+     snippets/illustration.liquid documents two opt-in hooks — .is-in draws the
+     rosette, .is-playing runs the equaliser — and nothing in the theme had ever
+     added either class, so both drawings shipped frozen. One observer, shared
+     by both, adding the class once when the drawing scrolls into view.
+     ------------------------------------------------------------------------ */
+  var illIO = null;
+
+  function initIllustrations(scope) {
+    var nodes = $$('.ill-rosette, .ill-eq', scope).filter(function (n) { return !n.__bmIll; });
+    if (!nodes.length) return;
+
+    function light(n) {
+      n.classList.add(n.classList.contains('ill-eq') ? 'is-playing' : 'is-in');
+    }
+
+    /* Reduced motion still gets the finished drawing — the rosette's resting
+       state is an undrawn outline, which would read as a rendering fault. The
+       snippet kills the equaliser keyframe itself under the same query. */
+    if (reduced || !supportsIO) {
+      nodes.forEach(function (n) { n.__bmIll = true; light(n); });
+      return;
+    }
+
+    if (!illIO) {
+      illIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          light(e.target);
+          illIO.unobserve(e.target);
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.2 });
+    }
+    nodes.forEach(function (n) { n.__bmIll = true; illIO.observe(n); });
+  }
+
   /* ------------------------------------------------------- 9. curtain ------ */
   function riqMark() {
     // The logo mark, reduced to its geometry: two rings and eight jingles.
@@ -438,6 +474,7 @@
     initHoverImage(scope);
     initCounters(scope);
     initMarquee(scope);
+    initIllustrations(scope);
   }
 
   // Reduced motion can be switched mid-session. Honour it immediately.

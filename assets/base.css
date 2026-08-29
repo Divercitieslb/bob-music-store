@@ -929,10 +929,16 @@ p{margin:0 0 1em}
 .section--bone{background:var(--bone)}
 
 .hiw{position:relative;overflow:hidden}
+/* The tessellation is a watermark, not a panel. Without a mask it lands as a
+   hard-edged rectangle of tiles sitting on the page — which is what it looked
+   like the first time. Faded on both axes so it dissolves into the paper. */
 .hiw__tess{
-  position:absolute;inset:auto -8% -14% auto;width:min(56vw,720px);
-  pointer-events:none;z-index:0;
+  position:absolute;inset:auto -10% -16% auto;width:min(54vw,700px);
+  pointer-events:none;z-index:0;opacity:.7;
+  -webkit-mask-image:radial-gradient(120% 100% at 100% 100%,#000 0%,rgba(0,0,0,.55) 42%,transparent 78%);
+          mask-image:radial-gradient(120% 100% at 100% 100%,#000 0%,rgba(0,0,0,.55) 42%,transparent 78%);
 }
+.hiw__tess svg{display:block;width:100%;height:auto}
 .hiw .wrap{position:relative;z-index:1}
 
 .hiw__head{max-width:62ch;margin-bottom:clamp(2.75rem,6vw,4.75rem)}
@@ -1014,6 +1020,20 @@ p{margin:0 0 1em}
   }
   .hiw__step.is-in .hiw__ill{opacity:.42;transform:none}
   .hiw__step:hover .hiw__ill{opacity:.72}
+
+  /* The snippet takes ONE size and squares the SVG with it, but the drawings
+     have wildly different viewBox ratios (the oud is 100x210, the risha 24x24),
+     so a single number letterboxed the tall ones and blew up the small ones.
+     Sized per drawing here instead — CSS beats the width/height attributes. */
+  /* The snippet writes width=height on every drawing, so the intrinsic ratio
+     is always 1:1 and `width:auto` just mirrors the height — the tall ones
+     came out letterboxed inside a square. aspect-ratio restores each viewBox. */
+  .hiw__ill svg{display:block;width:auto;height:auto;max-width:100%}
+  .hiw__ill .ill-oud{height:clamp(124px,13vw,172px);width:auto;aspect-ratio:100/210}
+  .hiw__ill .ill-darbuka{height:clamp(106px,11vw,142px);width:auto;aspect-ratio:120/170}
+  .hiw__ill .ill-rosette{width:clamp(96px,10vw,126px);height:auto;aspect-ratio:1}
+  .hiw__ill .ill-plectrum{height:clamp(54px,5.5vw,70px);width:auto;aspect-ratio:1}
+  .hiw__ill .ill-eq{width:100%;height:auto;aspect-ratio:240/64}
 }
 
 /* closing panel ----------------------------------------------------------- */
