@@ -1,5 +1,9 @@
 {%- liquid
   assign menu = linklists[section.settings.menu]
+  # A "url" setting cannot carry a schema default: Shopify rejects the schema,
+  # then silently never writes the file. So the fallback lives here instead.
+  assign util_url = section.settings.util_url | default: '/pages/how-it-works'
+  assign util_label = section.settings.util_label
 -%}
 
 {%- comment -%}
@@ -229,8 +233,8 @@
           A text link rather than a menu entry: the process page has to be
           reachable even before anyone edits the navigation in the admin.
         {%- endcomment -%}
-        {%- if section.settings.util_label != blank and section.settings.util_url != blank -%}
-          <a class="header__util" href="{{ section.settings.util_url }}">{{ section.settings.util_label }}</a>
+        {%- if util_label != blank -%}
+          <a class="header__util" href="{{ util_url }}">{{ util_label }}</a>
         {%- endif -%}
         <button class="icon-btn" data-open="search-drawer" aria-label="Search" aria-expanded="false">
           {% render 'icon', name: 'search', size: 21 %}
@@ -288,9 +292,9 @@
       </ul>
     </div>
     <div class="drawer__foot">
-      {%- if section.settings.util_label != blank and section.settings.util_url != blank -%}
-        <a class="drawer__util" href="{{ section.settings.util_url }}">
-          {{ section.settings.util_label }} {% render 'icon', name: 'arrow' %}
+      {%- if util_label != blank -%}
+        <a class="drawer__util" href="{{ util_url }}">
+          {{ util_label }} {% render 'icon', name: 'arrow' %}
         </a>
       {%- endif -%}
       {%- if settings.whatsapp_number != blank -%}
@@ -387,7 +391,7 @@
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
     { "type": "header", "content": "Utility link" },
     { "type": "text", "id": "util_label", "label": "Label", "default": "How we work" },
-    { "type": "url", "id": "util_url", "label": "Link", "default": "/pages/how-it-works" },
+    { "type": "url", "id": "util_url", "label": "Link", "info": "Defaults to /pages/how-it-works when left empty." },
     { "type": "header", "content": "Behaviour" },
     { "type": "checkbox", "id": "condense", "label": "Condense on scroll", "default": true, "info": "Shrinks the bar and logo and adds a brass hairline once the page moves." },
     { "type": "checkbox", "id": "show_progress", "label": "Show reading-progress rail", "default": true },
