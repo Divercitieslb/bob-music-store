@@ -1510,3 +1510,28 @@ html:not(.js) .nav__item:hover>.mega,
   .prop__title{font-size:1.02rem;line-height:1.25}
   .prop__text{font-size:.85rem;line-height:1.55}
 }
+
+/* --- the tablist itself ---------------------------------------------------
+   Eight tabs wrap to three rows on a phone, which is ~140px of chrome above a
+   370px rail. The chips are peer items in the same sense the cards are, so
+   they take the same treatment: one scrolling row, bled to the edges, with the
+   selected one always brought into view by the browser's own focus scroll.
+   Kept on flex — this row has no data-panel, so the display:grid rule that
+   constrains the rail does not apply here.
+   -------------------------------------------------------------------------- */
+@media(max-width:699px){
+  [role=tablist].chiprow{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    margin-inline:calc(var(--pad) * -1);
+    padding-inline:var(--pad);
+    padding-block:.25rem;
+    scroll-padding-inline:var(--pad);
+    scroll-snap-type:x proximity;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+  }
+  [role=tablist].chiprow::-webkit-scrollbar{display:none}
+  [role=tablist].chiprow > .chip{flex:0 0 auto;scroll-snap-align:start}
+}
