@@ -45,7 +45,7 @@
           "settings": {
             "image": "shopify://shop_images/look-oud.jpg",
             "default_asset": "look-oud.jpg",
-            "collection": "guitars-bass-copy",
+            "collection": "oud",
             "eyebrow": "Made by hand",
             "title": "The oud",
             "text": "Eleven instruments from workshops in Egypt, Syria and Lebanon.",
@@ -113,7 +113,7 @@
       "settings": {
         "default_asset": "feature-oud.jpg",
         "image_alt": "A handmade oud on the workbench",
-        "collection": "guitars-bass-copy",
+        "collection": "oud",
         "flip": false,
         "watermark": "oud-outline",
         "eyebrow": "The oud room",
@@ -126,7 +126,7 @@
         "stat_3": "1",
         "stat_3_label": "Of each, exactly",
         "cta_label": "See the ouds",
-        "cta_url": "shopify://collections/guitars-bass-copy",
+        "cta_url": "shopify://collections/oud",
         "bg": "section--shell"
       }
     },
@@ -143,7 +143,7 @@
         "t2": {
           "type": "tab",
           "settings": {
-            "collection": "guitars-bass-copy",
+            "collection": "oud",
             "label": "Oud"
           }
         },
