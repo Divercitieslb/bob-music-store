@@ -133,6 +133,27 @@
     "featured": {
       "type": "featured-products",
       "blocks": {
+        "tab_NDJFCK": {
+          "type": "tab",
+          "settings": {
+            "collection": "audio-studio-copy",
+            "label": "Strings & Accessories"
+          }
+        },
+        "tab_xepYYr": {
+          "type": "tab",
+          "settings": {
+            "collection": "violins-wind-copy",
+            "label": "Audio & Studio"
+          }
+        },
+        "tab_bia3Xe": {
+          "type": "tab",
+          "settings": {
+            "collection": "strings-accessories-copy",
+            "label": "Acoustic Guitars"
+          }
+        },
         "t1": {
           "type": "tab",
           "settings": {
@@ -170,6 +191,9 @@
         }
       },
       "block_order": [
+        "tab_NDJFCK",
+        "tab_xepYYr",
+        "tab_bia3Xe",
         "t1",
         "t2",
         "t3",
