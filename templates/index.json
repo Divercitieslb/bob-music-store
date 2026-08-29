@@ -24,7 +24,7 @@
         "cta_label": "Shop the catalogue",
         "cta_url": "/collections/all",
         "cta2_label": "Arabic instruments",
-        "cta2_url": "shopify://collections/cases-care-copy",
+        "cta2_url": "shopify://collections/arabic-instruments",
         "show_cue": true,
         "cue_label": "Scroll"
       }
