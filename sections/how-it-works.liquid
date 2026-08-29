@@ -1,0 +1,164 @@
+{%- comment -%}
+  How we work — the process page.
+
+  Built as one self-contained section so the page needs a single block of
+  content rather than six loosely-coupled ones. Steps are blocks: the merchant
+  can reorder, add or delete them without touching Liquid.
+
+  The step number is drawn, not typed — a numeral in the display face with a
+  khatam behind it. That is the same treatment as the stat band, so the page
+  reads as part of the same site rather than a bolted-on info page.
+{%- endcomment -%}
+
+{%- liquid
+  assign bg = section.settings.bg
+  assign steps = section.blocks | where: 'type', 'step'
+-%}
+
+<section class="section hiw {{ bg }}" data-hiw>
+  {%- if section.settings.show_tile -%}
+    <div class="hiw__tess" aria-hidden="true">
+      {% render 'illustration', name: 'tile-pattern', tone: 'brass', size: 460, opacity: 0.14, uid: 'hiw' %}
+    </div>
+  {%- endif -%}
+
+  <div class="wrap">
+
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+      <header class="hiw__head" data-reveal>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="{{ section.settings.size | default: 'h1' }}" data-split>{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {% render 'ornament', name: 'divider', tone: 'brass' %}
+        {%- if section.settings.intro != blank -%}
+          <div class="hiw__intro">{{ section.settings.intro }}</div>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    {%- if steps.size > 0 -%}
+      <ol class="hiw__list" data-reveal-stagger="90">
+        {%- for block in steps -%}
+          {%- liquid
+            assign n = forloop.index
+            if n < 10
+              assign num = '0' | append: n
+            else
+              assign num = n | append: ''
+            endif
+          -%}
+          <li class="hiw__step" data-reveal {{ block.shopify_attributes }}>
+
+            <div class="hiw__marker" aria-hidden="true">
+              <span class="hiw__khatam">{% render 'ornament', name: 'khatam', tone: 'brass', size: 62 %}</span>
+              <span class="hiw__num">{{ num }}</span>
+            </div>
+
+            <div class="hiw__body">
+              <h3 class="hiw__title">{{ block.settings.title }}</h3>
+              {%- if block.settings.text != blank -%}
+                <div class="hiw__text">{{ block.settings.text }}</div>
+              {%- endif -%}
+
+              {%- if block.settings.note != blank -%}
+                <p class="hiw__note">
+                  {% render 'illustration', name: 'plectrum', tone: 'brass', size: 13 %}
+                  <span>{{ block.settings.note }}</span>
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.cta_label != blank and block.settings.cta_url != blank -%}
+                <a class="link-arrow hiw__cta" href="{{ block.settings.cta_url }}">
+                  {{ block.settings.cta_label }} {% render 'icon', name: 'arrow' %}
+                </a>
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.illustration != 'none' -%}
+              <div class="hiw__ill" aria-hidden="true">
+                {% render 'illustration', name: block.settings.illustration, tone: 'oud', size: 132 %}
+              </div>
+            {%- endif -%}
+
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+
+    {%- if section.settings.foot_heading != blank -%}
+      <div class="hiw__foot" data-reveal>
+        <div class="hiw__foot-corner" aria-hidden="true">
+          {% render 'illustration', name: 'arabesque-corner', tone: 'brass', size: 74 %}
+        </div>
+        <h3 class="h3">{{ section.settings.foot_heading }}</h3>
+        {%- if section.settings.foot_text != blank -%}
+          <p>{{ section.settings.foot_text }}</p>
+        {%- endif -%}
+        <div class="hiw__foot-actions">
+          {%- if settings.whatsapp_number != blank -%}
+            <a class="btn" data-magnetic
+               href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}"
+               rel="noopener" target="_blank">
+              {% render 'icon', name: 'whatsapp', size: 18 %} {{ section.settings.foot_cta | default: 'Message the shop' }}
+            </a>
+          {%- endif -%}
+          <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Browse the catalogue</a>
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "How we work",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "How we work" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From the first message to the first note" },
+    { "type": "select", "id": "size", "label": "Heading size", "default": "h1",
+      "options": [
+        { "value": "h1", "label": "Large" },
+        { "value": "h-display", "label": "Display" }
+      ] },
+    { "type": "richtext", "id": "intro", "label": "Intro",
+      "default": "<p>Bob Music is a shop, not a warehouse. Nothing here is picked off a shelf and posted unseen — every instrument is checked, tuned and played before it goes out. Here is exactly what happens between you asking and you playing.</p>" },
+    { "type": "checkbox", "id": "show_tile", "label": "Star tessellation background", "default": true },
+    { "type": "select", "id": "bg", "label": "Background", "default": "",
+      "options": [
+        { "value": "", "label": "Paper" },
+        { "value": "section--shell", "label": "Shell" },
+        { "value": "section--bone", "label": "Bone" }
+      ] },
+    { "type": "header", "content": "Closing panel" },
+    { "type": "text", "id": "foot_heading", "label": "Heading", "default": "Still deciding?" },
+    { "type": "textarea", "id": "foot_text", "label": "Text", "default": "Tell us what you play, what you play it for and what you would like to spend. We will come back with two or three honest options — including the cheaper one, if the cheaper one is the right one." },
+    { "type": "text", "id": "foot_cta", "label": "WhatsApp button", "default": "Message the shop" }
+  ],
+  "blocks": [
+    { "type": "step", "name": "Step", "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "Tell us what you play" },
+      { "type": "richtext", "id": "text", "label": "Text",
+        "default": "<p>Message us on WhatsApp or send the enquiry form from any product page.</p>" },
+      { "type": "text", "id": "note", "label": "Aside" },
+      { "type": "select", "id": "illustration", "label": "Illustration", "default": "none",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "oud-outline", "label": "Oud" },
+          { "value": "darbuka-outline", "label": "Darbuka" },
+          { "value": "rosette-draw", "label": "Rosette" },
+          { "value": "plectrum", "label": "Risha" },
+          { "value": "waveform", "label": "Waveform" }
+        ] },
+      { "type": "text", "id": "cta_label", "label": "Link label" },
+      { "type": "url", "id": "cta_url", "label": "Link" }
+    ]}
+  ],
+  "presets": [{ "name": "How we work", "blocks": [
+    {"type":"step"},{"type":"step"},{"type":"step"},{"type":"step"},{"type":"step"},{"type":"step"}
+  ]}]
+}
+{% endschema %}

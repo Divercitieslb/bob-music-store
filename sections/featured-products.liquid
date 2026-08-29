@@ -41,10 +41,20 @@
         {%- for product in col.products limit: section.settings.count -%}
           {% render 'product-card', product: product %}
         {%- else -%}
-          {%- for i in (1..section.settings.count) -%}
-            <article class="card"><div class="card__media">{{ 'product-1' | placeholder_svg_tag }}</div>
-            <div class="card__body"><h3 class="card__title">Example product</h3></div></article>
-          {%- endfor -%}
+          {%- comment -%}
+            No placeholder cards here. Rendering fake "Example product" tiles put
+            invented products on a live storefront whenever a collection setting
+            did not resolve — which is exactly when the merchant most needs to
+            see that something is wrong.
+          {%- endcomment -%}
+          <div class="tab-empty">
+            <p class="mono">Nothing in this collection yet</p>
+            {%- if request.design_mode -%}
+              <p>Pick a collection for this tab in the sidebar. If you have chosen
+                one and it is still empty, its handle may have changed — check
+                Products &rarr; Collections.</p>
+            {%- endif -%}
+          </div>
         {%- endfor -%}
       </div>
     {%- endfor -%}

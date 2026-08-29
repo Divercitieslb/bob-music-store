@@ -168,7 +168,7 @@
         "text": "Nothing here is drop-shipped. Every instrument is unboxed, checked, tuned and set up by hand — and if it needs a fret dressed or a head brought up to pitch, that happens before it goes anywhere.",
         "image_alt": "A luthier setting up an instrument at the workbench",
         "cta_label": "How we work",
-        "cta_url": "/pages/about",
+        "cta_url": "/pages/how-it-works",
         "align": "left",
         "size": "h-display",
         "height": "band--tall",
@@ -387,7 +387,7 @@
             "heading": "It leaves properly packed",
             "text": "A hard case where the instrument needs one, padded and braced where it does not. Across Lebanon, and further when you ask.",
             "link_label": "How we work",
-            "link_url": "/pages/about"
+            "link_url": "/pages/how-it-works"
           }
         }
       },

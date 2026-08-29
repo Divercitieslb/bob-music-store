@@ -3,12 +3,14 @@
 -%}
 
 {%- comment -%}
-  Header — grid layout is LOAD BEARING and must not change:
-    row 1 .header__bar  = burger | logo | actions
-    row 2 .header__nav  = full-width nav row of its own
-  Nine mega-menu triggers used to collide with the icons when they shared a row.
-  Everything added below (condense-on-scroll, mega stagger, scroll progress) is
-  layered on top of that structure, never inside it.
+  Header — one grid row: burger | logo | nav | actions.
+  The nav had a full-width row of its own, which left the band beside the logo
+  empty and still overflowed into a sideways swipe on a laptop. It now sits in
+  that band and WRAPS to a second line rather than scrolling, so every menu
+  item is reachable without swiping. `.header__actions` stays flex-shrink:0 —
+  the icons must never be squeezed by the nav.
+  Everything below (condense-on-scroll, mega stagger, scroll progress) layers
+  on top of that structure, never inside it.
 {%- endcomment -%}
 
 <style>
@@ -18,7 +20,7 @@
     --e-out:cubic-bezier(.16,1,.3,1);
     --hh:var(--header-h);
     --logo-w:clamp(132px,13vw,186px);
-    --nav-pad:1.05rem;
+    --nav-pad:.5rem;
     transition:background var(--t-med);
   }
 
@@ -26,7 +28,7 @@
   .header.is-condensed{
     --hh:60px;
     --logo-w:clamp(104px,9vw,138px);
-    --nav-pad:.6rem;
+    --nav-pad:.3rem;
     background:rgba(251,248,242,.93);   /* --paper at 93% */
     backdrop-filter:saturate(1.15) blur(9px);
     -webkit-backdrop-filter:saturate(1.15) blur(9px);
@@ -43,7 +45,33 @@
     padding-block:var(--nav-pad);
     transition:padding .42s var(--e-out),color var(--t-fast);
   }
-  .header.is-condensed .header__nav{border-top-color:transparent}
+
+  /* Once the nav shares the row, the logo is what sets the header height, so
+     it comes down a size. Measured: 186px logo = 132px header; 150px = 108px. */
+  @media(min-width:1000px){
+    .header{--logo-w:clamp(120px,10vw,152px)}
+    .header.is-condensed{--logo-w:clamp(96px,7.5vw,120px)}
+  }
+
+  /* ---------------------------------------------------------- utility link */
+  .header__util{
+    display:none;align-items:center;white-space:nowrap;
+    margin-right:.65rem;padding:.4rem 0;
+    font-family:var(--f-sans);font-size:.64rem;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--ink-80);
+    border-bottom:1px solid var(--rule-strong);
+    transition:color var(--t-fast),border-color var(--t-fast);
+  }
+  .header__util:hover,.header__util:focus-visible{color:var(--ink);border-color:var(--brass)}
+  @media(min-width:760px){.header__util{display:inline-flex}}
+
+  .drawer__util{
+    display:flex;align-items:center;justify-content:space-between;gap:.6rem;
+    margin-bottom:.75rem;padding-bottom:.75rem;
+    border-bottom:1px solid var(--rule);
+    font-family:var(--f-sans);font-size:.7rem;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--ink);
+  }
 
   /* Brass hairline that fades in once the page has moved. Deliberately a
      pseudo-element, not box-shadow — theme.js writes an inline box-shadow on
@@ -147,7 +175,63 @@
         {%- endif -%}
       </a>
 
+      <nav class="header__nav" aria-label="Main">
+        <ul class="nav">
+            {%- for link in menu.links -%}
+              <li class="nav__item">
+                <a class="nav__link" href="{{ link.url }}"
+                   {% if link.active %}aria-current="page"{% endif %}>
+                  {{ link.title }}
+                  {%- if link.links.size > 0 %} {% render 'icon', name: 'chevron' %}{% endif -%}
+                </a>
+
+                {%- if link.links.size > 0 -%}
+                  <div class="mega">
+                    <div class="mega__inner">
+                      {%- for child in link.links -%}
+                        <div class="mega__col" style="--i:{{ forloop.index0 }}">
+                          <h3>{{ child.title }}</h3>
+                          {%- if child.links.size > 0 -%}
+                            <ul class="mega__list">
+                              {%- for gc in child.links -%}
+                                <li><a href="{{ gc.url }}">{{ gc.title }}</a></li>
+                              {%- endfor -%}
+                            </ul>
+                          {%- else -%}
+                            <ul class="mega__list">
+                              <li><a href="{{ child.url }}">Shop all {{ child.title | downcase }}</a></li>
+                            </ul>
+                          {%- endif -%}
+                        </div>
+                      {%- endfor -%}
+
+                      {%- if section.settings.mega_feature_heading != blank -%}
+                        <div class="mega__feature" style="--i:{{ link.links.size }}">
+                          {% render 'ornament', name: 'corner', tone: 'brass', size: 58 %}
+                          <p class="eyebrow">{{ section.settings.mega_feature_eyebrow }}</p>
+                          <h3 class="h3">{{ section.settings.mega_feature_heading }}</h3>
+                          <p>{{ section.settings.mega_feature_text }}</p>
+                          <a class="link-arrow" href="{{ section.settings.mega_feature_url }}">
+                            Explore {% render 'icon', name: 'arrow' %}
+                          </a>
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+        </ul>
+      </nav>
+
       <div class="header__actions">
+        {%- comment -%}
+          A text link rather than a menu entry: the process page has to be
+          reachable even before anyone edits the navigation in the admin.
+        {%- endcomment -%}
+        {%- if section.settings.util_label != blank and section.settings.util_url != blank -%}
+          <a class="header__util" href="{{ section.settings.util_url }}">{{ section.settings.util_label }}</a>
+        {%- endif -%}
         <button class="icon-btn" data-open="search-drawer" aria-label="Search" aria-expanded="false">
           {% render 'icon', name: 'search', size: 21 %}
         </button>
@@ -165,57 +249,6 @@
 
     </div>
   </div>
-
-  <nav class="header__nav" aria-label="Main">
-    <div class="wrap">
-      <ul class="nav">
-          {%- for link in menu.links -%}
-            <li class="nav__item">
-              <a class="nav__link" href="{{ link.url }}"
-                 {% if link.active %}aria-current="page"{% endif %}>
-                {{ link.title }}
-                {%- if link.links.size > 0 %} {% render 'icon', name: 'chevron' %}{% endif -%}
-              </a>
-
-              {%- if link.links.size > 0 -%}
-                <div class="mega">
-                  <div class="mega__inner">
-                    {%- for child in link.links -%}
-                      <div class="mega__col" style="--i:{{ forloop.index0 }}">
-                        <h3>{{ child.title }}</h3>
-                        {%- if child.links.size > 0 -%}
-                          <ul class="mega__list">
-                            {%- for gc in child.links -%}
-                              <li><a href="{{ gc.url }}">{{ gc.title }}</a></li>
-                            {%- endfor -%}
-                          </ul>
-                        {%- else -%}
-                          <ul class="mega__list">
-                            <li><a href="{{ child.url }}">Shop all {{ child.title | downcase }}</a></li>
-                          </ul>
-                        {%- endif -%}
-                      </div>
-                    {%- endfor -%}
-
-                    {%- if section.settings.mega_feature_heading != blank -%}
-                      <div class="mega__feature" style="--i:{{ link.links.size }}">
-                        {% render 'ornament', name: 'corner', tone: 'brass', size: 58 %}
-                        <p class="eyebrow">{{ section.settings.mega_feature_eyebrow }}</p>
-                        <h3 class="h3">{{ section.settings.mega_feature_heading }}</h3>
-                        <p>{{ section.settings.mega_feature_text }}</p>
-                        <a class="link-arrow" href="{{ section.settings.mega_feature_url }}">
-                          Explore {% render 'icon', name: 'arrow' %}
-                        </a>
-                      </div>
-                    {%- endif -%}
-                  </div>
-                </div>
-              {%- endif -%}
-            </li>
-          {%- endfor -%}
-      </ul>
-    </div>
-  </nav>
 
   {%- if section.settings.show_progress -%}
     <div class="header__progress" data-header-progress aria-hidden="true"></div>
@@ -255,6 +288,11 @@
       </ul>
     </div>
     <div class="drawer__foot">
+      {%- if section.settings.util_label != blank and section.settings.util_url != blank -%}
+        <a class="drawer__util" href="{{ section.settings.util_url }}">
+          {{ section.settings.util_label }} {% render 'icon', name: 'arrow' %}
+        </a>
+      {%- endif -%}
       {%- if settings.whatsapp_number != blank -%}
         <a class="btn btn--full" href="https://wa.me/{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}">
           {% render 'icon', name: 'whatsapp', size: 18 %} Message the shop
@@ -347,6 +385,9 @@
   "settings": [
     { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Leave empty to use the built-in Bob Music logo." },
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "header", "content": "Utility link" },
+    { "type": "text", "id": "util_label", "label": "Label", "default": "How we work" },
+    { "type": "url", "id": "util_url", "label": "Link", "default": "/pages/how-it-works" },
     { "type": "header", "content": "Behaviour" },
     { "type": "checkbox", "id": "condense", "label": "Condense on scroll", "default": true, "info": "Shrinks the bar and logo and adds a brass hairline once the page moves." },
     { "type": "checkbox", "id": "show_progress", "label": "Show reading-progress rail", "default": true },

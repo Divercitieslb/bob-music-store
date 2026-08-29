@@ -8,12 +8,17 @@
 <style>
   .marquee{position:relative}
   .marquee__pause{
-    position:absolute;top:.5rem;right:.75rem;z-index:2;
-    width:26px;height:26px;display:grid;place-items:center;
-    border:1px solid var(--rule-strong);background:var(--paper);opacity:.55;
-    transition:opacity var(--t-fast);
+    position:absolute;top:50%;right:.75rem;transform:translateY(-50%);z-index:3;
+    display:inline-flex;align-items:center;gap:.45rem;
+    padding:.3rem .6rem;
+    border:1px solid var(--rule-strong);background:var(--paper);
+    font-family:var(--f-sans);font-size:.58rem;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--ink-60);
+    opacity:.75;transition:opacity var(--t-fast),color var(--t-fast);
   }
-  .marquee__pause:hover,.marquee__pause:focus-visible{opacity:1}
+  .marquee__pause:hover,.marquee__pause:focus-visible{opacity:1;color:var(--ink)}
+  .marquee__pause-text{display:none}
+  @media(min-width:620px){.marquee__pause-text{display:inline}}
   .marquee__pause-icon{
     width:8px;height:9px;border-left:2.5px solid var(--ink);border-right:2.5px solid var(--ink);
   }
@@ -22,7 +27,6 @@
     border-left:8px solid var(--ink);border-top:5px solid transparent;border-bottom:5px solid transparent;
   }
   .marquee__track.is-paused{animation-play-state:paused}
-  .marquee:hover .marquee__track{animation-play-state:paused}
   .marquee.section--ink .marquee__pause{background:var(--ink);border-color:rgba(239,230,214,.3)}
   .marquee.section--ink .marquee__pause-icon{border-color:var(--bone)}
 </style>
@@ -30,9 +34,16 @@
   {%- if section.settings.label != blank -%}
     <p class="eyebrow marquee__label">{{ section.settings.label }}</p>
   {%- endif -%}
+  {%- comment -%}
+    WCAG 2.2.2 requires a way to stop motion that starts on its own and runs past
+    five seconds. Labelled rather than a bare glyph, because an unexplained icon
+    on a scrolling strip reads as decoration.
+  {%- endcomment -%}
   <button class="marquee__pause" type="button" data-marquee-pause
-          aria-pressed="false" aria-label="Pause the scrolling brand list">
+          aria-pressed="false" aria-label="Pause the scrolling brand list"
+          title="Pause the scrolling brand list">
     <span class="marquee__pause-icon" aria-hidden="true"></span>
+    <span class="marquee__pause-text" data-pause-label>Pause</span>
   </button>
   <div class="marquee__track" aria-hidden="true">
     {%- for pass in (1..2) -%}
@@ -56,11 +67,17 @@
     var btn = sec.querySelector('[data-marquee-pause]');
     var track = sec.querySelector('.marquee__track');
     if (!btn || !track) return;
+    var label = btn.querySelector('[data-pause-label]');
     btn.addEventListener('click', function () {
+      // motion.js may have taken the track over and disabled the CSS keyframe;
+      // it watches for this same class, so one toggle covers both cases.
       var paused = track.classList.toggle('is-paused');
       btn.setAttribute('aria-pressed', String(paused));
-      btn.setAttribute('aria-label', paused ? 'Resume the scrolling brand list'
-                                            : 'Pause the scrolling brand list');
+      var text = paused ? 'Resume the scrolling brand list'
+                        : 'Pause the scrolling brand list';
+      btn.setAttribute('aria-label', text);
+      btn.setAttribute('title', text);
+      if (label) label.textContent = paused ? 'Play' : 'Pause';
     });
   })();
 </script>

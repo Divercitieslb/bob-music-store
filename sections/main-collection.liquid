@@ -71,16 +71,18 @@
     line-height:1.5;color:var(--ink-80);
   }
 
-  /* --- sticky, condensing bar ---------------------------------------------- */
-  .coll-sentinel{height:1px;margin:0}
+  /* --- results bar ---------------------------------------------------------
+     Deliberately NOT sticky. It used to follow the scroll and condense, which
+     put a permanent band across the middle of the grid and cut product cards
+     in half. The count and the sort belong at the top of the results, once.
+     ------------------------------------------------------------------------ */
   .coll-bar{
-    position:sticky;top:var(--header-h);z-index:60;
+    position:static;
     background:var(--paper);border-bottom:1px solid var(--rule);
-    transition:box-shadow .32s var(--e),background-color .32s var(--e);
   }
   .coll-bar__inner{
     display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
-    padding-block:1.15rem;transition:padding .32s var(--e);
+    padding-block:1.15rem;
   }
   .coll-bar__left{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
   .coll-bar__count{display:flex;align-items:baseline;gap:.45rem}
@@ -101,22 +103,10 @@
   .coll-bar__jump-n{font-family:var(--f-mono);color:var(--brass)}
   @media(min-width:1000px){.coll-bar__jump{display:none}}
 
-  .coll-bar.is-stuck{
-    background:rgba(251,248,242,.94);
-    box-shadow:0 1px 0 rgba(20,16,12,.07),0 14px 26px -24px rgba(20,16,12,.65);
-  }
-  @supports (backdrop-filter:blur(6px)){
-    .coll-bar.is-stuck{backdrop-filter:blur(9px)}
-  }
-  .coll-bar.is-stuck .coll-bar__inner{padding-block:.62rem}
-  .coll-bar.is-stuck .coll-bar__label{opacity:0}
-  .coll-bar.is-stuck .coll-active{padding-bottom:.62rem}
-  .coll-bar.is-stuck .select{padding-block:.5rem}
-
   /* --- active filter chips -------------------------------------------------- */
   .coll-active{
     display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;
-    padding-bottom:1.1rem;transition:padding .32s var(--e);
+    padding-bottom:1.1rem;
   }
   .coll-chip{
     display:inline-flex;align-items:center;gap:.55rem;
@@ -282,8 +272,6 @@
     </aside>
 
     <div>
-      <div class="coll-sentinel" data-coll-sentinel aria-hidden="true"></div>
-
       <div class="coll-bar" data-coll-bar>
         <div class="coll-bar__inner">
           <div class="coll-bar__left">
@@ -405,42 +393,25 @@
 <script>
   (function () {
     'use strict';
-    var bar = document.querySelector('[data-coll-bar]');
-    var sentinel = document.querySelector('[data-coll-sentinel]');
-    if (!bar) return;
-
-    /* the header is sticky and taller than --header-h once the nav row shows,
-       so measure it rather than guess */
+    /* The header is sticky and its height changes when the nav wraps, so the
+       facet rail is measured rather than guessed. The results bar is no longer
+       sticky and needs no measuring at all. */
     var header = document.querySelector('[data-header]');
     var facets = document.getElementById('coll-filters');
+    if (!facets) return;
     function place() {
       var h = header ? Math.round(header.getBoundingClientRect().height) : 0;
-      if (h > 0) {
-        bar.style.top = h + 'px';
-        if (facets) {
-          if (window.matchMedia('(min-width:1000px)').matches) {
-            facets.style.top = (h + 24) + 'px';
-            facets.style.maxHeight = 'calc(100vh - ' + (h + 48) + 'px)';
-          } else {
-            facets.style.top = '';
-            facets.style.maxHeight = '';
-          }
-        }
+      if (h <= 0) return;
+      if (window.matchMedia('(min-width:1000px)').matches) {
+        facets.style.top = (h + 24) + 'px';
+        facets.style.maxHeight = 'calc(100vh - ' + (h + 48) + 'px)';
+      } else {
+        facets.style.top = '';
+        facets.style.maxHeight = '';
       }
     }
     place();
     window.addEventListener('resize', place, { passive: true });
-
-    /* condense once the bar has actually stuck */
-    if (sentinel && 'IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        var e = entries[0];
-        if (e.isIntersecting) bar.classList.remove('is-stuck');
-        else if (e.boundingClientRect.top < 0) bar.classList.add('is-stuck');
-        else bar.classList.remove('is-stuck');
-      }, { threshold: 0, rootMargin: '-' + (parseInt(bar.style.top, 10) || 82) + 'px 0px 0px 0px' });
-      io.observe(sentinel);
-    }
 
     /* on narrow screens the facet panel sits above the grid — start it folded
        so the products are not pushed off the first screen. No-JS keeps it open. */

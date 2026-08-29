@@ -369,6 +369,10 @@
     for (var i = 0; i < marquees.length; i++) {
       var m = marquees[i];
       if (!m.half) continue;
+      // The section renders a pause control (WCAG 2.2.2). Once this driver has
+      // taken the track over, animation-play-state no longer applies to it, so
+      // the class has to be honoured here or the button does nothing.
+      if (m.track.classList.contains('is-paused')) continue;
       m.x -= m.base * dt * rate;
       if (m.x <= -m.half) m.x += m.half;
       m.track.style.transform = 'translate3d(' + m.x.toFixed(2) + 'px,0,0)';

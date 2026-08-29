@@ -1,0 +1,144 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-band",
+      "settings": {
+        "default_asset": "band-bench.jpg",
+        "image_alt": "The repair bench at Bob Music Store, Beirut",
+        "eyebrow": "Bob Music Store — Beirut",
+        "heading": "How we work",
+        "text": "Every instrument that leaves this shop has been opened, checked, tuned and played first. Here is the whole process, start to finish.",
+        "align": "left",
+        "size": "h-display",
+        "height": "band--short"
+      }
+    },
+    "steps": {
+      "type": "how-it-works",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Tell us what you play",
+            "text": "<p>Message us on WhatsApp, or send the enquiry from any product page. Tell us the instrument, what you play on it, and roughly what you would like to spend. If you are buying for someone else, tell us their age and level — it changes the answer more than the budget does.</p>",
+            "note": "You do not need to know the model. \"My son is starting oud lessons\" is enough to start from.",
+            "illustration": "oud-outline"
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "We come back with two or three options",
+            "text": "<p>Not a catalogue dump — a short, honest shortlist, with the differences explained in plain words: what the sound board is, why one is double the price, and which one we would take home ourselves. If the cheaper one is the right one, we will say so.</p>",
+            "note": "Prices are quoted per instrument. Two of the same model are rarely identical, so the price follows the piece, not the listing.",
+            "illustration": "plectrum"
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "Set up on the bench",
+            "text": "<p>Before anything is handed over it goes on the bench. Action and relief adjusted, frets checked, nut slots cut properly, new strings, intonation set. Ouds are checked for a settled neck and a clean bridge join. Percussion heads are tuned and the hardware is checked for rattle.</p><p>This is the step most shops skip. It is the reason an instrument from here plays easier than the same instrument from a box.</p>",
+            "illustration": "rosette-draw"
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "title": "Come and play it",
+            "text": "<p>You are welcome to sit with it in the shop for as long as you need — plug it in, tune it down, play the piece you actually play. Bring your teacher. Bring your own picks and cable. Nobody is going to hover.</p>",
+            "note": "If you cannot come in person we will send a short video of the instrument being played, so you hear the actual piece rather than a stock recording.",
+            "illustration": "waveform"
+          }
+        },
+        "s5": {
+          "type": "step",
+          "settings": {
+            "title": "Delivery across Lebanon",
+            "text": "<p>Beirut and the suburbs are usually same or next day. The rest of the country goes out within two to three working days. Everything travels in a hard case or double-boxed with the neck braced — an instrument that arrives out of adjustment has not really arrived.</p>",
+            "illustration": "none"
+          }
+        },
+        "s6": {
+          "type": "step",
+          "settings": {
+            "title": "Bring it back whenever it needs it",
+            "text": "<p>Wood moves. A neck that was perfect in February will want a quarter turn in August, and that is normal rather than a fault. Bring anything bought here back for a free set-up in the first year, and after that at the shop rate — including instruments you did not buy from us.</p>",
+            "note": "Strings, heads, skins, bridges, pickups and electronics are fitted while you wait where we can.",
+            "illustration": "darbuka-outline"
+          }
+        }
+      },
+      "block_order": ["s1", "s2", "s3", "s4", "s5", "s6"],
+      "settings": {
+        "eyebrow": "The process",
+        "heading": "From the first message to the first note",
+        "size": "h1",
+        "intro": "<p>Bob Music is a shop, not a warehouse. Nothing is picked off a shelf and posted unseen. Here is exactly what happens between you asking and you playing.</p>",
+        "show_tile": true,
+        "bg": "",
+        "foot_heading": "Still deciding?",
+        "foot_text": "Tell us what you play, what you play it for, and what you would like to spend. We will come back with two or three honest options — including the cheaper one, if the cheaper one is the right one.",
+        "foot_cta": "Message the shop"
+      }
+    },
+    "props": {
+      "type": "value-props",
+      "blocks": {
+        "p1": {
+          "type": "prop",
+          "settings": {
+            "icon": "tune",
+            "title": "Set up before it ships",
+            "text": "Action, intonation, frets, strings and heads — checked on the bench, never straight out of the box."
+          }
+        },
+        "p2": {
+          "type": "prop",
+          "settings": {
+            "icon": "truck",
+            "title": "Delivered across Lebanon",
+            "text": "Beirut same or next day; the rest of the country in two to three working days, braced and double-boxed."
+          }
+        },
+        "p3": {
+          "type": "prop",
+          "settings": {
+            "icon": "shield",
+            "title": "A year of free set-ups",
+            "text": "Wood moves with the season. Bring it back for adjustment in the first year at no charge."
+          }
+        },
+        "p4": {
+          "type": "prop",
+          "settings": {
+            "icon": "whatsapp",
+            "title": "Talk to a player",
+            "text": "The person answering on WhatsApp plays, repairs and sells. No script, no call centre."
+          }
+        }
+      },
+      "block_order": ["p1", "p2", "p3", "p4"],
+      "settings": {
+        "heading": "What you get either way",
+        "bg": "section--shell"
+      }
+    },
+    "closing": {
+      "type": "editorial-band",
+      "settings": {
+        "default_asset": "look-oud-wide.jpg",
+        "image_alt": "An oud resting against the wall of the shop",
+        "eyebrow": "Ready when you are",
+        "heading": "Come and play something",
+        "text": "The shop is open six days a week. Bring your teacher, bring your picks, and take as long as you need.",
+        "cta_label": "Browse the catalogue",
+        "cta_url": "/collections/all",
+        "align": "centre",
+        "size": "h1",
+        "height": "band--tall"
+      }
+    }
+  },
+  "order": ["hero", "steps", "props", "closing"]
+}
