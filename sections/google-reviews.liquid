@@ -60,11 +60,21 @@
         <h2 class="h1" data-split>{{ section.settings.heading }}</h2>
 
         {%- comment -%}
-          Only rendered when a manual figure was typed or the API is live. The
-          map card below shows Google's own current rating either way, so an
-          empty "— / 5" here would be worse than nothing.
+          Suppressed whenever the map card is on, because that card carries a
+          better version of the same thing a few lines below — with the khatam,
+          the count and its own link. Two identical score rows stacked is what
+          shipped for one deploy and it read as a mistake.
         {%- endcomment -%}
-        <div class="grevs__score"{% unless has_api or settings.google_rating != blank %} hidden{% endunless %}>
+        {%- liquid
+          assign show_head_score = false
+          if has_api or settings.google_rating != blank
+            assign show_head_score = true
+          endif
+          if section.settings.show_map
+            assign show_head_score = false
+          endif
+        -%}
+        <div class="grevs__score"{% unless show_head_score %} hidden{% endunless %}>
           <span data-gp="stars">
             {%- if settings.google_rating != blank -%}
               <span class="gstars" role="img" aria-label="{{ settings.google_rating }} out of 5">
@@ -83,9 +93,15 @@
         </div>
       </div>
 
-      <a class="link-arrow" data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">
-        {{ section.settings.link_label }} {% render 'icon', name: 'arrow' %}
-      </a>
+      {%- comment -%}
+        Same reasoning: the map card's own actions row already offers "Reviews on
+        Google", so this would be the third route to one page in one section.
+      {%- endcomment -%}
+      {%- unless section.settings.show_map -%}
+        <a class="link-arrow" data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">
+          {{ section.settings.link_label }} {% render 'icon', name: 'arrow' %}
+        </a>
+      {%- endunless -%}
     </div>
 
     {%- if section.settings.show_map and has_id -%}
@@ -130,9 +146,8 @@
         refresh on their own. Google shows at most five here —
         <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">read them all on Google</a>.
       {%- elsif section.settings.show_map -%}
-        The star rating and the review count on the map are drawn by Google
-        itself, so they are always current.
-        <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">Read the reviews on Google</a>.
+        Every rating and review is on our Google Business Profile, and the map is
+        drawn by Google itself.
       {%- else -%}
         <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">Read the reviews on Google</a>.
       {%- endif -%}
