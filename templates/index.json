@@ -275,6 +275,57 @@
         "heading": "Why buy here",
         "bg": "section--shell"
       }
+    },
+    "figures": {
+      "type": "stat-band",
+      "blocks": {
+        "f1": {
+          "type": "figure",
+          "settings": {
+            "value": "268",
+            "label": "Instruments in stock",
+            "note": "Every one photographed as it is"
+          }
+        },
+        "f2": {
+          "type": "figure",
+          "settings": {
+            "value": "42",
+            "label": "Collections",
+            "note": "Sorted the way a player looks"
+          }
+        },
+        "f3": {
+          "type": "figure",
+          "settings": {
+            "value": "81",
+            "label": "Arabic instruments",
+            "note": "Oud, darbuka, riq, tabl, ney"
+          }
+        },
+        "f4": {
+          "type": "figure",
+          "settings": {
+            "value": "31",
+            "label": "Vintage & collectible",
+            "note": "One of each, exactly"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {
+        "eyebrow": "The shop in numbers",
+        "heading": "What is on the wall today",
+        "count_up": true,
+        "default_asset": "look-darbuka.jpg",
+        "overlay": 82,
+        "bg": "section--ink"
+      }
     }
   },
   "order": [
@@ -282,6 +333,7 @@
     "brands",
     "lookbook",
     "oud_room",
+    "figures",
     "featured",
     "bench",
     "percussion",
