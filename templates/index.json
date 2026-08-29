@@ -136,15 +136,15 @@
         "tab_NDJFCK": {
           "type": "tab",
           "settings": {
-            "collection": "audio-studio-copy",
-            "label": "Strings & Accessories"
+            "collection": "classical-guitars-copy",
+            "label": "Electric Guitars"
           }
         },
         "tab_xepYYr": {
           "type": "tab",
           "settings": {
-            "collection": "violins-wind-copy",
-            "label": "Audio & Studio"
+            "collection": "button-accordions-copy",
+            "label": "Violins"
           }
         },
         "tab_bia3Xe": {
