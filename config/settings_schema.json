@@ -4,35 +4,94 @@
     "theme_name": "Bob Music Store",
     "theme_version": "1.0.0",
     "theme_author": "Bob Music Store",
-    "theme_documentation_url": "https://github.com/",
-    "theme_support_url": "https://github.com/"
+    "theme_documentation_url": "https://github.com/Divercitieslb/bob-music-store#readme",
+    "theme_support_url": "https://github.com/Divercitieslb/bob-music-store/issues"
   },
   {
     "name": "Brand",
     "settings": [
-      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "32×32 or larger. Leave empty to use the riq mark." },
-      { "type": "image_picker", "id": "og_image", "label": "Social sharing image", "info": "1200×630 recommended." }
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32×32 or larger. Leave empty to use the riq mark."
+      },
+      {
+        "type": "image_picker",
+        "id": "og_image",
+        "label": "Social sharing image",
+        "info": "1200×630 recommended."
+      }
     ]
   },
   {
     "name": "Shop details",
     "settings": [
-      { "type": "header", "content": "Address" },
-      { "type": "text", "id": "address_street", "label": "Street", "default": "" },
-      { "type": "text", "id": "address_city", "label": "City", "default": "Beirut" },
-      { "type": "text", "id": "address_country", "label": "Country", "default": "Lebanon" },
-      { "type": "header", "content": "Contact" },
-      { "type": "text", "id": "phone", "label": "Phone", "default": "" },
-      { "type": "text", "id": "email", "label": "Email", "default": "" },
-      { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number", "info": "International format, e.g. 9613123456. Powers the enquiry buttons.", "default": "" }
+      {
+        "type": "header",
+        "content": "Address"
+      },
+      {
+        "type": "text",
+        "id": "address_street",
+        "label": "Street",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "address_city",
+        "label": "City",
+        "default": "Beirut"
+      },
+      {
+        "type": "text",
+        "id": "address_country",
+        "label": "Country",
+        "default": "Lebanon"
+      },
+      {
+        "type": "header",
+        "content": "Contact"
+      },
+      {
+        "type": "text",
+        "id": "phone",
+        "label": "Phone",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "email",
+        "label": "Email",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "WhatsApp number",
+        "info": "International format, e.g. 9613123456. Powers the enquiry buttons.",
+        "default": ""
+      }
     ]
   },
   {
     "name": "Social",
     "settings": [
-      { "type": "url", "id": "social_instagram", "label": "Instagram" },
-      { "type": "url", "id": "social_facebook", "label": "Facebook" },
-      { "type": "url", "id": "social_tiktok", "label": "TikTok" }
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      }
     ]
   },
   {
@@ -56,8 +115,14 @@
         "label": "Text direction",
         "default": "ltr",
         "options": [
-          { "value": "ltr", "label": "Left to right" },
-          { "value": "rtl", "label": "Right to left (Arabic)" }
+          {
+            "value": "ltr",
+            "label": "Left to right"
+          },
+          {
+            "value": "rtl",
+            "label": "Right to left (Arabic)"
+          }
         ]
       }
     ]
