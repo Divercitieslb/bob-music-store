@@ -2,24 +2,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Map card — render test</title>
 <!--
-  Proves snippets/google-map.liquid renders without any API key.
+  Renders snippets/google-map.liquid's markup by hand, so the ORNAMENT and the
+  mirrored score can be checked without a Shopify render and without hammering
+  Google (this sandbox's IP gets throttled: grey tiles, chrome still drawn).
 
-  WHAT WAS TESTED AND WHAT IT SHOWED
-    q=place_id:ChIJ…&output=embed  -> a WORLD MAP. The legacy embed route does
-                                      not resolve place_id. Do not "improve" the
-                                      snippet by switching the query to it.
-    q=<name and address>           -> resolves. Google draws the card itself:
-                                      "Bob music · Old Saida Rd, Lebanon ·
-                                      5.0 ★ (18)", Directions, Open in Maps.
-    plus- vs percent-encoded spaces -> both resolve; Liquid's url_encode emits
-                                      plus, which is fine.
-
-  Confirmed independently with curl: the embed HTML contains "Bob music",
-  "Old Saida Rd", the Knowledge Graph id /g/11hdpyb6r3 and the coordinates
-  33.8053851, 35.4985436.
-
-  If the tiles come back grey here, check the IP before the code — Google
-  throttles repeated automated loads and serves the chrome without the tiles.
+  Tested and recorded so nobody re-tries them:
+    q=place_id:ChIJ…  -> a WORLD MAP. The legacy embed route does not resolve
+                         place_id. The Place ID drives the LINKS instead.
+    q=<name+address>  -> resolves: "Bob music · Old Saida Rd, Lebanon · 5.0 ★ (18)".
+    /maps/place/?q=place_id: -> errors on mobile. Use the documented
+                         /maps/search/?api=1&query=…&query_place_id=… instead.
 -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Karla:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/base.css">
@@ -27,18 +19,43 @@
 <section class="section section--shell">
   <div class="wrap">
     <div class="section-head"><div>
-      <p class="eyebrow">Bob Music Store — Beirut</p>
-      <h2 class="h1">Find us</h2>
+      <p class="eyebrow">Old Saida Road, Beirut</p>
+      <h2 class="h1">Come and see us</h2>
     </div></div>
-    <div class="gmap">
-      <div class="gmap__frame" style="--gmap-h:380px">
-        <iframe src="https://maps.google.com/maps?q=Bob%20Music%20Old%20Saida%20Rd%20Lebanon&output=embed"
-                title="Bob Music Store on Google Maps" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+
+    <div class="gmap gmap--ornate">
+      <span class="gmap__tess" aria-hidden="true"><svg viewBox="0 0 64 64" width="400" height="400" style="width:100%;height:auto" aria-hidden="true"><defs><pattern id="tp" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M8 1 15 8 8 15 1 8Z" fill="none" stroke="#B0854A" stroke-width="1"/><circle cx="8" cy="8" r="2" fill="#B0854A" opacity=".5"/></pattern></defs><rect width="64" height="64" fill="url(#tp)" opacity="0.13"/></svg></span>
+
+      <a class="gscore" href="https://www.google.com/maps/search/?api=1&query=Bob%20Music%20Old%20Saida%20Rd%20Lebanon&query_place_id=ChIJQcKz4FAZHxURb6fG5-otlRA" target="_blank" rel="noopener">
+        <span class="gscore__mark" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 32 32" fill="none"><path d="M16 1.6 20.1 7.3 26.9 5.1 24.7 11.9 30.4 16 24.7 20.1 26.9 26.9 20.1 24.7 16 30.4 11.9 24.7 5.1 26.9 7.3 20.1 1.6 16 7.3 11.9 5.1 5.1 11.9 7.3Z" fill="#B0854A"/><path d="M16 8.4 20.2 12.6 21.6 16 20.2 19.4 16 23.6 11.8 19.4 10.4 16 11.8 12.6Z" fill="#FBF8F2" opacity=".9"/><circle cx="16" cy="16" r="2.4" fill="#B0854A"/></svg></span>
+        <span class="gscore__body">
+          <span class="gscore__row">
+            <span class="gscore__stars"><span class="gstars" role="img" aria-label="5.0 out of 5"><span class="gstars__bg">★★★★★</span><span class="gstars__fg" style="width:100%">★★★★★</span></span></span>
+            <strong class="gscore__n">5.0</strong><span class="gscore__of">/ 5</span>
+          </span>
+          <span class="gscore__meta"><span class="gscore__count">18</span> reviews on Google</span>
+        </span>
+        <span class="gscore__go"><svg width="16" height="12" viewBox="0 0 18 12" fill="none"><path d="M1 6h15M11 1l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+
+      <div class="gmap__crest" role="presentation">
+        <span class="gmap__crest-rule"></span>
+        <span class="gmap__crest-ill gmap__crest-ill--oud"><svg width="34" height="34" viewBox="0 0 100 210" fill="none"><ellipse cx="50" cy="150" rx="42" ry="52" stroke="#B0854A" stroke-width="3"/><circle cx="50" cy="140" r="14" stroke="#B0854A" stroke-width="2"/><path d="M50 98V20M38 20h24" stroke="#B0854A" stroke-width="3"/></svg></span>
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="none"><path d="M16 1.6 20.1 7.3 26.9 5.1 24.7 11.9 30.4 16 24.7 20.1 26.9 26.9 20.1 24.7 16 30.4 11.9 24.7 5.1 26.9 7.3 20.1 1.6 16 7.3 11.9 5.1 5.1 11.9 7.3Z" fill="#B0854A"/></svg>
+        <span class="gmap__crest-ill gmap__crest-ill--drum"><svg width="30" height="30" viewBox="0 0 120 170" fill="none"><ellipse cx="60" cy="24" rx="44" ry="14" stroke="#B0854A" stroke-width="3"/><path d="M16 24c0 40 24 52 24 74s-14 26-14 42M104 24c0 40-24 52-24 74s14 26 14 42" stroke="#B0854A" stroke-width="3"/><ellipse cx="60" cy="152" rx="34" ry="12" stroke="#B0854A" stroke-width="2.5"/></svg></span>
+        <span class="gmap__crest-rule"></span>
+      </div>
+      <div class="gmap__stage">
+        <span class="gmap__corner gmap__corner--tl" aria-hidden="true"><svg width="46" height="46" viewBox="0 0 64 64" fill="none"><path d="M2 2h22M2 2v22" stroke="#B0854A" stroke-width="1.4"/><path d="M9 9h10M9 9v10" stroke="#B0854A" stroke-width="1" opacity=".6"/><path d="M2 32c16 0 30-14 30-30" stroke="#B0854A" stroke-width="1" opacity=".45" fill="none"/><path d="M15 15 21 9l6 6-6 6Z" fill="#B0854A" opacity=".5"/></svg></span>
+        <span class="gmap__corner gmap__corner--br" aria-hidden="true"><svg width="46" height="46" viewBox="0 0 64 64" fill="none"><path d="M2 2h22M2 2v22" stroke="#B0854A" stroke-width="1.4"/><path d="M9 9h10M9 9v10" stroke="#B0854A" stroke-width="1" opacity=".6"/><path d="M2 32c16 0 30-14 30-30" stroke="#B0854A" stroke-width="1" opacity=".45" fill="none"/><path d="M15 15 21 9l6 6-6 6Z" fill="#B0854A" opacity=".5"/></svg></span>
+        <div class="gmap__frame" style="--gmap-h:340px">
+          <iframe src="https://maps.google.com/maps?q=Bob%20Music%20Old%20Saida%20Rd%20Lebanon&output=embed" title="Bob Music Store on Google Maps" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
       </div>
       <div class="gmap__actions">
-        <a class="btn btn--ghost btn--sm" href="https://www.google.com/maps/dir/?api=1&destination=Bob%20Music%20Old%20Saida%20Rd%20Lebanon&destination_place_id=ChIJQcKz4FAZHxURb6fG5-otlRA" target="_blank" rel="noopener">Directions →</a>
-        <a class="gmap__link" href="https://www.google.com/maps/place/?q=place_id:ChIJQcKz4FAZHxURb6fG5-otlRA" target="_blank" rel="noopener">Reviews on Google</a>
-        <a class="gmap__link" href="https://search.google.com/local/writereview?placeid=ChIJQcKz4FAZHxURb6fG5-otlRA" target="_blank" rel="noopener">Write a review</a>
+        <a class="btn btn--ghost btn--sm" href="#">Directions <svg width="16" height="12" viewBox="0 0 18 12" fill="none"><path d="M1 6h15M11 1l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="gmap__link" href="#">Reviews on Google</a>
+        <a class="gmap__link" href="#">Write a review</a>
       </div>
     </div>
   </div>

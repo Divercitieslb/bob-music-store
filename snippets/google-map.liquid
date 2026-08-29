@@ -1,22 +1,26 @@
 {%- comment -%}
-  The Google map card — and, more importantly, the only part of the Google
-  integration that needs NO API key, NO Google Cloud project and NO billing.
+  The Google map card — and the only part of the Google integration that needs
+  NO API key, NO Google Cloud project and NO billing.
 
   maps.google.com/maps?q=<name and address>&output=embed is the legacy embed
   route. It refuses top-level navigation but works inside an iframe, and Google
-  renders the business card itself: name, address, star rating, review count,
-  a Directions button and an Open in Maps button. Because Google draws it, the
-  rating and the count are live — a new review changes them with nothing to
-  maintain here.
+  draws the business card itself on a wide screen: name, address, star rating,
+  review count, Directions, Open in Maps.
 
-  Two things it will not do, and neither has a keyless workaround:
-    - the review TEXT cannot be read out of the iframe (cross-origin, and
-      scraping it would be against Google's terms even if it were possible)
-    - place_id: as the query does NOT resolve on this route — tested, it
-      returns a world map. The query has to be the name and address as text.
-      The Place ID is still used for every LINK below, where it is exact.
+  ON A PHONE GOOGLE DROPS THAT CARD. Reported from a real device and consistent
+  with the embed being responsive. So the rating is mirrored above the map in
+  our own panel, which is the only way it is visible on a phone at all. That
+  panel is typed in by hand — there is no keyless way to read the number — and
+  it EXPIRES: see rating_fresh below. A number that can go quietly stale is
+  worse than no number.
 
-  args: place_id, query, name, height, eager
+  Two things tested and rejected, so nobody re-tries them:
+    - place_id: as the embed query returns a WORLD MAP on this route. The query
+      must be name-and-address text. The Place ID drives the links instead.
+    - a CSS filter on the iframe to warm it into the palette. It also tints
+      Google's logo and the "Map data ©" line, which their terms forbid.
+
+  args: place_id, query, name, height, eager, ornate (default true), score (default true)
 {%- endcomment -%}
 
 {%- liquid
@@ -42,10 +46,11 @@
   assign q_enc = q | strip | url_encode
   assign label = name | default: shop.name
 
-  # Every one of these works without a key. Verified: /maps/place, /maps/search,
-  # /maps/dir and /local/writereview all answer 200 for this Place ID.
+  # /maps/search/?api=1 is the DOCUMENTED Maps URLs form and the one that opens
+  # the Google Maps app on a phone. /maps/place/?q=place_id: is undocumented and
+  # errors on mobile — reported from a real device, and the reason this changed.
   if pid != blank
-    assign url_place = 'https://www.google.com/maps/place/?q=place_id:' | append: pid
+    assign url_place = 'https://www.google.com/maps/search/?api=1&query=' | append: q_enc | append: '&query_place_id=' | append: pid
     assign url_dir = 'https://www.google.com/maps/dir/?api=1&destination=' | append: q_enc | append: '&destination_place_id=' | append: pid
     assign url_write = 'https://search.google.com/local/writereview?placeid=' | append: pid
   else
@@ -53,23 +58,122 @@
     assign url_dir = 'https://www.google.com/maps/dir/?api=1&destination=' | append: q_enc
     assign url_write = url_place
   endif
+
+  # The expiry. Google offers no keyless way to read the rating, so the number
+  # is typed in — and after 120 days the theme stops showing it rather than
+  # asserting something nobody has checked. google-place.js overwrites both
+  # nodes the moment an API key exists, and then none of this matters.
+  assign rating_fresh = false
+  if settings.google_rating != blank and settings.google_rating_checked != blank
+    assign checked_ts = settings.google_rating_checked | date: '%s' | plus: 0
+    assign now_ts = 'now' | date: '%s' | plus: 0
+    if checked_ts > 0
+      assign age_days = now_ts | minus: checked_ts | divided_by: 86400
+      if age_days <= 120
+        assign rating_fresh = true
+      endif
+    endif
+  endif
+
+  assign show_score = true
+  if score == false
+    assign show_score = false
+  endif
+  assign is_ornate = true
+  if ornate == false
+    assign is_ornate = false
+  endif
 -%}
 
-<div class="gmap">
-  <div class="gmap__frame" style="--gmap-h:{{ height | default: 340 }}px">
-    <iframe
-      src="https://maps.google.com/maps?q={{ q_enc }}&output=embed"
-      title="{{ label | escape }} on Google Maps"
-      {% unless eager %}loading="lazy"{% endunless %}
-      referrerpolicy="no-referrer-when-downgrade"
-      allowfullscreen></iframe>
+<div class="gmap{% if is_ornate %} gmap--ornate{% endif %}">
+
+  {%- if is_ornate -%}
+    <span class="gmap__tess" aria-hidden="true">
+      {% render 'illustration', name: 'tile-pattern', tone: 'brass', size: 400, opacity: 0.13, uid: 'gmap' %}
+    </span>
+  {%- endif -%}
+
+  {%- if show_score -%}
+    {%- comment -%}
+      Mirrored above the map because Google's embed hides its own card on a
+      phone. data-gp hooks are live if an API key is ever added.
+    {%- endcomment -%}
+    <a class="gscore" href="{{ url_place }}" target="_blank" rel="noopener">
+      <span class="gscore__mark" aria-hidden="true">
+        {% render 'ornament', name: 'khatam', tone: 'brass', size: 34 %}
+      </span>
+
+      <span class="gscore__body">
+        <span class="gscore__row">
+          <span data-gp="stars" class="gscore__stars">
+            {%- if rating_fresh -%}
+              <span class="gstars" role="img" aria-label="{{ settings.google_rating }} out of 5">
+                <span class="gstars__bg">★★★★★</span>
+                <span class="gstars__fg" style="width:{{ settings.google_rating | times: 20.0 }}%">★★★★★</span>
+              </span>
+            {%- endif -%}
+          </span>
+          {%- if rating_fresh -%}
+            <strong class="gscore__n" data-gp="rating">{{ settings.google_rating }}</strong>
+            <span class="gscore__of">/ 5</span>
+          {%- endif -%}
+        </span>
+
+        <span class="gscore__meta">
+          {%- if rating_fresh and settings.google_review_count != blank -%}
+            <span class="gscore__count" data-gp="count">{{ settings.google_review_count }}</span> reviews on Google
+          {%- else -%}
+            Rated on Google
+          {%- endif -%}
+        </span>
+      </span>
+
+      <span class="gscore__go">{% render 'icon', name: 'arrow' %}</span>
+    </a>
+  {%- endif -%}
+
+  {%- if is_ornate -%}
+    {%- comment -%}
+      The crest. The oud and the darbuka sat in the page margin at first and
+      pushed the document into horizontal scroll — the .wrap gutter is not wide
+      enough for them at any viewport worth targeting. Centred between two rules
+      instead, where they cannot overflow anything and read as a caption rule
+      rather than as clip art.
+    {%- endcomment -%}
+    <div class="gmap__crest" role="presentation">
+      <span class="gmap__crest-rule"></span>
+      <span class="gmap__crest-ill gmap__crest-ill--oud">{% render 'illustration', name: 'oud-outline', tone: 'brass', size: 34 %}</span>
+      {% render 'ornament', name: 'khatam', tone: 'brass', size: 16 %}
+      <span class="gmap__crest-ill gmap__crest-ill--drum">{% render 'illustration', name: 'darbuka-outline', tone: 'brass', size: 30 %}</span>
+      <span class="gmap__crest-rule"></span>
+    </div>
+  {%- endif -%}
+
+  <div class="gmap__stage">
+    {%- if is_ornate -%}
+      <span class="gmap__corner gmap__corner--tl" aria-hidden="true">
+        {% render 'illustration', name: 'arabesque-corner', tone: 'brass', size: 42 %}
+      </span>
+      <span class="gmap__corner gmap__corner--br" aria-hidden="true">
+        {% render 'illustration', name: 'arabesque-corner', tone: 'brass', size: 42 %}
+      </span>
+    {%- endif -%}
+
+    <div class="gmap__frame" style="--gmap-h:{{ height | default: 340 }}px">
+      <iframe
+        src="https://maps.google.com/maps?q={{ q_enc }}&output=embed"
+        title="{{ label | escape }} on Google Maps"
+        {% unless eager %}loading="lazy"{% endunless %}
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen></iframe>
+    </div>
   </div>
 
   <div class="gmap__actions">
     <a class="btn btn--ghost btn--sm" href="{{ url_dir }}" target="_blank" rel="noopener">
       Directions {% render 'icon', name: 'arrow' %}
     </a>
-    <a class="gmap__link" href="{{ url_place }}" target="_blank" rel="noopener">
+    <a class="gmap__link" data-gp="maps" href="{{ url_place }}" target="_blank" rel="noopener">
       Reviews on Google
     </a>
     <a class="gmap__link" href="{{ url_write }}" target="_blank" rel="noopener">

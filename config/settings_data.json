@@ -15,7 +15,10 @@
     "text_direction": "ltr",
     "google_place_id": "ChIJQcKz4FAZHxURb6fG5-otlRA",
     "google_map_query": "Bob Music Old Saida Rd Lebanon",
-    "address_street": "Old Saida Rd"
+    "address_street": "Old Saida Rd",
+    "google_rating": "5.0",
+    "google_review_count": "18",
+    "google_rating_checked": "2026-08-29"
   },
   "presets": {
     "Bob Music Store": {
@@ -25,7 +28,10 @@
       "text_direction": "ltr",
       "google_place_id": "ChIJQcKz4FAZHxURb6fG5-otlRA",
       "google_map_query": "Bob Music Old Saida Rd Lebanon",
-      "address_street": "Old Saida Rd"
+      "address_street": "Old Saida Rd",
+      "google_rating": "5.0",
+      "google_review_count": "18",
+      "google_rating_checked": "2026-08-29"
     }
   }
 }

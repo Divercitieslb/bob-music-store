@@ -170,12 +170,19 @@
         "type": "text",
         "id": "google_rating",
         "label": "Rating",
-        "info": "Optional and MANUAL — it will go stale. The map card already shows the live figure. Only fill this if you want a number in the footer too."
+        "info": "Typed in by hand — Google gives no way to read this without an API key. It EXPIRES: 120 days after the date below the site stops showing the number and shows a plain 'Rated on Google' link instead, so it can never quietly go stale."
       },
       {
         "type": "text",
         "id": "google_review_count",
-        "label": "Number of reviews"
+        "label": "Number of reviews",
+        "info": "The number of reviews, as of the date below."
+      },
+      {
+        "type": "text",
+        "id": "google_rating_checked",
+        "label": "Last checked",
+        "info": "YYYY-MM-DD. Update this whenever you refresh the two numbers above. Leave blank and the number is never shown."
       }
     ]
   }
