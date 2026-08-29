@@ -359,7 +359,9 @@
         "photos_label": "Photographed in the shop by customers and by us",
         "photos_count": 8,
         "photos_skip": 0,
-        "bg": ""
+        "bg": "",
+        "show_map": true,
+        "map_height": 340
       }
     }
   },

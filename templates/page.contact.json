@@ -33,7 +33,8 @@
         "photos_label": "Photographed in the shop by customers and by us",
         "photos_count": 8,
         "photos_skip": 0,
-        "bg": "section--shell"
+        "bg": "section--shell",
+        "show_map": false
       }
     }
   },
