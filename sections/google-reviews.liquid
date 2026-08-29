@@ -32,8 +32,20 @@
   endif
 -%}
 
+{%- comment -%}
+  With no API key and the map switched off there is nothing left to show but a
+  heading, so the section stands down rather than leaving a 240px gap — which is
+  exactly what it did on the contact page, where the contact panel already
+  carries the map.
+{%- endcomment -%}
+{%- liquid
+  assign has_something = false
+  if has_api or section.settings.show_map
+    assign has_something = true
+  endif
+-%}
 <section class="section grevs {{ section.settings.bg }}" data-gp-section
-         {% unless has_id or request.design_mode %}hidden{% endunless %}>
+         {% unless has_id and has_something or request.design_mode %}hidden{% endunless %}>
   <div class="wrap">
 
     <div class="section-head">
@@ -113,9 +125,11 @@
         Ratings and reviews come straight from our Google Business Profile and
         refresh on their own. Google shows at most five here —
         <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">read them all on Google</a>.
+      {%- elsif section.settings.show_map -%}
+        The star rating and the review count on the map are drawn by Google
+        itself, so they are always current.
+        <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">Read the reviews on Google</a>.
       {%- else -%}
-        The rating and the review count on the map above are drawn by Google and
-        are always current.
         <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">Read the reviews on Google</a>.
       {%- endif -%}
     </p>

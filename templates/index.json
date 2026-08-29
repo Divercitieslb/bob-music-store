@@ -351,9 +351,9 @@
     "reviews": {
       "type": "google-reviews",
       "settings": {
-        "eyebrow": "From the shop floor",
-        "heading": "What people say",
-        "link_label": "All reviews on Google",
+        "eyebrow": "Old Saida Road, Beirut",
+        "heading": "Come and see us",
+        "link_label": "Read the reviews on Google",
         "min_rating": 0,
         "show_map": true,
         "map_height": 340,
