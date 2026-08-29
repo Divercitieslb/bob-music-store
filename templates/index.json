@@ -84,7 +84,7 @@
           "settings": {
             "image": "shopify://shop_images/look-audio.jpg",
             "default_asset": "look-audio.jpg",
-            "collection": "violins-wind-copy",
+            "collection": "audio-studio",
             "eyebrow": "For the stage",
             "title": "Audio & studio",
             "text": "Microphones, amplifiers, pedals and PA.",
@@ -178,7 +178,7 @@
         "t1": {
           "type": "tab",
           "settings": {
-            "collection": "violins-wind-copy",
+            "collection": "audio-studio",
             "label": "Audio & Studio"
           }
         },
