@@ -326,6 +326,24 @@
         "overlay": 82,
         "bg": "section--ink"
       }
+    },
+    "quote": {
+      "type": "quote-band",
+      "settings": {
+        "quote": "You do not choose an oud from a photograph. You choose it by ear, in a room, with the bowl against your chest.",
+        "attribution": "Bob",
+        "role": "Behind the counter since the shop opened",
+        "size": "large",
+        "show_divider": true,
+        "show_mark": true,
+        "default_asset": "look-oud.jpg",
+        "image_alt": "An oud on the workbench",
+        "media_side": "right",
+        "media_width": 38,
+        "cta_label": "See the ouds",
+        "cta_url": "/collections/oud",
+        "bg": ""
+      }
     }
   },
   "order": [
@@ -336,6 +354,7 @@
     "figures",
     "featured",
     "bench",
+    "quote",
     "percussion",
     "categories",
     "props"
