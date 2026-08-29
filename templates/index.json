@@ -71,7 +71,7 @@
           "settings": {
             "image": "shopify://shop_images/look-accordion.jpg",
             "default_asset": "look-accordion.jpg",
-            "collection": "percussion-copy",
+            "collection": "accordions",
             "eyebrow": "Vintage",
             "title": "Italian & German accordions",
             "text": "Castelfidardo, Klingenthal, and a Soviet bayan.",
@@ -157,21 +157,21 @@
         "t4": {
           "type": "tab",
           "settings": {
-            "collection": "percussion-copy",
+            "collection": "accordions",
             "label": "Accordions"
           }
         },
         "tab_xepYYr": {
           "type": "tab",
           "settings": {
-            "collection": "button-accordions-copy",
+            "collection": "violins",
             "label": "Violins"
           }
         },
         "tab_bia3Xe": {
           "type": "tab",
           "settings": {
-            "collection": "audio-studio-copy",
+            "collection": "strings-accessories",
             "label": "Strings & Accessories"
           }
         },
@@ -185,7 +185,7 @@
         "t5": {
           "type": "tab",
           "settings": {
-            "collection": "electric-violins-copy",
+            "collection": "flutes-ney",
             "label": "Flutes & Ney"
           }
         }
@@ -239,7 +239,7 @@
         "c2": {
           "type": "category",
           "settings": {
-            "collection": "strings-accessories-copy",
+            "collection": "acoustic-guitars",
             "title": "Acoustic Guitars",
             "subtitle": "",
             "url": ""
@@ -248,7 +248,7 @@
         "c3": {
           "type": "category",
           "settings": {
-            "collection": "flutes-ney-copy",
+            "collection": "recorders",
             "title": "Recorders",
             "subtitle": "",
             "url": ""
@@ -257,7 +257,7 @@
         "category_fp7hEW": {
           "type": "category",
           "settings": {
-            "collection": "riq-frame-drums-copy",
+            "collection": "tabl-bass-drums",
             "title": "Tabl & Bass Drums",
             "subtitle": "",
             "url": ""
