@@ -1,0 +1,63 @@
+<section class="band {{ section.settings.height }}">
+  {%- if section.settings.image != blank -%}
+    <div class="band__media">
+      <img src="{{ section.settings.image | image_url: width: 2600 }}"
+           srcset="{{ section.settings.image | image_url: width: 1000 }} 1000w,
+                   {{ section.settings.image | image_url: width: 1800 }} 1800w,
+                   {{ section.settings.image | image_url: width: 2600 }} 2600w"
+           sizes="100vw" alt="{{ section.settings.image_alt | escape }}"
+           width="2600" height="1100" loading="lazy">
+    </div>
+  {%- else -%}
+    <div class="band__media band__media--empty tile-bg"></div>
+  {%- endif -%}
+
+  <div class="band__inner wrap band__inner--{{ section.settings.align }}">
+    <div class="band__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="{{ section.settings.size }}">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}
+        <p class="lede band__lede">{{ section.settings.text }}</p>
+      {%- endif -%}
+      {%- if section.settings.cta_label != blank -%}
+        <a class="btn btn--light" href="{{ section.settings.cta_url }}"
+           style="margin-top:1.75rem">{{ section.settings.cta_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial band",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Wide and cinematic — 2600×1100 or similar." },
+    { "type": "text", "id": "image_alt", "label": "Image alt text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Played before it ships" },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "text", "id": "cta_label", "label": "Button" },
+    { "type": "url", "id": "cta_url", "label": "Button link" },
+    { "type": "select", "id": "align", "label": "Text position", "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "centre", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ] },
+    { "type": "select", "id": "size", "label": "Heading size", "default": "h1",
+      "options": [
+        { "value": "h1", "label": "Large" },
+        { "value": "h-display", "label": "Display" }
+      ] },
+    { "type": "select", "id": "height", "label": "Height", "default": "band--tall",
+      "options": [
+        { "value": "band--short", "label": "Short" },
+        { "value": "band--tall", "label": "Tall" },
+        { "value": "band--full", "label": "Full screen" }
+      ] }
+  ],
+  "presets": [{ "name": "Editorial band" }]
+}
+{% endschema %}

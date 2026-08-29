@@ -12,15 +12,36 @@
 
       <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} — home">
         {%- if section.settings.logo != blank -%}
-          <img src="{{ section.settings.logo | image_url: width: 420 }}"
-               alt="{{ shop.name }}" width="210" height="57" loading="eager">
+          <img src="{{ section.settings.logo | image_url: width: 560 }}"
+               alt="{{ shop.name }}" width="280" height="180" loading="eager">
         {%- else -%}
-          <img src="{{ 'logo-primary.png' | asset_url }}" alt="{{ shop.name }}" width="1147" height="765" loading="eager" fetchpriority="high">
+          <img src="{{ 'logo-header.png' | asset_url }}" alt="{{ shop.name }}"
+               width="1139" height="732" loading="eager" fetchpriority="high">
         {%- endif -%}
       </a>
 
-      <nav class="header__nav" aria-label="Main">
-        <ul class="nav">
+      <div class="header__actions">
+        <button class="icon-btn" data-open="search-drawer" aria-label="Search" aria-expanded="false">
+          {% render 'icon', name: 'search', size: 21 %}
+        </button>
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="icon-btn" href="{{ routes.account_url }}" aria-label="Account">
+            {% render 'icon', name: 'user', size: 21 %}
+          </a>
+        {%- endif -%}
+        <a class="icon-btn" href="{{ routes.cart_url }}"
+           aria-label="Cart ({{ cart.item_count }} items)">
+          {% render 'icon', name: 'cart', size: 21 %}
+          <span class="cart-count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <nav class="header__nav" aria-label="Main">
+    <div class="wrap">
+      <ul class="nav">
           {%- for link in menu.links -%}
             <li class="nav__item">
               <a class="nav__link" href="{{ link.url }}"
@@ -64,27 +85,9 @@
               {%- endif -%}
             </li>
           {%- endfor -%}
-        </ul>
-      </nav>
-
-      <div class="header__actions">
-        <button class="icon-btn" data-open="search-drawer" aria-label="Search" aria-expanded="false">
-          {% render 'icon', name: 'search', size: 21 %}
-        </button>
-        {%- if shop.customer_accounts_enabled -%}
-          <a class="icon-btn" href="{{ routes.account_url }}" aria-label="Account">
-            {% render 'icon', name: 'user', size: 21 %}
-          </a>
-        {%- endif -%}
-        <a class="icon-btn" href="{{ routes.cart_url }}" data-open="cart-drawer"
-           aria-label="Cart ({{ cart.item_count }} items)">
-          {% render 'icon', name: 'cart', size: 21 %}
-          <span class="cart-count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
-        </a>
-      </div>
-
+      </ul>
     </div>
-  </div>
+  </nav>
 </header>
 
 {%- comment -%} ---------------------------------------------- mobile menu {%- endcomment -%}

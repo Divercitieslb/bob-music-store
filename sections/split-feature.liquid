@@ -1,0 +1,90 @@
+{%- liquid
+  assign flip = section.settings.flip
+  assign col = collections[section.settings.collection]
+-%}
+
+<section class="split {{ section.settings.bg }} {% if flip %}split--flip{% endif %}">
+  <div class="split__media">
+    {%- if section.settings.image != blank -%}
+      <img src="{{ section.settings.image | image_url: width: 1800 }}"
+           srcset="{{ section.settings.image | image_url: width: 800 }} 800w,
+                   {{ section.settings.image | image_url: width: 1400 }} 1400w,
+                   {{ section.settings.image | image_url: width: 1800 }} 1800w"
+           sizes="(min-width:900px) 55vw, 100vw"
+           alt="{{ section.settings.image_alt | escape }}"
+           width="1800" height="2000" loading="lazy">
+    {%- else -%}
+      <div class="split__placeholder tile-bg"></div>
+    {%- endif -%}
+  </div>
+
+  <div class="split__body">
+    <div class="split__inner">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="h1">{{ section.settings.heading }}</h2>
+      <div style="margin:1.35rem 0 1.5rem">
+        {% render 'ornament', name: 'divider', tone: 'brass' %}
+      </div>
+      {%- if section.settings.text != blank -%}
+        <div class="rte split__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.stat_1 != blank -%}
+        <dl class="split__stats">
+          {%- for i in (1..3) -%}
+            {%- liquid
+              case i
+                when 1 then assign sv = section.settings.stat_1 | assign sl = section.settings.stat_1_label
+                when 2 then assign sv = section.settings.stat_2 | assign sl = section.settings.stat_2_label
+                when 3 then assign sv = section.settings.stat_3 | assign sl = section.settings.stat_3_label
+              endcase
+            -%}
+            {%- if sv != blank -%}
+              <div><dt class="num">{{ sv }}</dt><dd>{{ sl }}</dd></div>
+            {%- endif -%}
+          {%- endfor -%}
+        </dl>
+      {%- endif -%}
+
+      {%- if section.settings.cta_label != blank -%}
+        <a class="btn {% if section.settings.bg contains 'ink' or section.settings.bg contains 'espresso' %}btn--light{% else %}btn--ghost{% endif %}"
+           href="{{ section.settings.cta_url | default: col.url }}">{{ section.settings.cta_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Split feature",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Portrait or square. See IMAGE-PROMPTS.md for the prompt that fits this slot." },
+    { "type": "text", "id": "image_alt", "label": "Image alt text" },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Sets the button link." },
+    { "type": "checkbox", "id": "flip", "label": "Image on the right", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Oud Room" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "header", "content": "Figures (optional)" },
+    { "type": "text", "id": "stat_1", "label": "Figure 1" },
+    { "type": "text", "id": "stat_1_label", "label": "Label 1" },
+    { "type": "text", "id": "stat_2", "label": "Figure 2" },
+    { "type": "text", "id": "stat_2_label", "label": "Label 2" },
+    { "type": "text", "id": "stat_3", "label": "Figure 3" },
+    { "type": "text", "id": "stat_3_label", "label": "Label 3" },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "cta_label", "label": "Button" },
+    { "type": "url", "id": "cta_url", "label": "Button link" },
+    { "type": "select", "id": "bg", "label": "Background", "default": "",
+      "options": [
+        { "value": "", "label": "White" },
+        { "value": "section--shell", "label": "Shell" },
+        { "value": "section--ink", "label": "Ink" },
+        { "value": "section--espresso", "label": "Espresso" }
+      ] }
+  ],
+  "presets": [{ "name": "Split feature" }]
+}
+{% endschema %}

@@ -1,0 +1,35 @@
+{%- liquid
+  assign names = section.settings.brands | split: ','
+-%}
+<section class="marquee {{ section.settings.bg }}" aria-label="{{ section.settings.label }}">
+  {%- if section.settings.label != blank -%}
+    <p class="eyebrow marquee__label">{{ section.settings.label }}</p>
+  {%- endif -%}
+  <div class="marquee__track" aria-hidden="true">
+    {%- for pass in (1..2) -%}
+      {%- for n in names -%}
+        <span>{{ n | strip }}</span>
+        {% render 'ornament', name: 'khatam', size: 11, tone: 'brass' %}
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+  <span class="visually-hidden">{{ section.settings.brands }}</span>
+</section>
+
+{% schema %}
+{
+  "name": "Brand marquee",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "Brands we carry" },
+    { "type": "textarea", "id": "brands", "label": "Brands", "info": "Comma separated.",
+      "default": "Fender · Shure · BOSS · Roland · Yamaha · Audio-Technica · Epiphone · Squier · Laney · Behringer · Korg · M-Audio · D'Addario · Joyo · Mooer · Celestion · Hohner · Weltmeister · Paolo Soprani · Gawharet El Fan · Alam Alikaa · Power Beat" },
+    { "type": "select", "id": "bg", "label": "Background", "default": "",
+      "options": [
+        { "value": "", "label": "White" },
+        { "value": "section--shell", "label": "Shell" },
+        { "value": "section--ink", "label": "Ink" }
+      ] }
+  ],
+  "presets": [{ "name": "Brand marquee" }]
+}
+{% endschema %}

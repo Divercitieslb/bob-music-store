@@ -5,33 +5,71 @@
       "settings": {
         "eyebrow": "Beirut · All instruments. One passion.",
         "heading": "Where the oud meets the amplifier",
-        "text": "Two hundred and sixty-eight instruments under one roof — hand-inlaid darbukas and Egyptian ouds beside Fender, Shure and BOSS. Checked on the bench, played before it ships.",
+        "text": "Hand-inlaid darbukas and Egyptian ouds on one wall. Fender, Shure and BOSS on the other. Every instrument checked on the bench before it leaves the shop.",
         "cta_label": "Shop the catalogue",
         "cta_url": "/collections/all",
         "cta2_label": "Arabic instruments",
         "cta2_url": "/collections/arabic-instruments"
       }
     },
-    "categories": {
-      "type": "category-grid",
+
+    "brands": {
+      "type": "brand-marquee",
+      "settings": {
+        "label": "Brands we carry",
+        "brands": "Fender · Shure · BOSS · Roland · Yamaha · Audio-Technica · Epiphone · Squier · Laney · Behringer · Korg · M-Audio · D'Addario · Joyo · Mooer · Celestion · Hohner · Weltmeister · Paolo Soprani · Gawharet El Fan · Alam Alikaa · Power Beat",
+        "bg": "section--shell"
+      }
+    },
+
+    "lookbook": {
+      "type": "lookbook",
       "blocks": {
-        "c1": { "type": "category", "settings": { "collection": "darbuka", "title": "Darbuka" } },
-        "c2": { "type": "category", "settings": { "collection": "oud", "title": "Oud" } },
-        "c3": { "type": "category", "settings": { "collection": "guitars", "title": "Guitars & Bass" } },
-        "c4": { "type": "category", "settings": { "collection": "accordions", "title": "Accordions" } },
-        "c5": { "type": "category", "settings": { "collection": "audio-studio", "title": "Audio & Studio" } },
-        "c6": { "type": "category", "settings": { "collection": "violins-wind", "title": "Violins & Wind" } }
+        "l1": { "type": "look", "settings": {
+          "collection": "oud", "eyebrow": "Made by hand",
+          "title": "The oud", "text": "Eleven instruments from workshops in Egypt, Syria and Lebanon.",
+          "span": "wide" } },
+        "l2": { "type": "look", "settings": {
+          "collection": "darbuka", "eyebrow": "45 in stock",
+          "title": "Darbuka", "text": "No two shells alike.", "span": "narrow" } },
+        "l3": { "type": "look", "settings": {
+          "collection": "accordions", "eyebrow": "Vintage",
+          "title": "Italian & German accordions", "text": "Castelfidardo, Klingenthal, and a Soviet bayan.",
+          "span": "narrow" } },
+        "l4": { "type": "look", "settings": {
+          "collection": "audio-studio", "eyebrow": "For the stage",
+          "title": "Audio & studio", "text": "Microphones, amplifiers, pedals and PA.",
+          "span": "wide" } }
       },
-      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"],
+      "block_order": ["l1", "l2", "l3", "l4"],
       "settings": {
         "eyebrow": "The catalogue",
-        "heading": "Shop by instrument",
-        "text": "Seven families, forty-eight collections. Everything in the shop, sorted the way a player looks for it.",
+        "heading": "Two musical worlds, one shop",
+        "text": "Two hundred and sixty-eight instruments, sorted the way a player looks for them.",
         "link_label": "All collections",
         "link_url": "/collections",
         "bg": ""
       }
     },
+
+    "oud_room": {
+      "type": "split-feature",
+      "settings": {
+        "collection": "oud",
+        "flip": false,
+        "eyebrow": "The oud room",
+        "heading": "An instrument you choose by ear",
+        "text": "<p>Every oud we stock is built by hand, so no two sound the same. A blonde spruce top speaks quickly and cuts through a room. A darker cedar top gives you warmth and a longer decay. The bowl — walnut, mahogany, or ribbed maple — decides how much of that sound comes back at you.</p><p>Come and play them. We will string it to your preference and set the action before it leaves.</p>",
+        "image_alt": "A handmade oud on the workbench",
+        "stat_1": "11", "stat_1_label": "Ouds in stock",
+        "stat_2": "3", "stat_2_label": "Countries of origin",
+        "stat_3": "1", "stat_3_label": "Of each, exactly",
+        "cta_label": "See the ouds",
+        "cta_url": "/collections/oud",
+        "bg": "section--shell"
+      }
+    },
+
     "featured": {
       "type": "featured-products",
       "blocks": {
@@ -48,21 +86,57 @@
         "count": 10,
         "link_label": "View all",
         "link_url": "/collections/all",
-        "bg": "section--shell"
+        "bg": ""
       }
     },
-    "story": {
-      "type": "brand-story",
+
+    "bench": {
+      "type": "editorial-band",
       "settings": {
-        "eyebrow": "The shop",
-        "heading": "A counter, a bench, and someone who plays",
-        "text": "<p>Bob Music sits where two musical worlds overlap. On one wall, hand-inlaid darbukas, riqs and ouds built by makers in Egypt, Syria and Lebanon. On the other, the guitars, microphones and pedals any working band needs on a Friday night.</p><p>We do not drop-ship. Everything here has been unboxed, checked and set up by hand — and if it needs a fret dressed or a head tuned before it leaves, that happens first.</p>",
-        "image_alt": "Inside the Bob Music shop",
-        "cta_label": "Our story",
+        "eyebrow": "The bench",
+        "heading": "Played before it ships",
+        "text": "Nothing here is drop-shipped. Every instrument is unboxed, checked, tuned and set up by hand — and if it needs a fret dressed or a head brought up to pitch, that happens before it goes anywhere.",
+        "image_alt": "A luthier setting up an instrument at the workbench",
+        "cta_label": "How we work",
         "cta_url": "/pages/about",
-        "bg": "section--shell"
+        "align": "left",
+        "size": "h-display",
+        "height": "band--tall"
       }
     },
+
+    "percussion": {
+      "type": "split-feature",
+      "settings": {
+        "collection": "percussion",
+        "flip": true,
+        "eyebrow": "Arabic percussion",
+        "heading": "The rhythm section of a whole region",
+        "text": "<p>Darbuka, riq, tabl and bendir — the instruments that carry Arabic music. Our darbukas come from workshops that still inlay mother-of-pearl by hand, one tessera at a time, which is why the shells in the photographs are the shells you receive.</p><p>All are bolt-tuned with synthetic heads, so they hold pitch through a Beirut summer and through a flight.</p>",
+        "image_alt": "Mother-of-pearl inlay on a darbuka shell",
+        "cta_label": "Shop percussion",
+        "cta_url": "/collections/percussion",
+        "bg": "section--ink"
+      }
+    },
+
+    "categories": {
+      "type": "category-grid",
+      "blocks": {
+        "c1": { "type": "category", "settings": { "collection": "guitars", "title": "Guitars & Bass" } },
+        "c2": { "type": "category", "settings": { "collection": "violins-wind", "title": "Violins & Wind" } },
+        "c3": { "type": "category", "settings": { "collection": "accessories", "title": "Strings & Accessories" } }
+      },
+      "block_order": ["c1", "c2", "c3"],
+      "settings": {
+        "eyebrow": "Everything else",
+        "heading": "The rest of the shop",
+        "link_label": "All collections",
+        "link_url": "/collections",
+        "bg": ""
+      }
+    },
+
     "props": {
       "type": "value-props",
       "blocks": {
@@ -72,8 +146,18 @@
         "p4": { "type": "prop", "settings": { "icon": "whatsapp", "title": "Ask us anything", "text": "Message the shop on WhatsApp — a player will answer, not a bot." } }
       },
       "block_order": ["p1", "p2", "p3", "p4"],
-      "settings": { "heading": "Why buy here", "bg": "section--ink" }
+      "settings": { "heading": "Why buy here", "bg": "section--shell" }
     }
   },
-  "order": ["hero", "categories", "featured", "story", "props"]
+  "order": [
+    "hero",
+    "brands",
+    "lookbook",
+    "oud_room",
+    "featured",
+    "bench",
+    "percussion",
+    "categories",
+    "props"
+  ]
 }

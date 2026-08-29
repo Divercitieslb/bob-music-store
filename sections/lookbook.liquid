@@ -1,0 +1,88 @@
+<section class="section {{ section.settings.bg }}">
+  <div class="wrap">
+    {%- if section.settings.heading != blank -%}
+      <div class="section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+          <h2 class="h1">{{ section.settings.heading }}</h2>
+          {%- if section.settings.text != blank -%}<p class="lede">{{ section.settings.text }}</p>{%- endif -%}
+        </div>
+        {%- if section.settings.link_url != blank -%}
+          <a class="link-arrow" href="{{ section.settings.link_url }}">
+            {{ section.settings.link_label }} {% render 'icon', name: 'arrow' %}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="lookbook">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign col = collections[block.settings.collection]
+          assign img = block.settings.image
+          if img == blank and col.featured_image
+            assign img = col.featured_image
+          endif
+          assign url = block.settings.url | default: col.url | default: '#'
+        -%}
+        <a class="look look--{{ block.settings.span }}" href="{{ url }}" {{ block.shopify_attributes }}>
+          {%- if img != blank -%}
+            <img src="{{ img | image_url: width: 1400 }}"
+                 srcset="{{ img | image_url: width: 700 }} 700w, {{ img | image_url: width: 1400 }} 1400w"
+                 sizes="(min-width:900px) 50vw, 100vw"
+                 alt="{{ block.settings.title | escape }}"
+                 width="1400" height="1000" loading="lazy">
+          {%- else -%}
+            {%- comment -%}
+              No cutout fallback here on purpose: a product shot on white inside a
+              cinematic panel reads as a mistake. See IMAGE-PROMPTS.md.
+            {%- endcomment -%}
+            <div class="look__placeholder tile-bg"></div>
+          {%- endif -%}
+          <div class="look__label">
+            {%- if block.settings.eyebrow != blank -%}<span>{{ block.settings.eyebrow }}</span>{%- endif -%}
+            <h3>{{ block.settings.title | default: col.title }}</h3>
+            {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "See everything" },
+    { "type": "url", "id": "link_url", "label": "Link" },
+    { "type": "select", "id": "bg", "label": "Background", "default": "",
+      "options": [
+        { "value": "", "label": "White" },
+        { "value": "section--shell", "label": "Shell" },
+        { "value": "section--ink", "label": "Ink" }
+      ] }
+  ],
+  "blocks": [
+    { "type": "look", "name": "Panel", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "collection", "id": "collection", "label": "Collection" },
+      { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+      { "type": "text", "id": "title", "label": "Title" },
+      { "type": "text", "id": "text", "label": "Text" },
+      { "type": "url", "id": "url", "label": "Link override" },
+      { "type": "select", "id": "span", "label": "Width", "default": "half",
+        "options": [
+          { "value": "half", "label": "Half" },
+          { "value": "wide", "label": "Two thirds" },
+          { "value": "narrow", "label": "One third" }
+        ] }
+    ]}
+  ],
+  "presets": [{ "name": "Lookbook", "blocks": [ {"type":"look"},{"type":"look"},{"type":"look"} ] }]
+}
+{% endschema %}
