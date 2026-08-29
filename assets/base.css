@@ -1136,7 +1136,13 @@ p{margin:0 0 1em}
   padding:clamp(1.5rem,3vw,2.25rem);
   border:1px solid var(--rule);background:var(--shell);
 }
-.contact__corner{position:absolute;top:-1px;left:-1px;pointer-events:none;opacity:.9}
+/* Top-RIGHT, mirrored. At top-left the flourish ran straight through "THE
+   SHOP" — there is only 1.5rem of padding to clear and the ornament is wider
+   than that. Nothing sits in the top-right corner. */
+.contact__corner{
+  position:absolute;top:-1px;right:-1px;pointer-events:none;
+  opacity:.65;transform:scaleX(-1);
+}
 .contact__dh{
   font-family:var(--f-sans);font-size:.68rem;font-weight:700;
   letter-spacing:.22em;text-transform:uppercase;color:var(--brass-text);
