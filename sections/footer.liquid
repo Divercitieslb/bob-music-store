@@ -54,10 +54,14 @@
               rather than making somebody copy a street name.
             {%- endcomment -%}
             {%- liquid
+              # /maps/search/?api=1 is the documented form and the one that
+              # opens the Maps app on a phone; /maps/place/?q=place_id: errors
+              # there. Do not change it back.
               if settings.google_maps_url != blank
                 assign maps_url = settings.google_maps_url
               elsif settings.google_place_id != blank
-                assign maps_url = 'https://www.google.com/maps/place/?q=place_id:' | append: settings.google_place_id
+                assign gq = settings.google_map_query | default: shop.name | url_encode
+                assign maps_url = 'https://www.google.com/maps/search/?api=1&query=' | append: gq | append: '&query_place_id=' | append: settings.google_place_id
               else
                 assign maps_url = '#'
               endif

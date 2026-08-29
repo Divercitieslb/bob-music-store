@@ -23,10 +23,14 @@
   if has_id and settings.google_maps_key != blank
     assign has_api = true
   endif
+  # /maps/search/?api=1 is the DOCUMENTED Maps URLs form and the one that opens
+  # the Maps app on a phone. /maps/place/?q=place_id: is undocumented and errors
+  # on mobile — reported from a real device. Do not change it back.
   if settings.google_maps_url != blank
     assign maps_url = settings.google_maps_url
   elsif has_id
-    assign maps_url = 'https://www.google.com/maps/place/?q=place_id:' | append: settings.google_place_id
+    assign gq = settings.google_map_query | default: shop.name | url_encode
+    assign maps_url = 'https://www.google.com/maps/search/?api=1&query=' | append: gq | append: '&query_place_id=' | append: settings.google_place_id
   else
     assign maps_url = '#'
   endif
