@@ -21,7 +21,24 @@
         "subjects": "A specific instrument,Repairs and set-up,Trade-in or valuation,Lessons and teachers,Something else",
         "bg": ""
       }
+    },
+    "reviews": {
+      "type": "google-reviews",
+      "settings": {
+        "eyebrow": "Bob Music Store on Google",
+        "heading": "What people say",
+        "link_label": "All reviews on Google",
+        "min_rating": 0,
+        "show_photos": true,
+        "photos_label": "Photographed in the shop by customers and by us",
+        "photos_count": 8,
+        "photos_skip": 0,
+        "bg": "section--shell"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "reviews"
+  ]
 }

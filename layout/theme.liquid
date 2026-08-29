@@ -65,5 +65,21 @@
 
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
   <script src="{{ 'motion.js' | asset_url }}" defer></script>
+
+  {%- comment -%}
+    Live Google Business Profile data. Loaded only when both values are set, so
+    the script is never fetched on a store that has not configured it. The key
+    is public by design — a Maps Platform browser key is protected by its HTTP
+    referrer restriction, not by being hidden.
+  {%- endcomment -%}
+  {%- if settings.google_place_id != blank and settings.google_maps_key != blank -%}
+    <script>
+      window.BOB_GOOGLE_PLACE = {
+        placeId: {{ settings.google_place_id | json }},
+        key: {{ settings.google_maps_key | json }}
+      };
+    </script>
+    <script src="{{ 'google-place.js' | asset_url }}" defer></script>
+  {%- endif -%}
 </body>
 </html>

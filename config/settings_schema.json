@@ -126,5 +126,47 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Google Business Profile",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Rating, reviews, address, phone, hours and photos are read live from your Google listing, so they stay current on their own. Two values are needed: the Place ID of the listing, and a Maps Platform API key restricted to this domain. Without them the theme falls back to whatever is typed under Shop details."
+      },
+      {
+        "type": "text",
+        "id": "google_place_id",
+        "label": "Place ID",
+        "info": "Looks like ChIJ… — find it with Google's Place ID Finder."
+      },
+      {
+        "type": "text",
+        "id": "google_maps_key",
+        "label": "Maps Platform API key",
+        "info": "Restrict it to HTTP referrers bobmusic.shop/* and to the Places API, or anyone can spend your quota. It is visible in the page source by design; the referrer restriction is what protects it."
+      },
+      {
+        "type": "url",
+        "id": "google_maps_url",
+        "label": "Google Maps link",
+        "info": "Used for Directions before the Place ID is set, and as the fallback if the API is unreachable."
+      },
+      {
+        "type": "header",
+        "content": "Fallback values"
+      },
+      {
+        "type": "text",
+        "id": "google_rating",
+        "label": "Rating",
+        "info": "Shown only until the API answers. e.g. 4.8"
+      },
+      {
+        "type": "text",
+        "id": "google_review_count",
+        "label": "Number of reviews"
+      }
+    ]
   }
 ]

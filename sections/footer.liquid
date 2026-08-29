@@ -46,17 +46,35 @@
             {%- endif -%}
 
           {%- when 'contact' -%}
+            {%- comment -%}
+              The address, phone and rating carry data-gp hooks: whatever is
+              typed under Shop details renders first, and google-place.js
+              replaces it with the live Business Profile values once they
+              arrive. The address is a link, so tapping it opens Google Maps
+              rather than making somebody copy a street name.
+            {%- endcomment -%}
+            {%- liquid
+              assign maps_url = settings.google_maps_url | default: '#'
+              assign has_gp = false
+              if settings.google_place_id != blank and settings.google_maps_key != blank
+                assign has_gp = true
+              endif
+            -%}
             <div {{ block.shopify_attributes }}>
               <h4>{{ block.settings.heading }}</h4>
               <ul>
-                {%- if settings.address_street != blank -%}
-                  <li>{{ settings.address_street }}</li>
-                {%- endif -%}
-                {%- if settings.address_city != blank -%}
-                  <li>{{ settings.address_city }}{% if settings.address_country != blank %}, {{ settings.address_country }}{% endif %}</li>
-                {%- endif -%}
-                {%- if settings.phone != blank -%}
-                  <li><a href="tel:{{ settings.phone | remove: ' ' }}">{{ settings.phone }}</a></li>
+                <li>
+                  <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">
+                    <span data-gp="address">
+                      {%- if settings.address_street != blank -%}{{ settings.address_street }}, {% endif -%}
+                      {{ settings.address_city | default: 'Beirut' }}
+                      {%- if settings.address_country != blank %}, {{ settings.address_country }}{% endif -%}
+                    </span>
+                    {% render 'icon', name: 'arrow' %}
+                  </a>
+                </li>
+                {%- if settings.phone != blank or has_gp -%}
+                  <li><a data-gp="phone" href="tel:{{ settings.phone | remove: ' ' }}">{{ settings.phone }}</a></li>
                 {%- endif -%}
                 {%- if settings.email != blank -%}
                   <li><a href="mailto:{{ settings.email }}">{{ settings.email }}</a></li>
@@ -65,6 +83,23 @@
                   <li style="margin-top:.6rem;opacity:.75">{{ block.settings.hours }}</li>
                 {%- endif -%}
               </ul>
+
+              {%- if has_gp or settings.google_rating != blank -%}
+                <a class="gbadge" data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener"
+                   style="margin-top:.9rem">
+                  <span data-gp="stars">
+                    {%- if settings.google_rating != blank -%}
+                      <span class="gstars" role="img" aria-label="{{ settings.google_rating }} out of 5">
+                        <span class="gstars__bg">★★★★★</span>
+                        <span class="gstars__fg" style="width:{{ settings.google_rating | times: 20.0 }}%">★★★★★</span>
+                      </span>
+                    {%- endif -%}
+                  </span>
+                  <strong data-gp="rating">{{ settings.google_rating }}</strong>
+                  <span>on Google</span>
+                  <span class="gbadge__n">(<span data-gp="count">{{ settings.google_review_count }}</span>)</span>
+                </a>
+              {%- endif -%}
             </div>
 
           {%- when 'newsletter' -%}

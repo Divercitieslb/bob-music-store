@@ -1561,3 +1561,161 @@ html:not(.js) .nav__item:hover>.mega,
 .tabmore__btn{display:inline-flex;align-items:center;gap:.6rem}
 .tabmore__btn svg{transition:transform var(--t-fast)}
 .tabmore__btn:hover svg{transform:translateX(3px)}
+
+/* ===========================================================================
+   GOOGLE BUSINESS PROFILE  (sections/google-reviews.liquid, assets/google-place.js)
+   =========================================================================== */
+
+/* --- stars ----------------------------------------------------------------
+   Two stacked rows of five glyphs with the top one clipped to a percentage.
+   Half-star characters do not exist in Cormorant or Karla, and rounding 4.6 to
+   five full stars overstates the score.
+   -------------------------------------------------------------------------- */
+.gstars{
+  position:relative;display:inline-block;vertical-align:middle;
+  font-size:1rem;line-height:1;letter-spacing:.12em;
+  white-space:nowrap;
+  /* width:max-content is load-bearing. The overlay is a PERCENTAGE of this
+     box, and a flex item is blockified — dropped straight into .grev (a flex
+     column) this stretched to the full card width, so the percentage resolved
+     against 218px of card instead of 65px of glyphs and every review rendered
+     five filled stars. A three-star review displayed as five is not a styling
+     bug, it is a false statement about what somebody wrote. */
+  width:max-content;max-width:100%;
+  flex:0 0 auto;align-self:start;
+}
+.gstars__bg{color:var(--rule-strong)}
+.gstars__fg{
+  position:absolute;inset:0;overflow:hidden;color:var(--brass);
+  white-space:nowrap;
+}
+
+/* --- the score line -------------------------------------------------------- */
+.grevs__score{display:flex;align-items:center;flex-wrap:wrap;gap:.55rem .9rem;margin-top:1.1rem}
+.grevs__num{display:inline-flex;align-items:baseline;gap:.2rem}
+.grevs__num strong{font-family:var(--f-mono);font-size:1.15rem;font-weight:700;color:var(--ink)}
+.grevs__of{font-family:var(--f-mono);font-size:.78rem;color:var(--ink-40)}
+.grevs__count{
+  font-family:var(--f-sans);font-size:.64rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink-60);
+}
+.grevs__count span{font-family:var(--f-mono);letter-spacing:.02em;color:var(--ink)}
+
+/* --- one review ------------------------------------------------------------ */
+.grid--reviews{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+.grevs .grid--reviews{margin-top:clamp(1.5rem,3vw,2.25rem)}
+
+.grev{
+  display:flex;flex-direction:column;gap:.75rem;
+  padding:clamp(1.15rem,2.4vw,1.6rem);
+  background:var(--paper);border:1px solid var(--rule);
+}
+.section--shell .grev{background:var(--paper)}
+.grev__head{display:flex;align-items:center;gap:.7rem}
+.grev__avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.grev__avatar--letter{
+  display:grid;place-items:center;background:var(--sand);color:var(--espresso);
+  font-family:var(--f-display);font-size:1.05rem;font-weight:600;
+}
+.grev__who{min-width:0}
+.grev__name{
+  margin:0;font-family:var(--f-sans);font-size:.8rem;font-weight:700;
+  color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.grev__when{margin:0;font-family:var(--f-sans);font-size:.7rem;color:var(--ink-40)}
+.grev .gstars{font-size:.86rem}
+
+/* Clamped, never truncated in JS — cutting somebody's sentence server-side and
+   presenting it as their review misrepresents what they wrote. The full text is
+   in the DOM and one tap away on Google. */
+.grev__text{
+  margin:0;font-size:.94rem;line-height:1.66;color:var(--ink-80);
+  display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.grev__link{
+  margin-top:auto;padding-top:.35rem;
+  font-family:var(--f-sans);font-size:.6rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--brass-text);
+}
+.grev__link:hover{color:var(--ink)}
+
+/* --- the photo contact sheet ----------------------------------------------
+   Snapshots from a shop, not product photography: different phones, different
+   light, different years. Uniform square crops in one strip, with a shared warm
+   grade so the white balances stop fighting each other, and a caption that says
+   what they are. Framed as evidence, not as art direction.
+   -------------------------------------------------------------------------- */
+.gshots{margin-top:clamp(2rem,4vw,3rem)}
+.gshots__label{
+  margin:0 0 .9rem;font-family:var(--f-sans);font-size:.62rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ink-40);
+}
+.gshots__strip{
+  display:grid;gap:var(--gap);
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+}
+.gshot{margin:0;position:relative;background:var(--bone)}
+.gshot img{
+  width:100%;aspect-ratio:1;object-fit:cover;display:block;
+  /* The grade. Enough to pull a cold phone photo and a warm one towards each
+     other; not so much that the instruments stop looking like themselves. */
+  filter:saturate(.88) contrast(1.04) sepia(.1);
+  transition:filter var(--t-med),transform var(--t-med);
+}
+.gshot:hover img{filter:none;transform:scale(1.03)}
+.gshot{overflow:hidden}
+.gshot__by{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:1.4rem .6rem .45rem;
+  background:linear-gradient(to top,rgba(20,16,12,.82),transparent);
+  color:var(--bone);font-family:var(--f-sans);font-size:.56rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+/* --- footnotes ------------------------------------------------------------- */
+.grevs__source{
+  margin:clamp(1.5rem,3vw,2.25rem) 0 0;max-width:62ch;
+  font-size:.82rem;line-height:1.65;color:var(--ink-60);
+}
+.grevs__source a{color:var(--brass-text);border-bottom:1px solid var(--rule-strong)}
+.grevs__source a:hover{color:var(--ink);border-color:var(--brass)}
+.grevs__setup{
+  margin-top:1.5rem;padding:.9rem 1.1rem;
+  background:var(--paper);border-left:2px solid var(--brass);
+  font-size:.88rem;line-height:1.6;color:var(--ink-80);
+}
+
+/* --- the rating badge, reused in the footer and on the contact page --------- */
+.gbadge{
+  display:inline-flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+  font-family:var(--f-sans);font-size:.68rem;font-weight:600;
+  letter-spacing:.06em;color:var(--ink-80);
+}
+.gbadge .gstars{font-size:.82rem}
+.gbadge strong{font-family:var(--f-mono);color:var(--ink)}
+.gbadge__n{font-family:var(--f-mono)}
+.footer .gbadge{color:#CFC3B0}
+.footer .gbadge strong,.footer .gbadge__n{color:var(--bone)}
+.footer .gstars__bg{color:rgba(239,230,214,.28)}
+
+.gopen{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-family:var(--f-sans);font-size:.6rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-40);
+}
+.gopen::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+.gopen.is-open{color:var(--ok,#2E6F4E)}
+
+.ghours{display:grid;gap:.15rem}
+.ghours__row{display:block;font-size:.9rem;line-height:1.5}
+
+@media(max-width:699px){
+  /* Both need .grid.rail's own weight to beat it — `.grid.rail` is (0,2,0) and
+     a single class would silently lose, which is how the reviews ended up at
+     the default 68vw on the first pass. */
+  .grid.rail.grid--reviews{--rail-card:78vw}
+  .gshots__strip.rail{--rail-card:42vw}
+  .gshots__strip{grid-template-columns:none}
+}

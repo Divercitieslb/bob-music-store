@@ -21,6 +21,13 @@
   if settings.phone != blank or settings.email != blank or settings.whatsapp_number != blank or settings.address_street != blank
     assign has_details = true
   endif
+  # Google Business Profile. Where a value exists on both sides, the live one
+  # wins — google-place.js overwrites these nodes once the API answers.
+  assign has_gp = false
+  if settings.google_place_id != blank and settings.google_maps_key != blank
+    assign has_gp = true
+  endif
+  assign g_maps = map_url | default: settings.google_maps_url | default: '#'
 -%}
 
 <div class="contact">
@@ -100,23 +107,32 @@
         <div>
           <dt>Where</dt>
           <dd>
-            {%- if settings.address_street != blank -%}{{ settings.address_street }}<br>{%- endif -%}
-            {{ settings.address_city | default: 'Beirut' }}{% if settings.address_country != blank %}, {{ settings.address_country }}{% endif %}
-            {%- if map_url != blank -%}
-              <br><a class="contact__map" href="{{ map_url }}" rel="noopener" target="_blank">Open in maps {% render 'icon', name: 'arrow' %}</a>
+            <span data-gp="address">
+              {%- if settings.address_street != blank -%}{{ settings.address_street }}<br>{%- endif -%}
+              {{ settings.address_city | default: 'Beirut' }}{% if settings.address_country != blank %}, {{ settings.address_country }}{% endif %}
+            </span>
+            {%- if g_maps != '#' or has_gp -%}
+              <br><a class="contact__map" data-gp="maps" href="{{ g_maps }}" rel="noopener" target="_blank">Directions {% render 'icon', name: 'arrow' %}</a>
             {%- endif -%}
           </dd>
         </div>
 
         <div>
           <dt>Hours</dt>
-          <dd>{{ c_hours }}</dd>
+          <dd>
+            <span class="gopen" data-gp="open-now" hidden></span>
+            {%- if has_gp -%}
+              <span class="ghours" data-gp="hours"><span class="ghours__row">{{ c_hours }}</span></span>
+            {%- else -%}
+              {{ c_hours }}
+            {%- endif -%}
+          </dd>
         </div>
 
-        {%- if settings.phone != blank -%}
+        {%- if settings.phone != blank or has_gp -%}
           <div>
             <dt>Phone</dt>
-            <dd><a href="tel:{{ settings.phone | remove: ' ' }}">{{ settings.phone }}</a></dd>
+            <dd><a data-gp="phone" href="tel:{{ settings.phone | remove: ' ' }}">{{ settings.phone }}</a></dd>
           </div>
         {%- endif -%}
 
@@ -134,6 +150,23 @@
           </div>
         {%- endif -%}
       </dl>
+
+      {%- if has_gp or settings.google_rating != blank -%}
+        <a class="gbadge" data-gp="maps" href="{{ g_maps }}" rel="noopener" target="_blank"
+           style="margin-top:1.25rem">
+          <span data-gp="stars">
+            {%- if settings.google_rating != blank -%}
+              <span class="gstars" role="img" aria-label="{{ settings.google_rating }} out of 5">
+                <span class="gstars__bg">★★★★★</span>
+                <span class="gstars__fg" style="width:{{ settings.google_rating | times: 20.0 }}%">★★★★★</span>
+              </span>
+            {%- endif -%}
+          </span>
+          <strong data-gp="rating">{{ settings.google_rating }}</strong>
+          <span>on Google</span>
+          <span class="gbadge__n">(<span data-gp="count">{{ settings.google_review_count }}</span>)</span>
+        </a>
+      {%- endif -%}
 
       {%- if settings.social_instagram != blank or settings.social_facebook != blank or settings.social_tiktok != blank -%}
         <div class="contact__social">

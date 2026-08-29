@@ -1,0 +1,129 @@
+{%- comment -%}
+  What people say on Google — live from the Business Profile.
+
+  The whole section is hidden until the API answers, because a reviews block
+  with nothing in it is worse than no reviews block. assets/google-place.js
+  fills [data-gp-reviews] and unhides it; the rating line above works from the
+  fallback values under Theme settings in the meantime.
+
+  Google returns AT MOST FIVE reviews and does not let you choose which — the
+  "all reviews" link is not a nicety, it is the only route to the rest.
+{%- endcomment -%}
+
+{%- liquid
+  assign has_api = false
+  if settings.google_place_id != blank and settings.google_maps_key != blank
+    assign has_api = true
+  endif
+  assign maps_url = settings.google_maps_url | default: '#'
+-%}
+
+<section class="section grevs {{ section.settings.bg }}" data-gp-section
+         {% unless has_api or request.design_mode %}hidden{% endunless %}>
+  <div class="wrap">
+
+    <div class="section-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="h1" data-split>{{ section.settings.heading }}</h2>
+
+        <div class="grevs__score">
+          <span data-gp="stars">
+            {%- if settings.google_rating != blank -%}
+              <span class="gstars" role="img" aria-label="{{ settings.google_rating }} out of 5">
+                <span class="gstars__bg">★★★★★</span>
+                <span class="gstars__fg" style="width:{{ settings.google_rating | times: 20.0 }}%">★★★★★</span>
+              </span>
+            {%- endif -%}
+          </span>
+          <span class="grevs__num">
+            <strong data-gp="rating">{{ settings.google_rating }}</strong>
+            <span class="grevs__of">/ 5</span>
+          </span>
+          <span class="grevs__count">
+            <span data-gp="count">{{ settings.google_review_count }}</span> Google reviews
+          </span>
+        </div>
+      </div>
+
+      <a class="link-arrow" data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">
+        {{ section.settings.link_label }} {% render 'icon', name: 'arrow' %}
+      </a>
+    </div>
+
+    {%- comment -%}
+      Hidden until the fetch lands, then unhidden by the script. The rail
+      primitive does the mobile work — reviews are browsable peer items, which
+      is exactly what a rail is for.
+    {%- endcomment -%}
+    <div class="grid grid--reviews rail" data-gp-reviews
+         data-min-rating="{{ section.settings.min_rating }}" hidden></div>
+
+    {%- if section.settings.show_photos -%}
+      {%- comment -%}
+        PHOTOS. These are snapshots taken in a shop, not product photography —
+        different phones, different light, different years. Presented as a
+        contact sheet rather than as hero imagery: one uniform square crop, one
+        scrolling strip, a shared warm grade so mismatched white balance stops
+        fighting, and a caption that says plainly where they came from. The
+        merchant can skip the first N if the listing leads with a weak one, and
+        turn the whole strip off in one click.
+
+        Google requires the photographer's name to be shown; it is rendered
+        under each frame.
+      {%- endcomment -%}
+      <div class="gshots" data-gp-needs-data hidden>
+        <p class="gshots__label">
+          {{ section.settings.photos_label }}
+        </p>
+        <div class="gshots__strip grid rail" data-gp-photos
+             data-max="{{ section.settings.photos_count }}"
+             data-skip="{{ section.settings.photos_skip }}" hidden></div>
+      </div>
+    {%- endif -%}
+
+    <p class="grevs__source">
+      Ratings and reviews come straight from our Google Business Profile and
+      refresh on their own. Google shows at most five here —
+      <a data-gp="maps" href="{{ maps_url }}" target="_blank" rel="noopener">read them all on Google</a>.
+    </p>
+
+    {%- if request.design_mode and has_api == false -%}
+      <p class="grevs__setup">
+        <strong>Not connected yet.</strong> Add the Place ID and a Maps Platform
+        API key under <strong>Theme settings → Google Business Profile</strong>.
+        Until then this section is hidden from visitors and only visible here in
+        the editor.
+      </p>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Google reviews",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "From the shop floor" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What people say" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "All reviews on Google" },
+    { "type": "range", "id": "min_rating", "label": "Hide reviews below", "min": 0, "max": 5, "step": 1, "default": 0,
+      "info": "0 shows every review Google returns. Hiding poor reviews is legal but visitors notice a wall of five stars — 0 or 3 is the honest setting." },
+    { "type": "header", "content": "Photos from Google" },
+    { "type": "checkbox", "id": "show_photos", "label": "Show photos", "default": true },
+    { "type": "text", "id": "photos_label", "label": "Caption", "default": "Photographed in the shop by customers and by us" },
+    { "type": "range", "id": "photos_count", "label": "How many", "min": 3, "max": 12, "step": 1, "default": 8 },
+    { "type": "range", "id": "photos_skip", "label": "Skip the first", "min": 0, "max": 10, "step": 1, "default": 0,
+      "info": "Google decides the order and it is not always the best one first. Skip past a weak opener." },
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "bg", "label": "Background", "default": "section--shell",
+      "options": [
+        { "value": "", "label": "Paper" },
+        { "value": "section--shell", "label": "Shell" }
+      ] }
+  ],
+  "presets": [{ "name": "Google reviews" }]
+}
+{% endschema %}

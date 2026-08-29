@@ -347,6 +347,20 @@
         "heading": "Why buy here",
         "bg": "section--shell"
       }
+    },
+    "reviews": {
+      "type": "google-reviews",
+      "settings": {
+        "eyebrow": "From the shop floor",
+        "heading": "What people say",
+        "link_label": "All reviews on Google",
+        "min_rating": 0,
+        "show_photos": false,
+        "photos_label": "Photographed in the shop by customers and by us",
+        "photos_count": 8,
+        "photos_skip": 0,
+        "bg": ""
+      }
     }
   },
   "order": [
@@ -356,6 +370,7 @@
     "oud_room",
     "featured",
     "bench",
+    "reviews",
     "categories",
     "percussion",
     "props"
