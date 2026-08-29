@@ -164,8 +164,8 @@
         "tab_xepYYr": {
           "type": "tab",
           "settings": {
-            "collection": "accordions-copy",
-            "label": "Violins & Wind"
+            "collection": "button-accordions-copy",
+            "label": "Violins"
           }
         },
         "tab_bia3Xe": {
@@ -203,7 +203,7 @@
       "settings": {
         "eyebrow": "In the shop now",
         "heading": "Featured products",
-        "count": 10,
+        "count": 12,
         "link_label": "View all",
         "link_url": "/collections/all",
         "bg": ""
