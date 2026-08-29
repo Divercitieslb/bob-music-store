@@ -230,8 +230,8 @@
         "c1": {
           "type": "category",
           "settings": {
-            "collection": "guitars-bass",
-            "title": "Guitars & Bass",
+            "collection": "violins-copy",
+            "title": "Electric Violins",
             "subtitle": "",
             "url": ""
           }
@@ -258,7 +258,7 @@
           "type": "category",
           "settings": {
             "collection": "riq-frame-drums-copy",
-            "title": "Recorders",
+            "title": "Tabl & Bass Drums",
             "subtitle": "",
             "url": ""
           }
