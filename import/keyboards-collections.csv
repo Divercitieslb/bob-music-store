@@ -1,0 +1,6 @@
+Handle,Title,Body HTML,Sort Order,Published,Must Match,Rule: Product Column,Rule: Relation,Rule: Condition
+keyboards-synths,Keyboards & Synths,,best-selling,TRUE,all,Tag,Equals,Keyboards & Synths
+arranger-keyboards,Arranger Keyboards,,best-selling,TRUE,all,Tag,Equals,Arranger Keyboards
+synthesizers,Synthesizers,,best-selling,TRUE,all,Tag,Equals,Synthesizers
+workstations,Workstations,,best-selling,TRUE,all,Tag,Equals,Workstations
+portable-keyboards,Portable Keyboards,,best-selling,TRUE,all,Tag,Equals,Portable Keyboards
